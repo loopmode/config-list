@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "configured-list-workspace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@loopmode/babel7-base": "^0.3.6"
+  }
+}
