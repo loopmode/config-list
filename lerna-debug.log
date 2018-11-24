@@ -1,0 +1,47 @@
+0 silly input [ 'build' ]
+1 silly flags { _: [ 'run' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   ignore: 'example',
+1 silly flags   script: 'build',
+1 silly flags   args: [] }
+2 verbose rootPath D:\Projects\npm\loopmode@npm\configured-list
+3 info version 2.11.0
+4 silly existsSync D:\Projects\npm\loopmode@npm\configured-list\VERSION
+5 info versioning independent
+6 info ignore example
+7 silly initialize attempt
+8 silly initialize success
+9 silly execute attempt
+10 silly runScriptInDir build [] configured-list
+11 silly getExecOpts { cwd:
+11 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\configured-list\\packages\\configured-list' }
+12 error build Errored while running script in 'configured-list'
+13 error execute callback with error
+14 error Error: Command failed: yarn run build
+14 error { SyntaxError: D:\Projects\npm\loopmode@npm\configured-list\packages\configured-list\src\components\ConfiguredList\index.js: Support for the experimental syntax 'exportDefaultFrom' isn't currently enabled (1:8):
+14 error
+14 error > 1 | export default from './ConfiguredList';
+14 error     |        ^
+14 error   2 |
+14 error
+14 error Add @babel/plugin-proposal-export-default-from (https://git.io/vb4yH) to the 'plugins' section of your Babel config to enable transformation.
+14 error     at _class.raise (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:4028:15)
+14 error     at _class.expectPlugin (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:5348:18)
+14 error     at _class.parseExport (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:8277:12)
+14 error     at _class.parseStatementContent (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:7364:27)
+14 error     at _class.parseStatement (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:7277:17)
+14 error     at _class.parseBlockOrModuleBlockBody (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:7829:23)
+14 error     at _class.parseBlockBody (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:7816:10)
+14 error     at _class.parseTopLevel (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:7242:10)
+14 error     at _class.parse (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:8642:17)
+14 error     at parse (D:\Projects\npm\loopmode@npm\configured-list\node_modules\@babel\parser\lib\index.js:10648:38)
+14 error   pos: 7,
+14 error   loc: Position { line: 1, column: 7 },
+14 error   missingPlugin: [ 'exportDefaultFrom' ],
+14 error   code: 'BABEL_PARSE_ERROR' }
+14 error error Command failed with exit code 1.
+14 error $ babel src --out-dir lib --copy-files
+14 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+14 error
+14 error     at Promise.all.then.arr (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\execa\index.js:236:11)
