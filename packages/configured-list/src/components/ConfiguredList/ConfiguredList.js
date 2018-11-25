@@ -9,7 +9,7 @@ import DropdownSelect from '../DropdownSelect';
 import DeleteModal from '../DeleteModal';
 
 import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
-import bindHandlers from '../../utils/bindHandlers';
+import bind from '../../utils/bind';
 
 export default class ConfiguredList extends PureComponent {
     static propTypes = {
@@ -28,10 +28,12 @@ export default class ConfiguredList extends PureComponent {
 
         confirmRemove: PropTypes.bool,
 
+        dropdownExclusive: PropTypes.bool,
         dropdownText: PropTypes.string,
         dropdownClassName: PropTypes.string,
         dropdownItemIcon: PropTypes.func,
         dropdownItemFilter: PropTypes.func,
+        dropdownItemDisabled: PropTypes.func,
         dropdownItemSelected: PropTypes.func,
 
         nothingSelectableText: displayValueShape,
@@ -42,7 +44,9 @@ export default class ConfiguredList extends PureComponent {
         confirmDeleteCancelText: displayValueShape,
         confirmDeleteConfirmText: displayValueShape,
 
-        itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+        itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+        dropdownItemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+        listItemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
     };
     static defaultProps = {
         itemIdentifier: 'id',
@@ -62,7 +66,7 @@ export default class ConfiguredList extends PureComponent {
     };
     constructor(props, context) {
         super(props, context);
-        bindHandlers(this);
+        bind(this);
     }
 
     componentDidMount() {
@@ -89,8 +93,10 @@ export default class ConfiguredList extends PureComponent {
                             text={this.props.dropdownText}
                             items={items}
                             selectedItems={selectedItems}
-                            itemIdentifier={this.props.itemIdentifier}
+                            exclusive={this.props.dropdownExclusive}
+                            itemIdentifier={this.props.dropdownItemIdentifier || this.props.itemIdentifier}
                             itemIcon={this.props.dropdownItemIcon}
+                            itemDisabled={this.props.dropdownItemDisabled}
                             itemLabel={this.props.itemLabel}
                             itemFilter={this.props.dropdownItemFilter}
                             itemSelected={this.props.dropdownItemSelected}
@@ -107,7 +113,7 @@ export default class ConfiguredList extends PureComponent {
                     <Form.Field>
                         <SelectedItems
                             items={selectedItems}
-                            itemIdentifier={this.props.itemIdentifier}
+                            itemIdentifier={this.props.listItemIdentifier || this.props.itemIdentifier}
                             editable={this.props.editable}
                             removeable={this.props.removeable}
                             onEdit={this.props.onEdit}
@@ -142,11 +148,11 @@ export default class ConfiguredList extends PureComponent {
             this.handleRemoveConfirm({ id, item });
         }
     }
-    handleRemoveCancel() {
+    handleRemoveCancel(/*{ id, item }*/) {
         this.setState({ confirmRemove: undefined });
     }
-    handleRemoveConfirm(target = this.state.confirmRemove) {
-        this.props.onRemove(target);
+    handleRemoveConfirm({ id, item }) {
+        this.props.onRemove({ id, item });
         this.setState({ confirmRemove: undefined });
     }
 }

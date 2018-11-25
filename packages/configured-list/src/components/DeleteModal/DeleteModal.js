@@ -7,6 +7,7 @@ import AsyncState from '../AsyncState';
 
 import getValue from '../../utils/getValue';
 import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
+import bind from '../../utils/bind';
 
 export default class DeleteModal extends PureComponent {
     static propTypes = {
@@ -26,6 +27,10 @@ export default class DeleteModal extends PureComponent {
         cancelText: 'Cancel',
         confirmText: 'Remove'
     };
+    constructor(props, context) {
+        super(props, context);
+        bind(this);
+    }
     render() {
         const titleText = getDisplayValue(this.props.titleText, this.props);
         const contentText = getDisplayValue(this.props.contentText, this.props);
@@ -35,14 +40,26 @@ export default class DeleteModal extends PureComponent {
                 {titleText && <Modal.Header>{titleText}</Modal.Header>}
                 {contentText && <Modal.Content>{contentText}</Modal.Content>}
                 <Modal.Actions>
-                    <Button onClick={this.props.onCancel}>{getDisplayValue(this.props.cancelText, this.props)}</Button>
+                    <Button onClick={this.handleCancel}>{getDisplayValue(this.props.cancelText, this.props)}</Button>
                     <AsyncState>
-                        <Button negative onClick={this.props.onConfirm}>
+                        <Button negative onClick={this.handleConfirm}>
                             {getDisplayValue(this.props.confirmText, this.props)}
                         </Button>
                     </AsyncState>
                 </Modal.Actions>
             </Modal>
         );
+    }
+    handleCancel() {
+        return this.props.onCancel({
+            item: this.props.item,
+            id: this.props.itemID
+        });
+    }
+    handleConfirm() {
+        return this.props.onConfirm({
+            item: this.props.item,
+            id: this.props.itemID
+        });
     }
 }

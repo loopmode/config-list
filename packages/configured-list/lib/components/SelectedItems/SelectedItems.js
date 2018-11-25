@@ -31,7 +31,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _getValue = _interopRequireDefault(require("../../utils/getValue"));
 
-var _bindHandlers = _interopRequireDefault(require("../../utils/bindHandlers"));
+var _bind = _interopRequireDefault(require("../../utils/bind"));
 
 var FIELD_ACTIONS = '$actions';
 
@@ -45,7 +45,7 @@ function (_PureComponent) {
 
     (0, _classCallCheck2.default)(this, SelectedItems);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(SelectedItems).call(this, props, context));
-    (0, _bindHandlers.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), 'renderActionButtons');
+    (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), 'renderActionButtons');
     return _this;
   }
 

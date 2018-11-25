@@ -19,6 +19,8 @@ var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/ge
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
@@ -33,14 +35,20 @@ var _getValue = _interopRequireDefault(require("../../utils/getValue"));
 
 var _getDisplayValue = _interopRequireWildcard(require("../../utils/getDisplayValue"));
 
+var _bind = _interopRequireDefault(require("../../utils/bind"));
+
 var DeleteModal =
 /*#__PURE__*/
 function (_PureComponent) {
   (0, _inherits2.default)(DeleteModal, _PureComponent);
 
-  function DeleteModal() {
+  function DeleteModal(props, context) {
+    var _this;
+
     (0, _classCallCheck2.default)(this, DeleteModal);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DeleteModal).apply(this, arguments));
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(DeleteModal).call(this, props, context));
+    (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    return _this;
   }
 
   (0, _createClass2.default)(DeleteModal, [{
@@ -53,11 +61,27 @@ function (_PureComponent) {
         size: "tiny",
         onClose: this.props.onCancel
       }, titleText && _react.default.createElement(_semanticUiReact.Modal.Header, null, titleText), contentText && _react.default.createElement(_semanticUiReact.Modal.Content, null, contentText), _react.default.createElement(_semanticUiReact.Modal.Actions, null, _react.default.createElement(_semanticUiReact.Button, {
-        onClick: this.props.onCancel
+        onClick: this.handleCancel
       }, (0, _getDisplayValue.default)(this.props.cancelText, this.props)), _react.default.createElement(_AsyncState.default, null, _react.default.createElement(_semanticUiReact.Button, {
         negative: true,
-        onClick: this.props.onConfirm
+        onClick: this.handleConfirm
       }, (0, _getDisplayValue.default)(this.props.confirmText, this.props)))));
+    }
+  }, {
+    key: "handleCancel",
+    value: function handleCancel() {
+      return this.props.onCancel({
+        item: this.props.item,
+        id: this.props.itemID
+      });
+    }
+  }, {
+    key: "handleConfirm",
+    value: function handleConfirm() {
+      return this.props.onConfirm({
+        item: this.props.item,
+        id: this.props.itemID
+      });
     }
   }]);
   return DeleteModal;

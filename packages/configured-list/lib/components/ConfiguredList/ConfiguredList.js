@@ -41,7 +41,7 @@ var _DeleteModal = _interopRequireDefault(require("../DeleteModal"));
 
 var _getDisplayValue = _interopRequireWildcard(require("../../utils/getDisplayValue"));
 
-var _bindHandlers = _interopRequireDefault(require("../../utils/bindHandlers"));
+var _bind = _interopRequireDefault(require("../../utils/bind"));
 
 var ConfiguredList =
 /*#__PURE__*/
@@ -61,7 +61,7 @@ function (_PureComponent) {
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "state", {
       confirmRemove: undefined
     });
-    (0, _bindHandlers.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+    (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
   }
 
@@ -97,8 +97,10 @@ function (_PureComponent) {
         text: this.props.dropdownText,
         items: items,
         selectedItems: selectedItems,
-        itemIdentifier: this.props.itemIdentifier,
+        exclusive: this.props.dropdownExclusive,
+        itemIdentifier: this.props.dropdownItemIdentifier || this.props.itemIdentifier,
         itemIcon: this.props.dropdownItemIcon,
+        itemDisabled: this.props.dropdownItemDisabled,
         itemLabel: this.props.itemLabel,
         itemFilter: this.props.dropdownItemFilter,
         itemSelected: this.props.dropdownItemSelected,
@@ -107,7 +109,7 @@ function (_PureComponent) {
         onSelectItem: this.props.onAdd
       })) : _react.default.createElement(_semanticUiReact.Form.Field, null, (0, _getDisplayValue.default)(nothingSelectableText, this.props)), hasSelectedItems ? _react.default.createElement(_semanticUiReact.Form.Field, null, _react.default.createElement(_SelectedItems.default, {
         items: selectedItems,
-        itemIdentifier: this.props.itemIdentifier,
+        itemIdentifier: this.props.listItemIdentifier || this.props.itemIdentifier,
         editable: this.props.editable,
         removeable: this.props.removeable,
         onEdit: this.props.onEdit,
@@ -146,16 +148,22 @@ function (_PureComponent) {
     }
   }, {
     key: "handleRemoveCancel",
-    value: function handleRemoveCancel() {
+    value: function handleRemoveCancel()
+    /*{ id, item }*/
+    {
       this.setState({
         confirmRemove: undefined
       });
     }
   }, {
     key: "handleRemoveConfirm",
-    value: function handleRemoveConfirm() {
-      var target = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.state.confirmRemove;
-      this.props.onRemove(target);
+    value: function handleRemoveConfirm(_ref2) {
+      var id = _ref2.id,
+          item = _ref2.item;
+      this.props.onRemove({
+        id: id,
+        item: item
+      });
       this.setState({
         confirmRemove: undefined
       });
@@ -176,10 +184,12 @@ exports.default = ConfiguredList;
   onRemove: _propTypes.default.func,
   itemLabel: _propTypes.default.func,
   confirmRemove: _propTypes.default.bool,
+  dropdownExclusive: _propTypes.default.bool,
   dropdownText: _propTypes.default.string,
   dropdownClassName: _propTypes.default.string,
   dropdownItemIcon: _propTypes.default.func,
   dropdownItemFilter: _propTypes.default.func,
+  dropdownItemDisabled: _propTypes.default.func,
   dropdownItemSelected: _propTypes.default.func,
   nothingSelectableText: _getDisplayValue.displayValueShape,
   nothingSelectedText: _getDisplayValue.displayValueShape,
@@ -187,7 +197,9 @@ exports.default = ConfiguredList;
   confirmDeleteContentText: _getDisplayValue.displayValueShape,
   confirmDeleteCancelText: _getDisplayValue.displayValueShape,
   confirmDeleteConfirmText: _getDisplayValue.displayValueShape,
-  itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string])
+  itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
+  dropdownItemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
+  listItemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string])
 });
 (0, _defineProperty2.default)(ConfiguredList, "defaultProps", {
   itemIdentifier: 'id',

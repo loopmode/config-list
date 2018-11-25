@@ -1,4 +1,4 @@
-export default function bindHandlers(component, matchKeys = 'handle') {
+export default function bind(component, matchKeys = 'handle') {
     matchKeys = matchKeys.split(',');
     Object.getOwnPropertyNames(component.constructor.prototype).forEach(property => {
         if (matchKeys.some(matcher => property.startsWith(matcher))) {

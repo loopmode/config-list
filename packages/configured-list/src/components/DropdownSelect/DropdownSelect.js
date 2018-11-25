@@ -21,6 +21,8 @@ export default class DropdownSelect extends PureComponent {
         itemFilter: PropTypes.func,
         itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         onSelectItem: PropTypes.func,
+        itemDisabled: PropTypes.func,
+        itemIcon: PropTypes.func,
         itemLabel: PropTypes.func,
         itemSelected: PropTypes.func
     };
@@ -37,6 +39,7 @@ export default class DropdownSelect extends PureComponent {
             nothingSelectableText,
             onSelectItem,
             itemIdentifier,
+            itemDisabled = this.itemDisabled,
             itemIcon = this.itemIcon,
             itemLabel = this.itemLabel,
             itemFilter = this.itemFilter,
@@ -65,7 +68,7 @@ export default class DropdownSelect extends PureComponent {
                                 <Dropdown.Item
                                     key={id}
                                     onClick={() => onSelectItem({ item, id })}
-                                    disabled={isSelected}
+                                    disabled={itemDisabled && itemDisabled(item, isSelected)}
                                     icon={itemIcon && itemIcon(item, isSelected)}
                                     text={itemLabel && itemLabel(item, isSelected)}
                                 />
@@ -95,6 +98,9 @@ export default class DropdownSelect extends PureComponent {
     }
     itemIcon(item, isSelected) {
         return isSelected ? 'check circle outline' : 'circle outline';
+    }
+    itemDisabled(item, isSelected) {
+        return isSelected;
     }
     itemSelected(item, selectedItems, itemIdentifier) {
         if (!item || !selectedItems) {

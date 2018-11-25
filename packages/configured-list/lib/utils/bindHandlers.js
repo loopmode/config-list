@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = bindHandlers;
+exports.default = bind;
 
-function bindHandlers(component) {
+function bind(component) {
   var matchKeys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'handle';
   matchKeys = matchKeys.split(',');
   Object.getOwnPropertyNames(component.constructor.prototype).forEach(function (property) {

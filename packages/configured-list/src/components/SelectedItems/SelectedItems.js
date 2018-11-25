@@ -5,7 +5,7 @@ import { Button, Icon, Table } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 import getValue from '../../utils/getValue';
-import bindHandlers from '../../utils/bindHandlers';
+import bind from '../../utils/bind';
 
 const FIELD_ACTIONS = '$actions';
 
@@ -37,7 +37,7 @@ export default class SelectedItems extends PureComponent {
 
     constructor(props, context) {
         super(props, context);
-        bindHandlers(this, 'renderActionButtons');
+        bind(this, 'renderActionButtons');
     }
 
     render() {

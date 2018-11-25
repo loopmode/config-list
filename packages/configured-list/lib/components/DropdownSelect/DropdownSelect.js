@@ -54,6 +54,8 @@ function (_PureComponent) {
           nothingSelectableText = _this$props.nothingSelectableText,
           onSelectItem = _this$props.onSelectItem,
           itemIdentifier = _this$props.itemIdentifier,
+          _this$props$itemDisab = _this$props.itemDisabled,
+          itemDisabled = _this$props$itemDisab === void 0 ? this.itemDisabled : _this$props$itemDisab,
           _this$props$itemIcon = _this$props.itemIcon,
           itemIcon = _this$props$itemIcon === void 0 ? this.itemIcon : _this$props$itemIcon,
           _this$props$itemLabel = _this$props.itemLabel,
@@ -66,7 +68,7 @@ function (_PureComponent) {
           items = _this$props.items,
           dropdownIcon = _this$props.dropdownIcon,
           selectedItems = _this$props.selectedItems,
-          props = (0, _objectWithoutProperties2.default)(_this$props, ["nothingSelectableText", "onSelectItem", "itemIdentifier", "itemIcon", "itemLabel", "itemFilter", "itemSelected", "exclusive", "items", "dropdownIcon", "selectedItems"]);
+          props = (0, _objectWithoutProperties2.default)(_this$props, ["nothingSelectableText", "onSelectItem", "itemIdentifier", "itemDisabled", "itemIcon", "itemLabel", "itemFilter", "itemSelected", "exclusive", "items", "dropdownIcon", "selectedItems"]);
       var itemsToRender = items && items.filter(itemFilter);
 
       if (exclusive && itemsToRender) {
@@ -91,7 +93,7 @@ function (_PureComponent) {
               id: id
             });
           },
-          disabled: isSelected,
+          disabled: itemDisabled && itemDisabled(item, isSelected),
           icon: itemIcon && itemIcon(item, isSelected),
           text: itemLabel && itemLabel(item, isSelected)
         });
@@ -133,6 +135,11 @@ function (_PureComponent) {
       return isSelected ? 'check circle outline' : 'circle outline';
     }
   }, {
+    key: "itemDisabled",
+    value: function itemDisabled(item, isSelected) {
+      return isSelected;
+    }
+  }, {
     key: "itemSelected",
     value: function itemSelected(item, selectedItems, itemIdentifier) {
       if (!item || !selectedItems) {
@@ -167,6 +174,8 @@ exports.default = DropdownSelect;
   itemFilter: _propTypes.default.func,
   itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   onSelectItem: _propTypes.default.func,
+  itemDisabled: _propTypes.default.func,
+  itemIcon: _propTypes.default.func,
   itemLabel: _propTypes.default.func,
   itemSelected: _propTypes.default.func
 });
