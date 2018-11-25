@@ -4,22 +4,50 @@ import React, { PureComponent } from 'react';
 import { Form } from 'semantic-ui-react';
 
 import StyledForm from './ConfiguredList.styled';
-import AssignedItems from '../AssignedItems';
+import SelectedItems from '../SelectedItems';
 import DropdownSelect from '../DropdownSelect';
+import DeleteModal from '../DeleteModal';
+
+import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
+import bindHandlers from '../../utils/bindHandlers';
 
 export default class ConfiguredList extends PureComponent {
     static propTypes = {
         items: PropTypes.array,
         selectedItems: PropTypes.array,
         className: PropTypes.string,
-        conceptID: PropTypes.string,
-        onChange: PropTypes.func,
+
+        editable: PropTypes.bool,
+        removeable: PropTypes.bool,
+
+        onAdd: PropTypes.func,
+        onEdit: PropTypes.func,
         onRemove: PropTypes.func,
-        nothingAvailableText: PropTypes.string,
-        nothingSelectedText: PropTypes.string
+
+        itemLabel: PropTypes.func,
+
+        confirmRemove: PropTypes.bool,
+
+        dropdownText: PropTypes.string,
+        dropdownClassName: PropTypes.string,
+        dropdownItemIcon: PropTypes.func,
+        dropdownItemFilter: PropTypes.func,
+        dropdownItemSelected: PropTypes.func,
+
+        nothingSelectableText: displayValueShape,
+        nothingSelectedText: displayValueShape,
+
+        confirmDeleteTitleText: displayValueShape,
+        confirmDeleteContentText: displayValueShape,
+        confirmDeleteCancelText: displayValueShape,
+        confirmDeleteConfirmText: displayValueShape,
+
+        itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
     };
     static defaultProps = {
-        nothingAvailableText: 'No items available',
+        itemIdentifier: 'id',
+        dropdownText: 'Select an item',
+        nothingSelectableText: 'No items to select',
         nothingSelectedText: 'No items selected'
     };
 
@@ -30,11 +58,11 @@ export default class ConfiguredList extends PureComponent {
     };
 
     state = {
-        confirmDelete: undefined
+        confirmRemove: undefined
     };
     constructor(props, context) {
         super(props, context);
-        Object.keys(this).forEach(key => key.startsWith('handle') && (this[key] = this[key].bind(this)));
+        bindHandlers(this);
     }
 
     componentDidMount() {
@@ -48,41 +76,77 @@ export default class ConfiguredList extends PureComponent {
     }
 
     render() {
-        const { nothingAvailableText, nothingSelectedText, items, selectedItems, className } = this.props;
+        const { nothingSelectableText, nothingSelectedText, items, selectedItems, className } = this.props;
 
-        const hasItems = items && items.length > 0;
+        const hasSelectableItems = items && items.length > 0;
         const hasSelectedItems = selectedItems && selectedItems.length > 0;
+
         return (
-            <StyledForm className={className}>
-                {hasItems ? (
+            <StyledForm className={`ConfiguredList ${className || ''}`}>
+                {hasSelectableItems ? (
                     <Form.Field>
-                        <DropdownSelect onAdd={this.handleAdd} items={items} selectedItems={selectedItems} />
+                        <DropdownSelect
+                            text={this.props.dropdownText}
+                            items={items}
+                            selectedItems={selectedItems}
+                            itemIdentifier={this.props.itemIdentifier}
+                            itemIcon={this.props.dropdownItemIcon}
+                            itemLabel={this.props.itemLabel}
+                            itemFilter={this.props.dropdownItemFilter}
+                            itemSelected={this.props.dropdownItemSelected}
+                            nothingSelectableText={this.props.nothingSelectableText}
+                            className={this.props.dropdownClassName}
+                            onSelectItem={this.props.onAdd}
+                        />
                     </Form.Field>
                 ) : (
-                    <Form.Field>{nothingAvailableText}</Form.Field>
+                    <Form.Field>{getDisplayValue(nothingSelectableText, this.props)}</Form.Field>
                 )}
 
                 {hasSelectedItems ? (
                     <Form.Field>
-                        <AssignedItems items={selectedItems} onEdit={this.handleEdit} onRemove={this.handleRemove} />
+                        <SelectedItems
+                            items={selectedItems}
+                            itemIdentifier={this.props.itemIdentifier}
+                            editable={this.props.editable}
+                            removeable={this.props.removeable}
+                            onEdit={this.props.onEdit}
+                            onRemove={this.handleRemove}
+                        />
                     </Form.Field>
                 ) : (
-                    <Form.Field>{nothingSelectedText}</Form.Field>
+                    <Form.Field>{getDisplayValue(nothingSelectedText, this.props)}</Form.Field>
+                )}
+
+                {this.state.confirmRemove && (
+                    <DeleteModal
+                        item={this.state.confirmRemove.item}
+                        itemLabel={this.props.itemLabel}
+                        itemID={this.state.confirmRemove.id}
+                        titleText={this.props.confirmDeleteTitleText}
+                        contentText={this.props.confirmDeleteContentText}
+                        cancelText={this.props.confirmDeleteCancelText}
+                        confirmText={this.props.confirmDeleteConfirmText}
+                        onConfirm={this.handleRemoveConfirm}
+                        onCancel={this.handleRemoveCancel}
+                    />
                 )}
             </StyledForm>
         );
     }
 
-    handleRemove(query) {
-        this.setState({ confirmDelete: query });
+    handleRemove({ id, item }) {
+        if (this.props.confirmRemove) {
+            this.setState({ confirmRemove: { id, item } });
+        } else {
+            this.handleRemoveConfirm({ id, item });
+        }
     }
     handleRemoveCancel() {
-        this.setState({ confirmDelete: undefined });
+        this.setState({ confirmRemove: undefined });
     }
-    handleRemoveConfirm({ item, id }) {
-        this.props.onRemove({ item, id });
-    }
-    handleAdd(item) {
-        console.log('add', item);
+    handleRemoveConfirm(target = this.state.confirmRemove) {
+        this.props.onRemove(target);
+        this.setState({ confirmRemove: undefined });
     }
 }

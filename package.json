@@ -8,12 +8,13 @@
     "packages/*"
   ],
   "scripts": {
+    "start": "cd packages/example && yarn start",
     "build": "lerna run build --ignore example",
     "watch": "lerna run watch --ignore example",
     "lint": "lerna run lint --ignore example",
     "docs": "lerna run docs --ignore example"
   },
   "devDependencies": {
-    "@loopmode/babel7-base": "^0.3.6"
+    "@loopmode/babel7-base": "^1.0.1-b4"
   }
 }

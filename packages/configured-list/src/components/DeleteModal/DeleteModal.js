@@ -5,31 +5,40 @@ import { Modal, Button } from 'semantic-ui-react';
 
 import AsyncState from '../AsyncState';
 
+import getValue from '../../utils/getValue';
+import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
+
 export default class DeleteModal extends PureComponent {
     static propTypes = {
+        item: PropTypes.object,
+        itemID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onConfirm: PropTypes.func,
-        onClose: PropTypes.func,
         onCancel: PropTypes.func,
-        title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-        text: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-        confirmText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-        cancelText: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+        titleText: displayValueShape,
+        contentText: displayValueShape,
+        confirmText: displayValueShape,
+        cancelText: displayValueShape,
+        itemLabel: PropTypes.func
     };
     static defaultProps = {
-        title: 'Delete query',
+        titleText: 'Remove item',
+        contentText: ({ item }) => `Do you want to remove "${getValue(item, 'label') || getValue(item, 'name')}"?`,
         cancelText: 'Cancel',
-        confirmText: 'Delete'
+        confirmText: 'Remove'
     };
     render() {
+        const titleText = getDisplayValue(this.props.titleText, this.props);
+        const contentText = getDisplayValue(this.props.contentText, this.props);
+
         return (
-            <Modal open size="small" onClose={this.props.onClose}>
-                <Modal.Header>{this.props.title}</Modal.Header>
-                <Modal.Content>{this.props.text}</Modal.Content>
+            <Modal open size="tiny" onClose={this.props.onCancel}>
+                {titleText && <Modal.Header>{titleText}</Modal.Header>}
+                {contentText && <Modal.Content>{contentText}</Modal.Content>}
                 <Modal.Actions>
-                    <Button onClick={this.props.onCancel || this.props.onClose}>{this.props.cancelText}</Button>
+                    <Button onClick={this.props.onCancel}>{getDisplayValue(this.props.cancelText, this.props)}</Button>
                     <AsyncState>
                         <Button negative onClick={this.props.onConfirm}>
-                            {this.props.confirmText}
+                            {getDisplayValue(this.props.confirmText, this.props)}
                         </Button>
                     </AsyncState>
                 </Modal.Actions>

@@ -4,6 +4,9 @@ import { Button, Icon, Table } from 'semantic-ui-react';
 
 import PropTypes from 'prop-types';
 
+import getValue from '../../utils/getValue';
+import bindHandlers from '../../utils/bindHandlers';
+
 const FIELD_ACTIONS = '$actions';
 
 export default class SelectedItems extends PureComponent {
@@ -23,19 +26,19 @@ export default class SelectedItems extends PureComponent {
             })
         ),
         //
-        getIdentifier: PropTypes.func,
-        renderList: PropTypes.func,
-        renderColumn: PropTypes.func,
-        renderActions: PropTypes.func
+        itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+        renderColumnValue: PropTypes.func,
+        renderActionButtons: PropTypes.func
     };
 
     static defaultProps = {
-        columns: [{ field: 'name', label: 'Name' }, { field: '$actions', label: 'Actions' }],
-        getIdentifier: this.getIdentifier,
-        renderList: this.renderList,
-        renderColumn: this.renderColumn,
-        renderActions: this.renderActions
+        columns: [{ field: 'label', label: 'Name' }, { field: '$actions', label: 'Actions' }]
     };
+
+    constructor(props, context) {
+        super(props, context);
+        bindHandlers(this, 'renderActionButtons');
+    }
 
     render() {
         const {
@@ -43,24 +46,15 @@ export default class SelectedItems extends PureComponent {
             columns,
             editable,
             removeable,
-            getIdentifier,
-            renderList,
-            renderColumn,
-            renderActions
+            renderColumnValue = this.renderColumnValue,
+            renderActionButtons = this.renderActionButtons,
+            itemIdentifier
         } = this.props;
 
         if (!items || !columns) {
             return null;
         }
 
-        return renderList({ columns, items, getIdentifier, renderActions, renderColumn, editable, removeable });
-    }
-
-    getIdentifier(item) {
-        return item.id;
-    }
-
-    renderList({ columns, items, getIdentifier, renderActions, renderColumn, editable, removeable }) {
         return (
             <Table>
                 <thead>
@@ -72,15 +66,17 @@ export default class SelectedItems extends PureComponent {
                 </thead>
                 <tbody>
                     {items.map(item => {
-                        const id = getIdentifier(item);
+                        const id = getValue(item, itemIdentifier);
                         return (
                             <tr key={id}>
                                 {columns.map(column => {
                                     const key = `${id}--${column.field}`;
                                     if (column.field === FIELD_ACTIONS) {
-                                        return <td key={key}>{renderActions({ item, id, editable, removeable })}</td>;
+                                        return (
+                                            <td key={key}>{renderActionButtons({ item, id, editable, removeable })}</td>
+                                        );
                                     } else {
-                                        return <td key={key}>{renderColumn({ column, item, id })}</td>;
+                                        return <td key={key}>{renderColumnValue({ column, item, id })}</td>;
                                     }
                                 })}
                             </tr>
@@ -91,18 +87,18 @@ export default class SelectedItems extends PureComponent {
         );
     }
 
-    renderColumn({ item, column }) {
-        return item[column.field];
+    renderColumnValue({ item, column }) {
+        return getValue(item, column.field);
     }
 
-    renderActions({ editable, removeable, id, item }) {
+    renderActionButtons({ editable, removeable, id, item }) {
         return (
             <div className="action-buttons">
                 {editable && (
                     <Button
                         icon
                         size="mini"
-                        onClick={() => this.props.onEdit(id, item)}
+                        onClick={() => this.props.onEdit({ id, item })}
                         children={<Icon name="setting" />}
                     />
                 )}
@@ -110,7 +106,7 @@ export default class SelectedItems extends PureComponent {
                     <Button
                         icon
                         size="mini"
-                        onClick={() => this.props.onRemove(id, item)}
+                        onClick={() => this.props.onRemove({ id, item })}
                         children={<Icon name="delete" />}
                     />
                 )}

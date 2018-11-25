@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 
-import ConfiguredList from "configured-list";
 import "./App.css";
+
+import CommandsExample from "./CommandsExample";
 
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <ConfiguredList />
+                <CommandsExample />
             </div>
         );
     }
