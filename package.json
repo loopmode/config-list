@@ -15,6 +15,6 @@
     "docs": "lerna run docs --ignore example"
   },
   "devDependencies": {
-    "@loopmode/babel7-base": "^1.0.1-b4"
+    "@loopmode/babel7-base": "^1.0.1"
   }
 }
