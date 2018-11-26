@@ -4,24 +4,27 @@ import { Segment } from "semantic-ui-react";
 import ConfiguredList from "editable-list";
 import bind from "editable-list/lib/utils/bind";
 
-const triggers = [
+const items = [
     {
         id: "doubleclick",
-        label: "Double click"
+        label: "Double click",
+        action: null
     },
     {
         id: "longclick",
-        label: "Long click"
+        label: "Long click",
+        action: "foo"
     },
     {
         id: "shortclick",
-        label: "Short click"
+        label: "Short click",
+        action: null
     }
 ];
 
 export default class CommandsExample extends Component {
     state = {
-        selectedTriggers: []
+        configuredItems: []
     };
     constructor(props, context) {
         super(props, context);
@@ -36,6 +39,13 @@ export default class CommandsExample extends Component {
                         modalConfirm
                         dropdownExclusive
                         dropdownItemIcon={null}
+                        // dropdownItemLabel={({ item }) => item.label}
+                        // listItemLabel={({ item }) => (
+                        //     <div>
+                        //         <h4>{item.label}</h4>
+                        //         {item.id}: {item.key}
+                        //     </div>
+                        // )}
                         // dropdownItemDisabled={null}
                         // dropdownItemIdentifier={item => item.id}
                         // listItemIdentifier={item => item.key}
@@ -43,8 +53,8 @@ export default class CommandsExample extends Component {
                         removeable
                         onAdd={this.handleAdd}
                         onRemove={this.handleRemove}
-                        items={triggers}
-                        selectedItems={this.state.selectedTriggers}
+                        items={items}
+                        selectedItems={this.state.configuredItems}
                     />
                 </Segment>
             </div>
@@ -52,15 +62,15 @@ export default class CommandsExample extends Component {
     }
     handleAdd({ item }) {
         this.setState({
-            selectedTriggers: [
-                ...this.state.selectedTriggers,
+            configuredItems: [
+                ...this.state.configuredItems,
                 { ...item, key: Math.random() }
             ]
         });
     }
     handleRemove({ item }) {
         this.setState({
-            selectedTriggers: this.state.selectedTriggers.filter(
+            configuredItems: this.state.configuredItems.filter(
                 v => v.key !== item.key
             )
         });

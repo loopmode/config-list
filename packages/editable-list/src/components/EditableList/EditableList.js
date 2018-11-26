@@ -43,8 +43,12 @@ export default class EditableList extends PureComponent {
         dropdownItemDisabled: PropTypes.func,
         dropdownItemSelected: PropTypes.func,
 
-        // text messages
+        // label renderer
         itemLabel: PropTypes.func,
+        listItemLabel: PropTypes.func,
+        dropdownItemLabel: PropTypes.func,
+
+        // text messages
         nothingSelectableText: displayValueShape,
         nothingSelectedText: displayValueShape,
         confirmDeleteTitleText: displayValueShape,
@@ -103,7 +107,7 @@ export default class EditableList extends PureComponent {
                             itemIdentifier={this.props.dropdownItemIdentifier || this.props.itemIdentifier}
                             itemIcon={this.props.dropdownItemIcon}
                             itemDisabled={this.props.dropdownItemDisabled}
-                            itemLabel={this.props.itemLabel}
+                            itemLabel={this.props.dropdownItemLabel || this.props.itemLabel}
                             itemFilter={this.props.dropdownItemFilter}
                             itemSelected={this.props.dropdownItemSelected}
                             nothingSelectableText={this.props.nothingSelectableText}
@@ -122,6 +126,7 @@ export default class EditableList extends PureComponent {
                         <SelectedItems
                             items={selectedItems}
                             itemIdentifier={this.props.listItemIdentifier || this.props.itemIdentifier}
+                            itemLabel={this.props.listItemLabel || this.props.itemLabel}
                             editable={this.props.editable}
                             removeable={this.props.removeable}
                             onEdit={this.props.onEdit}

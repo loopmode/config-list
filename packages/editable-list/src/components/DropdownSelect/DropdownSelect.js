@@ -63,14 +63,14 @@ export default class DropdownSelect extends PureComponent {
                     {itemsToRender &&
                         itemsToRender.map(item => {
                             const id = getValue(item, itemIdentifier);
-                            const isSelected = itemSelected(item, selectedItems, itemIdentifier);
+                            const isSelected = itemSelected({ item, selectedItems, itemIdentifier });
                             return (
                                 <Dropdown.Item
                                     key={id}
                                     onClick={() => onSelectItem({ item, id })}
-                                    disabled={itemDisabled && itemDisabled(item, isSelected)}
-                                    icon={itemIcon && itemIcon(item, isSelected)}
-                                    text={itemLabel && itemLabel(item, isSelected)}
+                                    disabled={itemDisabled && itemDisabled({ item, isSelected })}
+                                    icon={itemIcon && itemIcon({ item, isSelected })}
+                                    text={itemLabel && itemLabel({ item, isSelected })}
                                 />
                             );
                         })}
@@ -93,16 +93,16 @@ export default class DropdownSelect extends PureComponent {
     itemFilter(/*item*/) {
         return true;
     }
-    itemLabel(item /*, isSelected*/) {
+    itemLabel({ item /*, isSelected*/ }) {
         return getValue(item, 'label') || getValue(item, 'name');
     }
-    itemIcon(item, isSelected) {
+    itemIcon({ isSelected }) {
         return isSelected ? 'check circle outline' : 'circle outline';
     }
-    itemDisabled(item, isSelected) {
+    itemDisabled({ isSelected }) {
         return isSelected;
     }
-    itemSelected(item, selectedItems, itemIdentifier) {
+    itemSelected({ item, selectedItems, itemIdentifier }) {
         if (!item || !selectedItems) {
             return false;
         }

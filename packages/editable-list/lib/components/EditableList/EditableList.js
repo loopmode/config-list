@@ -102,7 +102,7 @@ function (_PureComponent) {
         itemIdentifier: this.props.dropdownItemIdentifier || this.props.itemIdentifier,
         itemIcon: this.props.dropdownItemIcon,
         itemDisabled: this.props.dropdownItemDisabled,
-        itemLabel: this.props.itemLabel,
+        itemLabel: this.props.dropdownItemLabel || this.props.itemLabel,
         itemFilter: this.props.dropdownItemFilter,
         itemSelected: this.props.dropdownItemSelected,
         nothingSelectableText: this.props.nothingSelectableText,
@@ -117,6 +117,7 @@ function (_PureComponent) {
       }, _react.default.createElement(_SelectedItems.default, {
         items: selectedItems,
         itemIdentifier: this.props.listItemIdentifier || this.props.itemIdentifier,
+        itemLabel: this.props.listItemLabel || this.props.itemLabel,
         editable: this.props.editable,
         removeable: this.props.removeable,
         onEdit: this.props.onEdit,
@@ -250,8 +251,11 @@ exports.default = EditableList;
   dropdownItemFilter: _propTypes.default.func,
   dropdownItemDisabled: _propTypes.default.func,
   dropdownItemSelected: _propTypes.default.func,
-  // text messages
+  // label renderer
   itemLabel: _propTypes.default.func,
+  listItemLabel: _propTypes.default.func,
+  dropdownItemLabel: _propTypes.default.func,
+  // text messages
   nothingSelectableText: _getDisplayValue.displayValueShape,
   nothingSelectedText: _getDisplayValue.displayValueShape,
   confirmDeleteTitleText: _getDisplayValue.displayValueShape,

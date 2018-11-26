@@ -6,11 +6,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = bind;
 
 function bind(component) {
-  var matchKeys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'handle';
-  matchKeys = matchKeys.split(',');
+  for (var _len = arguments.length, matchKeys = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    matchKeys[_key - 1] = arguments[_key];
+  }
+
+  if (!matchKeys.length) {
+    matchKeys = ['handle'];
+  }
+
   Object.getOwnPropertyNames(component.constructor.prototype).forEach(function (property) {
     if (matchKeys.some(function (matcher) {
-      return property.startsWith(matcher);
+      return property.match(matcher);
     })) {
       component[property] = component[property].bind(component);
     }

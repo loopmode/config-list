@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.FIELD_ACTIONS = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -34,6 +34,7 @@ var _getValue = _interopRequireDefault(require("../../utils/getValue"));
 var _bind = _interopRequireDefault(require("../../utils/bind"));
 
 var FIELD_ACTIONS = '$actions';
+exports.FIELD_ACTIONS = FIELD_ACTIONS;
 
 var SelectedItems =
 /*#__PURE__*/
@@ -45,7 +46,7 @@ function (_PureComponent) {
 
     (0, _classCallCheck2.default)(this, SelectedItems);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(SelectedItems).call(this, props, context));
-    (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), 'renderActionButtons');
+    (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), /render[A-Z]/);
     return _this;
   }
 
@@ -107,7 +108,12 @@ function (_PureComponent) {
     value: function renderColumnValue(_ref) {
       var item = _ref.item,
           column = _ref.column;
-      return (0, _getValue.default)(item, column.field);
+      var value = (0, _getValue.default)(item, column.field);
+      return this.props.itemLabel({
+        item: item,
+        column: column,
+        value: value
+      });
     }
   }, {
     key: "renderActionButtons",
@@ -194,6 +200,7 @@ exports.default = SelectedItems;
     label: _propTypes.default.string
   })),
   //
+  itemLabel: _propTypes.default.func,
   itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   renderColumnValue: _propTypes.default.func,
   renderActionButtons: _propTypes.default.func,
@@ -205,7 +212,11 @@ exports.default = SelectedItems;
     field: 'label',
     label: 'Name'
   }, {
-    field: '$actions',
+    field: FIELD_ACTIONS,
     label: 'Actions'
-  }]
+  }],
+  itemLabel: function itemLabel(_ref5) {
+    var value = _ref5.value;
+    return value;
+  }
 });

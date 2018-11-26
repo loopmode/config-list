@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import getValue from '../../utils/getValue';
 import bind from '../../utils/bind';
 
-const FIELD_ACTIONS = '$actions';
+export const FIELD_ACTIONS = '$actions';
 
 export default class SelectedItems extends PureComponent {
     static propTypes = {
@@ -28,6 +28,7 @@ export default class SelectedItems extends PureComponent {
             })
         ),
         //
+        itemLabel: PropTypes.func,
         itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         renderColumnValue: PropTypes.func,
         renderActionButtons: PropTypes.func,
@@ -36,12 +37,13 @@ export default class SelectedItems extends PureComponent {
     };
 
     static defaultProps = {
-        columns: [{ field: 'label', label: 'Name' }, { field: '$actions', label: 'Actions' }]
+        columns: [{ field: 'label', label: 'Name' }, { field: FIELD_ACTIONS, label: 'Actions' }],
+        itemLabel: ({ value }) => value
     };
 
     constructor(props, context) {
         super(props, context);
-        bind(this, 'renderActionButtons');
+        bind(this, /render[A-Z]/);
     }
 
     render() {
@@ -95,7 +97,8 @@ export default class SelectedItems extends PureComponent {
     }
 
     renderColumnValue({ item, column }) {
-        return getValue(item, column.field);
+        const value = getValue(item, column.field);
+        return this.props.itemLabel({ item, column, value });
     }
 
     renderActionButtons({ editable, removeable, id, item, confirmRemove }) {

@@ -84,7 +84,11 @@ function (_PureComponent) {
         button: true
       }, props), _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, itemsToRender && itemsToRender.map(function (item) {
         var id = (0, _getValue.default)(item, itemIdentifier);
-        var isSelected = itemSelected(item, selectedItems, itemIdentifier);
+        var isSelected = itemSelected({
+          item: item,
+          selectedItems: selectedItems,
+          itemIdentifier: itemIdentifier
+        });
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
           key: id,
           onClick: function onClick() {
@@ -93,9 +97,18 @@ function (_PureComponent) {
               id: id
             });
           },
-          disabled: itemDisabled && itemDisabled(item, isSelected),
-          icon: itemIcon && itemIcon(item, isSelected),
-          text: itemLabel && itemLabel(item, isSelected)
+          disabled: itemDisabled && itemDisabled({
+            item: item,
+            isSelected: isSelected
+          }),
+          icon: itemIcon && itemIcon({
+            item: item,
+            isSelected: isSelected
+          }),
+          text: itemLabel && itemLabel({
+            item: item,
+            isSelected: isSelected
+          })
         });
       }), (!items || !this.hasItems(itemsToRender)) && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
         disabled: true,
@@ -124,24 +137,29 @@ function (_PureComponent) {
     }
   }, {
     key: "itemLabel",
-    value: function itemLabel(item
-    /*, isSelected*/
-    ) {
+    value: function itemLabel(_ref) {
+      var item = _ref.item;
       return (0, _getValue.default)(item, 'label') || (0, _getValue.default)(item, 'name');
     }
   }, {
     key: "itemIcon",
-    value: function itemIcon(item, isSelected) {
+    value: function itemIcon(_ref2) {
+      var isSelected = _ref2.isSelected;
       return isSelected ? 'check circle outline' : 'circle outline';
     }
   }, {
     key: "itemDisabled",
-    value: function itemDisabled(item, isSelected) {
+    value: function itemDisabled(_ref3) {
+      var isSelected = _ref3.isSelected;
       return isSelected;
     }
   }, {
     key: "itemSelected",
-    value: function itemSelected(item, selectedItems, itemIdentifier) {
+    value: function itemSelected(_ref4) {
+      var item = _ref4.item,
+          selectedItems = _ref4.selectedItems,
+          itemIdentifier = _ref4.itemIdentifier;
+
       if (!item || !selectedItems) {
         return false;
       }
