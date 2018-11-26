@@ -15,24 +15,26 @@ import cx from '../../utils/cx';
 
 export default class EditableList extends PureComponent {
     static propTypes = {
-        items: PropTypes.array,
-        selectedItems: PropTypes.array,
         className: PropTypes.string,
 
+        // primary options
+        items: PropTypes.array,
+        selectedItems: PropTypes.array,
         editable: PropTypes.bool,
         removeable: PropTypes.bool,
 
+        // callbacks
         onAdd: PropTypes.func,
         onEdit: PropTypes.func,
         onRemove: PropTypes.func,
 
-        itemLabel: PropTypes.func,
-
+        // confirmation options
         confirmRemove: PropTypes.bool,
         modalEdit: PropTypes.bool,
         modalConfirm: PropTypes.bool,
         modalConfirmSize: PropTypes.string,
 
+        // dropdown options
         dropdownExclusive: PropTypes.bool,
         dropdownText: PropTypes.string,
         dropdownClassName: PropTypes.string,
@@ -41,18 +43,21 @@ export default class EditableList extends PureComponent {
         dropdownItemDisabled: PropTypes.func,
         dropdownItemSelected: PropTypes.func,
 
+        // text messages
+        itemLabel: PropTypes.func,
         nothingSelectableText: displayValueShape,
         nothingSelectedText: displayValueShape,
-
         confirmDeleteTitleText: displayValueShape,
         confirmDeleteContentText: displayValueShape,
         confirmDeleteCancelText: displayValueShape,
         confirmDeleteConfirmText: displayValueShape,
 
+        // retrieving item IDs
         itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         dropdownItemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         listItemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
     };
+
     static defaultProps = {
         itemIdentifier: 'id',
         dropdownText: 'Select an item',
@@ -60,15 +65,10 @@ export default class EditableList extends PureComponent {
         nothingSelectedText: 'No items selected'
     };
 
-    offsetSliderSettings = {
-        min: 0,
-        max: 100,
-        step: 1
-    };
-
     state = {
         confirmation: null
     };
+
     constructor(props, context) {
         super(props, context);
         bind(this);
@@ -158,35 +158,41 @@ export default class EditableList extends PureComponent {
     }
 
     handleRemove({ id, item, event }) {
+        // no confirmation - just remove it
         if (!this.props.confirmRemove) {
             this.handleRemoveConfirm({ id, item });
             return;
         }
+
+        // modal confirm dialog
         if (this.props.modalConfirm) {
             this.setState({ confirmation: { id, item } });
             return;
         }
 
-        // inline-confirm
+        // inline-confirm button
         if (!this.state.confirmation) {
-            window.addEventListener('click', this.handleGlobalClick);
+            // await confirmation or reset
             this.setState({ confirmation: { id, item, button: event.target } });
+            window.addEventListener('click', this.handleGlobalClick);
         } else if (this.state.confirmation.id === id) {
-            window.removeEventListener('click', this.handleGlobalClick);
+            // same button clicked, confirm remove
             this.handleRemoveConfirm({ id, item });
+            window.removeEventListener('click', this.handleGlobalClick);
         }
     }
     handleRemoveCancel(/*{ id, item }*/) {
         this.setState({ confirmation: undefined });
     }
     handleRemoveConfirm({ id, item }) {
-        this.props.onRemove({ id, item });
         this.setState({ confirmation: undefined });
+        this.props.onRemove({ id, item });
     }
     handleGlobalClick(event) {
         if (!this.state.confirmation || !this.state.confirmation.button) {
             return;
         }
+        // reset confirmation when clicked NOT on the same pending remove button
         if (event.target !== this.state.confirmation.button && !this.state.confirmation.button.contains(event.target)) {
             this.setState({ confirmation: undefined });
         }

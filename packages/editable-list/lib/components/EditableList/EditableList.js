@@ -55,11 +55,6 @@ function (_PureComponent) {
 
     (0, _classCallCheck2.default)(this, EditableList);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(EditableList).call(this, props, context));
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "offsetSliderSettings", {
-      min: 0,
-      max: 100,
-      step: 1
-    });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "state", {
       confirmation: null
     });
@@ -150,13 +145,15 @@ function (_PureComponent) {
           item = _ref.item,
           event = _ref.event;
 
+      // no confirmation - just remove it
       if (!this.props.confirmRemove) {
         this.handleRemoveConfirm({
           id: id,
           item: item
         });
         return;
-      }
+      } // modal confirm dialog
+
 
       if (this.props.modalConfirm) {
         this.setState({
@@ -166,11 +163,11 @@ function (_PureComponent) {
           }
         });
         return;
-      } // inline-confirm
+      } // inline-confirm button
 
 
       if (!this.state.confirmation) {
-        window.addEventListener('click', this.handleGlobalClick);
+        // await confirmation or reset
         this.setState({
           confirmation: {
             id: id,
@@ -178,12 +175,14 @@ function (_PureComponent) {
             button: event.target
           }
         });
+        window.addEventListener('click', this.handleGlobalClick);
       } else if (this.state.confirmation.id === id) {
-        window.removeEventListener('click', this.handleGlobalClick);
+        // same button clicked, confirm remove
         this.handleRemoveConfirm({
           id: id,
           item: item
         });
+        window.removeEventListener('click', this.handleGlobalClick);
       }
     }
   }, {
@@ -200,12 +199,12 @@ function (_PureComponent) {
     value: function handleRemoveConfirm(_ref2) {
       var id = _ref2.id,
           item = _ref2.item;
+      this.setState({
+        confirmation: undefined
+      });
       this.props.onRemove({
         id: id,
         item: item
-      });
-      this.setState({
-        confirmation: undefined
       });
     }
   }, {
@@ -213,7 +212,8 @@ function (_PureComponent) {
     value: function handleGlobalClick(event) {
       if (!this.state.confirmation || !this.state.confirmation.button) {
         return;
-      }
+      } // reset confirmation when clicked NOT on the same pending remove button
+
 
       if (event.target !== this.state.confirmation.button && !this.state.confirmation.button.contains(event.target)) {
         this.setState({
@@ -227,19 +227,22 @@ function (_PureComponent) {
 
 exports.default = EditableList;
 (0, _defineProperty2.default)(EditableList, "propTypes", {
+  className: _propTypes.default.string,
+  // primary options
   items: _propTypes.default.array,
   selectedItems: _propTypes.default.array,
-  className: _propTypes.default.string,
   editable: _propTypes.default.bool,
   removeable: _propTypes.default.bool,
+  // callbacks
   onAdd: _propTypes.default.func,
   onEdit: _propTypes.default.func,
   onRemove: _propTypes.default.func,
-  itemLabel: _propTypes.default.func,
+  // confirmation options
   confirmRemove: _propTypes.default.bool,
   modalEdit: _propTypes.default.bool,
   modalConfirm: _propTypes.default.bool,
   modalConfirmSize: _propTypes.default.string,
+  // dropdown options
   dropdownExclusive: _propTypes.default.bool,
   dropdownText: _propTypes.default.string,
   dropdownClassName: _propTypes.default.string,
@@ -247,12 +250,15 @@ exports.default = EditableList;
   dropdownItemFilter: _propTypes.default.func,
   dropdownItemDisabled: _propTypes.default.func,
   dropdownItemSelected: _propTypes.default.func,
+  // text messages
+  itemLabel: _propTypes.default.func,
   nothingSelectableText: _getDisplayValue.displayValueShape,
   nothingSelectedText: _getDisplayValue.displayValueShape,
   confirmDeleteTitleText: _getDisplayValue.displayValueShape,
   confirmDeleteContentText: _getDisplayValue.displayValueShape,
   confirmDeleteCancelText: _getDisplayValue.displayValueShape,
   confirmDeleteConfirmText: _getDisplayValue.displayValueShape,
+  // retrieving item IDs
   itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   dropdownItemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   listItemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string])
