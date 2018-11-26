@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "configured-list-workspace",
+  "name": "editable-list-workspace",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -8,10 +8,10 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "cd packages/example && yarn start",
-    "build": "lerna run build --ignore example",
-    "watch": "lerna run watch --ignore example",
-    "lint": "lerna run lint --ignore example",
+    "dev": "cd packages/example && yarn start",
+    "build": "lerna run build --ignore example --stream",
+    "watch": "lerna run watch --ignore example --stream",
+    "lint": "lerna run lint --ignore example --stream",
     "docs": "lerna run docs --ignore example"
   },
   "devDependencies": {

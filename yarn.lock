@@ -912,10 +912,10 @@
   dependencies:
     classnames "^2.2.5"
 
-"@loopmode/babel7-base@^1.0.1-b4":
-  version "1.0.1-b4"
-  resolved "https://registry.yarnpkg.com/@loopmode/babel7-base/-/babel7-base-1.0.1-b4.tgz#e8d78af7fb0aaa2fcdab94df559d6a26a35664b5"
-  integrity sha512-A8yo9uyy4iLxMLQt+IOX9JgYmS/q34DpsM96eTKNaS1shh5Nq0Sa/3QqfBLV/wW/s2WvN6tld7YO0QDnPsXJpQ==
+"@loopmode/babel7-base@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@loopmode/babel7-base/-/babel7-base-1.0.1.tgz#d76f3cb4af436005ce25132c5c5df266b7095a6a"
+  integrity sha512-T5sCIAZJVKnOEp/1U/FxYj8cjXG86GUnr0nO10HqtlpEExrtuO/op6R3payoT0yBeFbJKepo4Ohk9yDGx7t1lw==
   dependencies:
     "@babel/cli" "^7.1.5"
     "@babel/core" "7.1.0"

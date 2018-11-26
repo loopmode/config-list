@@ -1,5 +1,5 @@
 {
-  "name": "configured-list",
+  "name": "editable-list",
   "version": "1.0.0",
   "main": "lib/index.js",
   "license": "MIT",

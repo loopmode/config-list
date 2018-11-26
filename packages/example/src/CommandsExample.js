@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import ConfiguredList from "configured-list";
-import bind from "configured-list/lib/utils/bind";
+import ConfiguredList from "editable-list";
+import bind from "editable-list/lib/utils/bind";
 
 const triggers = [
     {

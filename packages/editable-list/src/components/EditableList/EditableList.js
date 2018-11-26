@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 
 import React, { PureComponent } from 'react';
-import { Form } from 'semantic-ui-react';
 
-import StyledForm from './ConfiguredList.styled';
+import { Segment } from 'semantic-ui-react';
+
+import StyledContainer from './EditableList.styled';
 import SelectedItems from '../SelectedItems';
 import DropdownSelect from '../DropdownSelect';
 import DeleteModal from '../DeleteModal';
@@ -11,7 +12,7 @@ import DeleteModal from '../DeleteModal';
 import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
 import bind from '../../utils/bind';
 
-export default class ConfiguredList extends PureComponent {
+export default class EditableList extends PureComponent {
     static propTypes = {
         items: PropTypes.array,
         selectedItems: PropTypes.array,
@@ -86,9 +87,9 @@ export default class ConfiguredList extends PureComponent {
         const hasSelectedItems = selectedItems && selectedItems.length > 0;
 
         return (
-            <StyledForm className={`ConfiguredList ${className || ''}`}>
+            <StyledContainer className={`EditableList ${className || ''}`}>
                 {hasSelectableItems ? (
-                    <Form.Field>
+                    <Segment vertical className="EditableList--select">
                         <DropdownSelect
                             text={this.props.dropdownText}
                             items={items}
@@ -104,13 +105,15 @@ export default class ConfiguredList extends PureComponent {
                             className={this.props.dropdownClassName}
                             onSelectItem={this.props.onAdd}
                         />
-                    </Form.Field>
+                    </Segment>
                 ) : (
-                    <Form.Field>{getDisplayValue(nothingSelectableText, this.props)}</Form.Field>
+                    <Segment vertical className="EditableList--select">
+                        {getDisplayValue(nothingSelectableText, this.props)}
+                    </Segment>
                 )}
 
                 {hasSelectedItems ? (
-                    <Form.Field>
+                    <Segment vertical className="EditableList--selected">
                         <SelectedItems
                             items={selectedItems}
                             itemIdentifier={this.props.listItemIdentifier || this.props.itemIdentifier}
@@ -119,9 +122,11 @@ export default class ConfiguredList extends PureComponent {
                             onEdit={this.props.onEdit}
                             onRemove={this.handleRemove}
                         />
-                    </Form.Field>
+                    </Segment>
                 ) : (
-                    <Form.Field>{getDisplayValue(nothingSelectedText, this.props)}</Form.Field>
+                    <Segment vertical className="EditableList--selected">
+                        {getDisplayValue(nothingSelectedText, this.props)}
+                    </Segment>
                 )}
 
                 {this.state.confirmRemove && (
@@ -137,7 +142,7 @@ export default class ConfiguredList extends PureComponent {
                         onCancel={this.handleRemoveCancel}
                     />
                 )}
-            </StyledForm>
+            </StyledContainer>
         );
     }
 
