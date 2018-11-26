@@ -11,6 +11,7 @@ import DeleteModal from '../DeleteModal';
 
 import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
 import bind from '../../utils/bind';
+import cx from '../../utils/cx';
 
 export default class EditableList extends PureComponent {
     static propTypes = {
@@ -91,7 +92,7 @@ export default class EditableList extends PureComponent {
         const hasSelectedItems = selectedItems && selectedItems.length > 0;
 
         return (
-            <StyledContainer className={`EditableList ${className || ''}`}>
+            <StyledContainer className={cx('EditableList', className)}>
                 {hasSelectableItems ? (
                     <Segment vertical className="EditableList--select">
                         <DropdownSelect

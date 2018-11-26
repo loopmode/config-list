@@ -43,6 +43,8 @@ var _getDisplayValue = _interopRequireWildcard(require("../../utils/getDisplayVa
 
 var _bind = _interopRequireDefault(require("../../utils/bind"));
 
+var _cx = _interopRequireDefault(require("../../utils/cx"));
+
 var EditableList =
 /*#__PURE__*/
 function (_PureComponent) {
@@ -93,7 +95,7 @@ function (_PureComponent) {
       var hasSelectableItems = items && items.length > 0;
       var hasSelectedItems = selectedItems && selectedItems.length > 0;
       return _react.default.createElement(_EditableList.default, {
-        className: "EditableList ".concat(className || '')
+        className: (0, _cx.default)('EditableList', className)
       }, hasSelectableItems ? _react.default.createElement(_semanticUiReact.Segment, {
         vertical: true,
         className: "EditableList--select"
