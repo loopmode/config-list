@@ -11,6 +11,7 @@ import bind from '../../utils/bind';
 
 export default class DeleteModal extends PureComponent {
     static propTypes = {
+        size: PropTypes.string,
         item: PropTypes.object,
         itemID: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onConfirm: PropTypes.func,
@@ -25,7 +26,8 @@ export default class DeleteModal extends PureComponent {
         titleText: 'Remove item',
         contentText: ({ item }) => `Do you want to remove "${getValue(item, 'label') || getValue(item, 'name')}"?`,
         cancelText: 'Cancel',
-        confirmText: 'Remove'
+        confirmText: 'Remove',
+        size: 'mini'
     };
     constructor(props, context) {
         super(props, context);
@@ -36,7 +38,7 @@ export default class DeleteModal extends PureComponent {
         const contentText = getDisplayValue(this.props.contentText, this.props);
 
         return (
-            <Modal open size="tiny" onClose={this.props.onCancel}>
+            <Modal open size={this.props.size} onClose={this.props.onCancel}>
                 {titleText && <Modal.Header>{titleText}</Modal.Header>}
                 {contentText && <Modal.Content>{contentText}</Modal.Content>}
                 <Modal.Actions>

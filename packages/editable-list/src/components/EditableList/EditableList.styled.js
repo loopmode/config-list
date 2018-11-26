@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Segment } from 'semantic-ui-react';
 
-export default styled(Segment)`
+export default styled.div`
     > .ui.segment:first-child {
         padding-top: 0;
     }

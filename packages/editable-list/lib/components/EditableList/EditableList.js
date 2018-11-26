@@ -59,7 +59,7 @@ function (_PureComponent) {
       step: 1
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "state", {
-      confirmRemove: undefined
+      confirmation: null
     });
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
@@ -74,6 +74,7 @@ function (_PureComponent) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this._isMounted = false;
+      window.removeEventListener('click', this.handleGlobalClick);
     }
   }, {
     key: "setState",
@@ -122,14 +123,16 @@ function (_PureComponent) {
         editable: this.props.editable,
         removeable: this.props.removeable,
         onEdit: this.props.onEdit,
-        onRemove: this.handleRemove
+        onRemove: this.handleRemove,
+        confirmRemove: this.state.confirmation && !this.state.modalConfirm ? this.state.confirmation.id : undefined
       })) : _react.default.createElement(_semanticUiReact.Segment, {
         vertical: true,
         className: "EditableList--selected"
-      }, (0, _getDisplayValue.default)(nothingSelectedText, this.props)), this.state.confirmRemove && _react.default.createElement(_DeleteModal.default, {
-        item: this.state.confirmRemove.item,
+      }, (0, _getDisplayValue.default)(nothingSelectedText, this.props)), this.state.confirmation && this.props.modalConfirm && _react.default.createElement(_DeleteModal.default, {
+        size: this.props.modalConfirmSize,
+        item: this.state.confirmation.item,
         itemLabel: this.props.itemLabel,
-        itemID: this.state.confirmRemove.id,
+        itemID: this.state.confirmation.id,
         titleText: this.props.confirmDeleteTitleText,
         contentText: this.props.confirmDeleteContentText,
         cancelText: this.props.confirmDeleteCancelText,
@@ -142,16 +145,39 @@ function (_PureComponent) {
     key: "handleRemove",
     value: function handleRemove(_ref) {
       var id = _ref.id,
-          item = _ref.item;
+          item = _ref.item,
+          event = _ref.event;
 
-      if (this.props.confirmRemove) {
+      if (!this.props.confirmRemove) {
+        this.handleRemoveConfirm({
+          id: id,
+          item: item
+        });
+        return;
+      }
+
+      if (this.props.modalConfirm) {
         this.setState({
-          confirmRemove: {
+          confirmation: {
             id: id,
             item: item
           }
         });
-      } else {
+        return;
+      } // inline-confirm
+
+
+      if (!this.state.confirmation) {
+        window.addEventListener('click', this.handleGlobalClick);
+        this.setState({
+          confirmation: {
+            id: id,
+            item: item,
+            button: event.target
+          }
+        });
+      } else if (this.state.confirmation.id === id) {
+        window.removeEventListener('click', this.handleGlobalClick);
         this.handleRemoveConfirm({
           id: id,
           item: item
@@ -164,7 +190,7 @@ function (_PureComponent) {
     /*{ id, item }*/
     {
       this.setState({
-        confirmRemove: undefined
+        confirmation: undefined
       });
     }
   }, {
@@ -177,8 +203,21 @@ function (_PureComponent) {
         item: item
       });
       this.setState({
-        confirmRemove: undefined
+        confirmation: undefined
       });
+    }
+  }, {
+    key: "handleGlobalClick",
+    value: function handleGlobalClick(event) {
+      if (!this.state.confirmation || !this.state.confirmation.button) {
+        return;
+      }
+
+      if (event.target !== this.state.confirmation.button && !this.state.confirmation.button.contains(event.target)) {
+        this.setState({
+          confirmation: undefined
+        });
+      }
     }
   }]);
   return EditableList;
@@ -196,6 +235,9 @@ exports.default = EditableList;
   onRemove: _propTypes.default.func,
   itemLabel: _propTypes.default.func,
   confirmRemove: _propTypes.default.bool,
+  modalEdit: _propTypes.default.bool,
+  modalConfirm: _propTypes.default.bool,
+  modalConfirmSize: _propTypes.default.string,
   dropdownExclusive: _propTypes.default.bool,
   dropdownText: _propTypes.default.string,
   dropdownClassName: _propTypes.default.string,

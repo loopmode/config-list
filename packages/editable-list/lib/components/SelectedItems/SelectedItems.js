@@ -57,6 +57,7 @@ function (_PureComponent) {
           columns = _this$props.columns,
           editable = _this$props.editable,
           removeable = _this$props.removeable,
+          confirmRemove = _this$props.confirmRemove,
           _this$props$renderCol = _this$props.renderColumnValue,
           renderColumnValue = _this$props$renderCol === void 0 ? this.renderColumnValue : _this$props$renderCol,
           _this$props$renderAct = _this$props.renderActionButtons,
@@ -86,7 +87,8 @@ function (_PureComponent) {
               item: item,
               id: id,
               editable: editable,
-              removeable: removeable
+              removeable: removeable,
+              confirmRemove: confirmRemove
             }));
           } else {
             return _react.default.createElement("td", {
@@ -115,34 +117,61 @@ function (_PureComponent) {
       var editable = _ref2.editable,
           removeable = _ref2.removeable,
           id = _ref2.id,
-          item = _ref2.item;
+          item = _ref2.item,
+          confirmRemove = _ref2.confirmRemove;
       return _react.default.createElement("div", {
         className: "action-buttons"
-      }, editable && _react.default.createElement(_semanticUiReact.Button, {
-        icon: true,
-        size: "mini",
-        onClick: function onClick() {
+      }, editable && this.renderEditButton({
+        id: id,
+        item: item,
+        onClick: function onClick(event) {
           return _this2.props.onEdit({
             id: id,
-            item: item
+            item: item,
+            event: event
           });
-        },
+        }
+      }), removeable && this.renderRemoveButton({
+        id: id,
+        item: item,
+        confirmRemove: confirmRemove,
+        onClick: function onClick(event) {
+          return _this2.props.onRemove({
+            id: id,
+            item: item,
+            event: event
+          });
+        }
+      }));
+    }
+  }, {
+    key: "renderEditButton",
+    value: function renderEditButton(_ref3) {
+      var onClick = _ref3.onClick;
+      return _react.default.createElement(_semanticUiReact.Button, {
+        icon: true,
+        size: "mini",
+        onClick: onClick,
         children: _react.default.createElement(_semanticUiReact.Icon, {
           name: "setting"
         })
-      }), removeable && _react.default.createElement(_semanticUiReact.Button, {
+      });
+    }
+  }, {
+    key: "renderRemoveButton",
+    value: function renderRemoveButton(_ref4) {
+      var id = _ref4.id,
+          confirmRemove = _ref4.confirmRemove,
+          onClick = _ref4.onClick;
+      return _react.default.createElement(_semanticUiReact.Button, {
         icon: true,
         size: "mini",
-        onClick: function onClick() {
-          return _this2.props.onRemove({
-            id: id,
-            item: item
-          });
-        },
+        color: confirmRemove === id ? 'red' : undefined,
+        onClick: onClick,
         children: _react.default.createElement(_semanticUiReact.Icon, {
-          name: "delete"
+          name: confirmRemove === id ? 'check' : 'delete'
         })
-      }));
+      });
     }
   }]);
   return SelectedItems;
@@ -153,6 +182,8 @@ exports.default = SelectedItems;
   //
   editable: _propTypes.default.bool,
   removeable: _propTypes.default.bool,
+  // The ID of an item that needs removal confirmation
+  confirmRemove: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.number]),
   //
   onRemove: _propTypes.default.func,
   onEdit: _propTypes.default.func,
@@ -165,7 +196,9 @@ exports.default = SelectedItems;
   //
   itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   renderColumnValue: _propTypes.default.func,
-  renderActionButtons: _propTypes.default.func
+  renderActionButtons: _propTypes.default.func,
+  renderEditButton: _propTypes.default.func,
+  renderRemoveButton: _propTypes.default.func
 });
 (0, _defineProperty2.default)(SelectedItems, "defaultProps", {
   columns: [{

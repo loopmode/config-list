@@ -14,6 +14,8 @@ export default class SelectedItems extends PureComponent {
         //
         editable: PropTypes.bool,
         removeable: PropTypes.bool,
+        // The ID of an item that needs removal confirmation
+        confirmRemove: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         //
         onRemove: PropTypes.func,
         onEdit: PropTypes.func,
@@ -28,7 +30,9 @@ export default class SelectedItems extends PureComponent {
         //
         itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         renderColumnValue: PropTypes.func,
-        renderActionButtons: PropTypes.func
+        renderActionButtons: PropTypes.func,
+        renderEditButton: PropTypes.func,
+        renderRemoveButton: PropTypes.func
     };
 
     static defaultProps = {
@@ -46,6 +50,7 @@ export default class SelectedItems extends PureComponent {
             columns,
             editable,
             removeable,
+            confirmRemove,
             renderColumnValue = this.renderColumnValue,
             renderActionButtons = this.renderActionButtons,
             itemIdentifier
@@ -73,7 +78,9 @@ export default class SelectedItems extends PureComponent {
                                     const key = `${id}--${column.field}`;
                                     if (column.field === FIELD_ACTIONS) {
                                         return (
-                                            <td key={key}>{renderActionButtons({ item, id, editable, removeable })}</td>
+                                            <td key={key}>
+                                                {renderActionButtons({ item, id, editable, removeable, confirmRemove })}
+                                            </td>
                                         );
                                     } else {
                                         return <td key={key}>{renderColumnValue({ column, item, id })}</td>;
@@ -91,26 +98,37 @@ export default class SelectedItems extends PureComponent {
         return getValue(item, column.field);
     }
 
-    renderActionButtons({ editable, removeable, id, item }) {
+    renderActionButtons({ editable, removeable, id, item, confirmRemove }) {
         return (
             <div className="action-buttons">
-                {editable && (
-                    <Button
-                        icon
-                        size="mini"
-                        onClick={() => this.props.onEdit({ id, item })}
-                        children={<Icon name="setting" />}
-                    />
-                )}
-                {removeable && (
-                    <Button
-                        icon
-                        size="mini"
-                        onClick={() => this.props.onRemove({ id, item })}
-                        children={<Icon name="delete" />}
-                    />
-                )}
+                {editable &&
+                    this.renderEditButton({
+                        id,
+                        item,
+                        onClick: event => this.props.onEdit({ id, item, event })
+                    })}
+                {removeable &&
+                    this.renderRemoveButton({
+                        id,
+                        item,
+                        confirmRemove,
+                        onClick: event => this.props.onRemove({ id, item, event })
+                    })}
             </div>
+        );
+    }
+    renderEditButton({ onClick }) {
+        return <Button icon size="mini" onClick={onClick} children={<Icon name="setting" />} />;
+    }
+    renderRemoveButton({ id, confirmRemove, onClick }) {
+        return (
+            <Button
+                icon
+                size="mini"
+                color={confirmRemove === id ? 'red' : undefined}
+                onClick={onClick}
+                children={<Icon name={confirmRemove === id ? 'check' : 'delete'} />}
+            />
         );
     }
 }

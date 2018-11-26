@@ -28,6 +28,9 @@ export default class EditableList extends PureComponent {
         itemLabel: PropTypes.func,
 
         confirmRemove: PropTypes.bool,
+        modalEdit: PropTypes.bool,
+        modalConfirm: PropTypes.bool,
+        modalConfirmSize: PropTypes.string,
 
         dropdownExclusive: PropTypes.bool,
         dropdownText: PropTypes.string,
@@ -63,7 +66,7 @@ export default class EditableList extends PureComponent {
     };
 
     state = {
-        confirmRemove: undefined
+        confirmation: null
     };
     constructor(props, context) {
         super(props, context);
@@ -75,6 +78,7 @@ export default class EditableList extends PureComponent {
     }
     componentWillUnmount() {
         this._isMounted = false;
+        window.removeEventListener('click', this.handleGlobalClick);
     }
     setState(nextState) {
         this._isMounted && super.setState(nextState);
@@ -121,6 +125,11 @@ export default class EditableList extends PureComponent {
                             removeable={this.props.removeable}
                             onEdit={this.props.onEdit}
                             onRemove={this.handleRemove}
+                            confirmRemove={
+                                this.state.confirmation && !this.state.modalConfirm
+                                    ? this.state.confirmation.id
+                                    : undefined
+                            }
                         />
                     </Segment>
                 ) : (
@@ -129,11 +138,12 @@ export default class EditableList extends PureComponent {
                     </Segment>
                 )}
 
-                {this.state.confirmRemove && (
+                {this.state.confirmation && this.props.modalConfirm && (
                     <DeleteModal
-                        item={this.state.confirmRemove.item}
+                        size={this.props.modalConfirmSize}
+                        item={this.state.confirmation.item}
                         itemLabel={this.props.itemLabel}
-                        itemID={this.state.confirmRemove.id}
+                        itemID={this.state.confirmation.id}
                         titleText={this.props.confirmDeleteTitleText}
                         contentText={this.props.confirmDeleteContentText}
                         cancelText={this.props.confirmDeleteCancelText}
@@ -146,18 +156,38 @@ export default class EditableList extends PureComponent {
         );
     }
 
-    handleRemove({ id, item }) {
-        if (this.props.confirmRemove) {
-            this.setState({ confirmRemove: { id, item } });
-        } else {
+    handleRemove({ id, item, event }) {
+        if (!this.props.confirmRemove) {
+            this.handleRemoveConfirm({ id, item });
+            return;
+        }
+        if (this.props.modalConfirm) {
+            this.setState({ confirmation: { id, item } });
+            return;
+        }
+
+        // inline-confirm
+        if (!this.state.confirmation) {
+            window.addEventListener('click', this.handleGlobalClick);
+            this.setState({ confirmation: { id, item, button: event.target } });
+        } else if (this.state.confirmation.id === id) {
+            window.removeEventListener('click', this.handleGlobalClick);
             this.handleRemoveConfirm({ id, item });
         }
     }
     handleRemoveCancel(/*{ id, item }*/) {
-        this.setState({ confirmRemove: undefined });
+        this.setState({ confirmation: undefined });
     }
     handleRemoveConfirm({ id, item }) {
         this.props.onRemove({ id, item });
-        this.setState({ confirmRemove: undefined });
+        this.setState({ confirmation: undefined });
+    }
+    handleGlobalClick(event) {
+        if (!this.state.confirmation || !this.state.confirmation.button) {
+            return;
+        }
+        if (event.target !== this.state.confirmation.button && !this.state.confirmation.button.contains(event.target)) {
+            this.setState({ confirmation: undefined });
+        }
     }
 }

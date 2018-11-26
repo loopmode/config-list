@@ -14,7 +14,7 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 var _semanticUiReact = require("semantic-ui-react");
 
 function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n    &.ui.icon.button {\n        padding: 7px;\n    }\n"]);
+  var data = (0, _taggedTemplateLiteral2.default)(["\n    width: 100%;\n    &.ui.icon.button {\n        padding: 7px;\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
