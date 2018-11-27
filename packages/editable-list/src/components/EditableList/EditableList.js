@@ -8,10 +8,13 @@ import StyledContainer from './EditableList.styled';
 import SelectedItems from '../SelectedItems';
 import DropdownSelect from '../DropdownSelect';
 import DeleteModal from '../DeleteModal';
+import EditModal from '../EditModal';
 
 import getDisplayValue, { displayValueShape } from '../../utils/getDisplayValue';
 import bind from '../../utils/bind';
 import cx from '../../utils/cx';
+import clone from '../../utils/clone';
+import getValue from '../../utils/getValue';
 
 export default class EditableList extends PureComponent {
     static propTypes = {
@@ -28,11 +31,14 @@ export default class EditableList extends PureComponent {
         onEdit: PropTypes.func,
         onRemove: PropTypes.func,
 
-        // confirmation options
+        // removal confirmation
         confirmRemove: PropTypes.bool,
-        modalEdit: PropTypes.bool,
-        modalConfirm: PropTypes.bool,
-        modalConfirmSize: PropTypes.string,
+        confirmModal: PropTypes.bool,
+        confirmModalSize: PropTypes.string,
+
+        itemEditor: PropTypes.oneOfType([PropTypes.func]),
+        editModal: PropTypes.bool,
+        editModalSize: PropTypes.string,
 
         // dropdown options
         dropdownExclusive: PropTypes.bool,
@@ -56,6 +62,11 @@ export default class EditableList extends PureComponent {
         confirmDeleteCancelText: displayValueShape,
         confirmDeleteConfirmText: displayValueShape,
 
+        editModalTitleText: displayValueShape,
+        editModalContentText: displayValueShape,
+        editModalCancelText: displayValueShape,
+        editModalConfirmText: displayValueShape,
+
         // retrieving item IDs
         itemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
         dropdownItemIdentifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
@@ -70,6 +81,7 @@ export default class EditableList extends PureComponent {
     };
 
     state = {
+        editors: [],
         confirmation: null
     };
 
@@ -94,7 +106,6 @@ export default class EditableList extends PureComponent {
 
         const hasSelectableItems = items && items.length > 0;
         const hasSelectedItems = selectedItems && selectedItems.length > 0;
-
         return (
             <StyledContainer className={cx('EditableList', className)}>
                 {hasSelectableItems ? (
@@ -129,10 +140,10 @@ export default class EditableList extends PureComponent {
                             itemLabel={this.props.listItemLabel || this.props.itemLabel}
                             editable={this.props.editable}
                             removeable={this.props.removeable}
-                            onEdit={this.props.onEdit}
+                            onEdit={this.handleEdit}
                             onRemove={this.handleRemove}
                             confirmRemove={
-                                this.state.confirmation && !this.state.modalConfirm
+                                this.state.confirmation && !this.state.confirmModal
                                     ? this.state.confirmation.id
                                     : undefined
                             }
@@ -144,9 +155,9 @@ export default class EditableList extends PureComponent {
                     </Segment>
                 )}
 
-                {this.state.confirmation && this.props.modalConfirm && (
+                {this.state.confirmation && this.props.confirmModal && (
                     <DeleteModal
-                        size={this.props.modalConfirmSize}
+                        size={this.props.confirmModalSize}
                         item={this.state.confirmation.item}
                         itemLabel={this.props.itemLabel}
                         itemID={this.state.confirmation.id}
@@ -158,10 +169,58 @@ export default class EditableList extends PureComponent {
                         onCancel={this.handleRemoveCancel}
                     />
                 )}
+                {this.state.editors.length > 0 && this.props.editModal && (
+                    <EditModal
+                        editor={this.props.itemEditor}
+                        size={this.props.editModalSize}
+                        item={this.state.editors[0]}
+                        itemLabel={this.props.itemLabel}
+                        titleText={this.props.editModalTitleText}
+                        contentText={this.props.editModalContentText}
+                        cancelText={this.props.editModalCancelText}
+                        confirmText={this.props.editModalConfirmText}
+                        onConfirm={this.handleEditConfirm}
+                        onCancel={this.handleEditCancel}
+                    />
+                )}
             </StyledContainer>
         );
     }
 
+    //-----------------------------------------------------
+    //
+    // handle edit
+    //
+    //-----------------------------------------------------
+    handleEdit({ item }) {
+        if (this.props.editModal) {
+            this.setState({
+                editors: [...this.state.editors, clone(item)]
+            });
+        }
+    }
+    handleEditCancel({ item }) {
+        const itemIdentifier = this.props.listItemIdentifier || this.props.itemIdentifier;
+        this.setState({
+            editors: this.state.editors.filter(it => {
+                return getValue(it, itemIdentifier) !== getValue(item, itemIdentifier);
+            })
+        });
+    }
+    handleEditConfirm({ item, data }) {
+        const itemIdentifier = this.props.listItemIdentifier || this.props.itemIdentifier;
+        this.setState({
+            editors: this.state.editors.filter(it => {
+                return getValue(it, itemIdentifier) !== getValue(item, itemIdentifier);
+            })
+        });
+        this.props.onEdit({ data, item });
+    }
+    //-----------------------------------------------------
+    //
+    // handle remove
+    //
+    //-----------------------------------------------------
     handleRemove({ id, item, event }) {
         // no confirmation - just remove it
         if (!this.props.confirmRemove) {
@@ -170,7 +229,7 @@ export default class EditableList extends PureComponent {
         }
 
         // modal confirm dialog
-        if (this.props.modalConfirm) {
+        if (this.props.confirmModal) {
             this.setState({ confirmation: { id, item } });
             return;
         }

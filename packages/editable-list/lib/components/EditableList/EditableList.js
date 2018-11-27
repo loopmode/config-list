@@ -9,6 +9,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -39,11 +41,17 @@ var _DropdownSelect = _interopRequireDefault(require("../DropdownSelect"));
 
 var _DeleteModal = _interopRequireDefault(require("../DeleteModal"));
 
+var _EditModal = _interopRequireDefault(require("../EditModal"));
+
 var _getDisplayValue = _interopRequireWildcard(require("../../utils/getDisplayValue"));
 
 var _bind = _interopRequireDefault(require("../../utils/bind"));
 
 var _cx = _interopRequireDefault(require("../../utils/cx"));
+
+var _clone = _interopRequireDefault(require("../../utils/clone"));
+
+var _getValue = _interopRequireDefault(require("../../utils/getValue"));
 
 var EditableList =
 /*#__PURE__*/
@@ -56,6 +64,7 @@ function (_PureComponent) {
     (0, _classCallCheck2.default)(this, EditableList);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(EditableList).call(this, props, context));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "state", {
+      editors: [],
       confirmation: null
     });
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
@@ -120,14 +129,14 @@ function (_PureComponent) {
         itemLabel: this.props.listItemLabel || this.props.itemLabel,
         editable: this.props.editable,
         removeable: this.props.removeable,
-        onEdit: this.props.onEdit,
+        onEdit: this.handleEdit,
         onRemove: this.handleRemove,
-        confirmRemove: this.state.confirmation && !this.state.modalConfirm ? this.state.confirmation.id : undefined
+        confirmRemove: this.state.confirmation && !this.state.confirmModal ? this.state.confirmation.id : undefined
       })) : _react.default.createElement(_semanticUiReact.Segment, {
         vertical: true,
         className: "EditableList--selected"
-      }, (0, _getDisplayValue.default)(nothingSelectedText, this.props)), this.state.confirmation && this.props.modalConfirm && _react.default.createElement(_DeleteModal.default, {
-        size: this.props.modalConfirmSize,
+      }, (0, _getDisplayValue.default)(nothingSelectedText, this.props)), this.state.confirmation && this.props.confirmModal && _react.default.createElement(_DeleteModal.default, {
+        size: this.props.confirmModalSize,
         item: this.state.confirmation.item,
         itemLabel: this.props.itemLabel,
         itemID: this.state.confirmation.id,
@@ -137,14 +146,73 @@ function (_PureComponent) {
         confirmText: this.props.confirmDeleteConfirmText,
         onConfirm: this.handleRemoveConfirm,
         onCancel: this.handleRemoveCancel
+      }), this.state.editors.length > 0 && this.props.editModal && _react.default.createElement(_EditModal.default, {
+        editor: this.props.itemEditor,
+        size: this.props.editModalSize,
+        item: this.state.editors[0],
+        itemLabel: this.props.itemLabel,
+        titleText: this.props.editModalTitleText,
+        contentText: this.props.editModalContentText,
+        cancelText: this.props.editModalCancelText,
+        confirmText: this.props.editModalConfirmText,
+        onConfirm: this.handleEditConfirm,
+        onCancel: this.handleEditCancel
       }));
+    } //-----------------------------------------------------
+    //
+    // handle edit
+    //
+    //-----------------------------------------------------
+
+  }, {
+    key: "handleEdit",
+    value: function handleEdit(_ref) {
+      var item = _ref.item;
+
+      if (this.props.editModal) {
+        this.setState({
+          editors: (0, _toConsumableArray2.default)(this.state.editors).concat([(0, _clone.default)(item)])
+        });
+      }
     }
   }, {
+    key: "handleEditCancel",
+    value: function handleEditCancel(_ref2) {
+      var item = _ref2.item;
+      var itemIdentifier = this.props.listItemIdentifier || this.props.itemIdentifier;
+      this.setState({
+        editors: this.state.editors.filter(function (it) {
+          return (0, _getValue.default)(it, itemIdentifier) !== (0, _getValue.default)(item, itemIdentifier);
+        })
+      });
+    }
+  }, {
+    key: "handleEditConfirm",
+    value: function handleEditConfirm(_ref3) {
+      var item = _ref3.item,
+          data = _ref3.data;
+      var itemIdentifier = this.props.listItemIdentifier || this.props.itemIdentifier;
+      this.setState({
+        editors: this.state.editors.filter(function (it) {
+          return (0, _getValue.default)(it, itemIdentifier) !== (0, _getValue.default)(item, itemIdentifier);
+        })
+      });
+      this.props.onEdit({
+        data: data,
+        item: item
+      });
+    } //-----------------------------------------------------
+    //
+    // handle remove
+    //
+    //-----------------------------------------------------
+
+  }, {
     key: "handleRemove",
-    value: function handleRemove(_ref) {
-      var id = _ref.id,
-          item = _ref.item,
-          event = _ref.event;
+    value: function handleRemove(_ref4) {
+      var id = _ref4.id,
+          item = _ref4.item,
+          event = _ref4.event;
 
       // no confirmation - just remove it
       if (!this.props.confirmRemove) {
@@ -156,7 +224,7 @@ function (_PureComponent) {
       } // modal confirm dialog
 
 
-      if (this.props.modalConfirm) {
+      if (this.props.confirmModal) {
         this.setState({
           confirmation: {
             id: id,
@@ -197,9 +265,9 @@ function (_PureComponent) {
     }
   }, {
     key: "handleRemoveConfirm",
-    value: function handleRemoveConfirm(_ref2) {
-      var id = _ref2.id,
-          item = _ref2.item;
+    value: function handleRemoveConfirm(_ref5) {
+      var id = _ref5.id,
+          item = _ref5.item;
       this.setState({
         confirmation: undefined
       });
@@ -238,11 +306,13 @@ exports.default = EditableList;
   onAdd: _propTypes.default.func,
   onEdit: _propTypes.default.func,
   onRemove: _propTypes.default.func,
-  // confirmation options
+  // removal confirmation
   confirmRemove: _propTypes.default.bool,
-  modalEdit: _propTypes.default.bool,
-  modalConfirm: _propTypes.default.bool,
-  modalConfirmSize: _propTypes.default.string,
+  confirmModal: _propTypes.default.bool,
+  confirmModalSize: _propTypes.default.string,
+  itemEditor: _propTypes.default.oneOfType([_propTypes.default.func]),
+  editModal: _propTypes.default.bool,
+  editModalSize: _propTypes.default.string,
   // dropdown options
   dropdownExclusive: _propTypes.default.bool,
   dropdownText: _propTypes.default.string,
@@ -262,6 +332,10 @@ exports.default = EditableList;
   confirmDeleteContentText: _getDisplayValue.displayValueShape,
   confirmDeleteCancelText: _getDisplayValue.displayValueShape,
   confirmDeleteConfirmText: _getDisplayValue.displayValueShape,
+  editModalTitleText: _getDisplayValue.displayValueShape,
+  editModalContentText: _getDisplayValue.displayValueShape,
+  editModalCancelText: _getDisplayValue.displayValueShape,
+  editModalConfirmText: _getDisplayValue.displayValueShape,
   // retrieving item IDs
   itemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
   dropdownItemIdentifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
