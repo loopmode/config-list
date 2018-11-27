@@ -73,7 +73,11 @@ function (_PureComponent) {
 
       if (exclusive && itemsToRender) {
         itemsToRender = itemsToRender.filter(function (item) {
-          return !itemSelected(item, selectedItems, itemIdentifier);
+          return !itemSelected({
+            item: item,
+            selectedItems: selectedItems,
+            itemIdentifier: itemIdentifier
+          });
         });
       }
 

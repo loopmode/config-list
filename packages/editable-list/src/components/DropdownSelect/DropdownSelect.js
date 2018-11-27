@@ -54,7 +54,7 @@ export default class DropdownSelect extends PureComponent {
         let itemsToRender = items && items.filter(itemFilter);
 
         if (exclusive && itemsToRender) {
-            itemsToRender = itemsToRender.filter(item => !itemSelected(item, selectedItems, itemIdentifier));
+            itemsToRender = itemsToRender.filter(item => !itemSelected({ item, selectedItems, itemIdentifier }));
         }
 
         return (
