@@ -1,9 +1,9 @@
 export default class DataConverter {
     // supported types
-    static array = items => items;
-    static object = items => Object.values(items);
-    static immutableList = items => items.toJS();
-    static immutableMap = items => items.valueSeq().toJS();
+    static fromArray = items => items;
+    static fromObject = items => Object.values(items);
+    static fromImmutableList = items => items.toJS();
+    static fromImmutableMap = items => items.valueSeq().toJS();
 
     static getConverter(items) {
         if (!items) {
@@ -14,22 +14,21 @@ export default class DataConverter {
             return null;
         }
         if (Array.isArray(items)) {
-            return DataConverter.array;
+            return DataConverter.fromArray;
         }
         if (items.toJS) {
             const str = items.toString();
             if (str.substr(0, 3) === 'Map') {
-                return DataConverter.immutableMap;
+                return DataConverter.fromImmutableMap;
             }
             if (str.substr(0, 4) === 'List') {
-                return DataConverter.immutableMap;
+                return DataConverter.fromImmutableList;
             }
         }
-        return DataConverter.object;
+        return DataConverter.fromObject;
     }
 
     static convertItems(items) {
-        console.log('convert', items);
         const convert = DataConverter.getConverter(items);
         return convert(items);
     }

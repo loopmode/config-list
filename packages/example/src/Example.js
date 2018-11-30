@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { items } from './common.data';
+import availableItems from './common.data';
 import ItemEditor from './ItemEditor';
 
 class Example extends Component {
@@ -26,7 +26,7 @@ class Example extends Component {
             <ConfigList
                 ItemEditor={ItemEditor}
                 ItemValueRenderer={ItemValueRenderer}
-                items={items}
+                availableItems={availableItems}
                 configuredItems={configuredItems}
                 onAddItem={({ item }) => this.handleAddItem({ item })}
                 onRemoveItem={({ item }) => this.handleRemoveItem({ item })}

@@ -1,4 +1,4 @@
-export const items = [
+export default [
     {
         id: 'doubleclick',
         label: 'Double click',

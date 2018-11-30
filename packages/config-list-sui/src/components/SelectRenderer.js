@@ -20,7 +20,7 @@ export default class SelectRenderer extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         configuredItems: PropTypes.array,
-        items: PropTypes.array,
+        availableItems: PropTypes.array,
 
         dropdownText: PropTypes.string,
         dropdownIcon: PropTypes.string,
@@ -47,13 +47,13 @@ export default class SelectRenderer extends PureComponent {
     };
 
     render() {
-        const { onAddItem, dropdownIcon, items, dropdownText } = this.props;
+        const { onAddItem, dropdownIcon, availableItems, dropdownText } = this.props;
 
         return (
             <StyledSegment vertical className="SelectRenderer">
                 <Dropdown className="icon" icon={dropdownIcon} floating labeled button text={dropdownText}>
                     <Dropdown.Menu>
-                        {items.map(item => {
+                        {availableItems.map(item => {
                             return (
                                 <Dropdown.Item
                                     key={item.key || item.id}

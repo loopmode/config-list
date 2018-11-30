@@ -59,7 +59,7 @@ function (_PureComponent) {
       var _this$props = this.props,
           onAddItem = _this$props.onAddItem,
           dropdownIcon = _this$props.dropdownIcon,
-          items = _this$props.items,
+          availableItems = _this$props.availableItems,
           dropdownText = _this$props.dropdownText;
       return _react.default.createElement(StyledSegment, {
         vertical: true,
@@ -71,7 +71,7 @@ function (_PureComponent) {
         labeled: true,
         button: true,
         text: dropdownText
-      }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, items.map(function (item) {
+      }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, availableItems.map(function (item) {
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
           key: item.key || item.id,
           onClick: function onClick() {
@@ -91,7 +91,7 @@ exports.default = SelectRenderer;
 (0, _defineProperty2.default)(SelectRenderer, "propTypes", {
   className: _propTypes.default.string,
   configuredItems: _propTypes.default.array,
-  items: _propTypes.default.array,
+  availableItems: _propTypes.default.array,
   dropdownText: _propTypes.default.string,
   dropdownIcon: _propTypes.default.string,
   // only shows items in dropdown that are not already selected

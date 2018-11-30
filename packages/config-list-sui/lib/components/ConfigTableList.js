@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.defaultItemSettings = void 0;
+exports.default = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
@@ -29,8 +29,6 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _ConfigList = _interopRequireDefault(require("config-list/lib/components/ConfigList"));
 
-var _shapes = require("config-list/lib/utils/shapes");
-
 var _classnames = _interopRequireDefault(require("classnames"));
 
 var _TableListRenderer = _interopRequireDefault(require("./TableListRenderer"));
@@ -38,25 +36,6 @@ var _TableListRenderer = _interopRequireDefault(require("./TableListRenderer"));
 var _TableItemRenderer = _interopRequireDefault(require("./TableItemRenderer"));
 
 var _SelectRenderer = _interopRequireDefault(require("./SelectRenderer"));
-
-var defaultItemSettings = {
-  getLabel: function getLabel(item) {
-    return item.label;
-  },
-  getID: function getID(item) {
-    return item.id;
-  },
-  getKey: function getKey(item) {
-    return item.id;
-  },
-  isEditable: function isEditable() {
-    return true;
-  },
-  isRemovable: function isRemovable() {
-    return true;
-  }
-};
-exports.defaultItemSettings = defaultItemSettings;
 
 var TableConfigList =
 /*#__PURE__*/
@@ -86,14 +65,12 @@ exports.default = TableConfigList;
   ListRenderer: _propTypes.default.func,
   ItemRenderer: _propTypes.default.func,
   ItemEditor: _propTypes.default.func,
-  itemSettings: _shapes.ItemSettingsShape,
   columns: _propTypes.default.array
 });
 (0, _defineProperty2.default)(TableConfigList, "defaultProps", {
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _TableListRenderer.default,
   ItemRenderer: _TableItemRenderer.default,
-  itemSettings: defaultItemSettings,
   columns: [{
     field: 'label',
     label: 'Name'

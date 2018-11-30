@@ -82,16 +82,16 @@ function (_PureComponent) {
           ItemValueRenderer = _this$props.ItemValueRenderer,
           onAddItem = _this$props.onAddItem;
       var hasConfiguredItems = configuredItems && configuredItems.length > 0;
-      var items = this.convertItems(this.props.items);
+      var availableItems = this.convertItems(this.props.availableItems);
       return _react.default.createElement("div", {
         className: (0, _classnames.default)('ConfigList', className)
       }, _react.default.createElement(SelectRenderer, {
-        items: items,
+        availableItems: availableItems,
         configuredItems: configuredItems,
         onAddItem: onAddItem,
         parentProps: this.props
       }), hasConfiguredItems && _react.default.createElement(ListRenderer, {
-        items: items,
+        availableItems: availableItems,
         configuredItems: configuredItems,
         parentProps: this.props
       }, configuredItems.map(function (item) {
@@ -239,7 +239,7 @@ function (_PureComponent) {
 exports.default = ConfigList;
 (0, _defineProperty2.default)(ConfigList, "propTypes", {
   className: _propTypes.default.string,
-  items: _shapes.SupportedItemsShape,
+  availableItems: _shapes.SupportedItemsShape,
   configuredItems: _shapes.SupportedItemsShape,
   SelectRenderer: _propTypes.default.func,
   ListRenderer: _propTypes.default.func,

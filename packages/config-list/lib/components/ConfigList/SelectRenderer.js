@@ -52,7 +52,7 @@ function (_PureComponent) {
         value: "default",
         disabled: true,
         children: 'Add item'
-      }), this.props.items.map(function (item) {
+      }), this.props.availableItems.map(function (item) {
         return _react.default.createElement("option", {
           key: item.key || item.id,
           value: item.id,
@@ -63,7 +63,7 @@ function (_PureComponent) {
   }, {
     key: "handleSelect",
     value: function handleSelect(event) {
-      var item = this.props.items[event.target.selectedIndex - 1];
+      var item = this.props.availableItems[event.target.selectedIndex - 1];
       this.props.onAddItem({
         event: event,
         item: item
@@ -75,6 +75,6 @@ function (_PureComponent) {
 
 exports.default = SelectRenderer;
 (0, _defineProperty2.default)(SelectRenderer, "propTypes", {
-  items: _propTypes.default.array,
+  availableItems: _propTypes.default.array,
   onAddItem: _propTypes.default.func
 });

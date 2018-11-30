@@ -13,7 +13,7 @@ import DataConverter from './DataConverter';
 export default class ConfigList extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        items: SupportedItemsShape,
+        availableItems: SupportedItemsShape,
         configuredItems: SupportedItemsShape,
         SelectRenderer: PropTypes.func,
         ListRenderer: PropTypes.func,
@@ -61,18 +61,22 @@ export default class ConfigList extends PureComponent {
 
         const hasConfiguredItems = configuredItems && configuredItems.length > 0;
 
-        const items = this.convertItems(this.props.items);
+        const availableItems = this.convertItems(this.props.availableItems);
 
         return (
             <div className={cx('ConfigList', className)}>
                 <SelectRenderer
-                    items={items}
+                    availableItems={availableItems}
                     configuredItems={configuredItems}
                     onAddItem={onAddItem}
                     parentProps={this.props}
                 />
                 {hasConfiguredItems && (
-                    <ListRenderer items={items} configuredItems={configuredItems} parentProps={this.props}>
+                    <ListRenderer
+                        availableItems={availableItems}
+                        configuredItems={configuredItems}
+                        parentProps={this.props}
+                    >
                         {configuredItems.map(item => {
                             const editorData = this.state.editing[item.key || item.id];
                             const isRemoving = !!this.state.removing[item.key || item.id];

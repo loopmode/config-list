@@ -34,27 +34,26 @@ function () {
       }
 
       if (Array.isArray(items)) {
-        return DataConverter.array;
+        return DataConverter.fromArray;
       }
 
       if (items.toJS) {
         var str = items.toString();
 
         if (str.substr(0, 3) === 'Map') {
-          return DataConverter.immutableMap;
+          return DataConverter.fromImmutableMap;
         }
 
         if (str.substr(0, 4) === 'List') {
-          return DataConverter.immutableMap;
+          return DataConverter.fromImmutableList;
         }
       }
 
-      return DataConverter.object;
+      return DataConverter.fromObject;
     }
   }, {
     key: "convertItems",
     value: function convertItems(items) {
-      console.log('convert', items);
       var convert = DataConverter.getConverter(items);
       return convert(items);
     }
@@ -63,15 +62,15 @@ function () {
 }();
 
 exports.default = DataConverter;
-(0, _defineProperty2.default)(DataConverter, "array", function (items) {
+(0, _defineProperty2.default)(DataConverter, "fromArray", function (items) {
   return items;
 });
-(0, _defineProperty2.default)(DataConverter, "object", function (items) {
+(0, _defineProperty2.default)(DataConverter, "fromObject", function (items) {
   return Object.values(items);
 });
-(0, _defineProperty2.default)(DataConverter, "immutableList", function (items) {
+(0, _defineProperty2.default)(DataConverter, "fromImmutableList", function (items) {
   return items.toJS();
 });
-(0, _defineProperty2.default)(DataConverter, "immutableMap", function (items) {
+(0, _defineProperty2.default)(DataConverter, "fromImmutableMap", function (items) {
   return items.valueSeq().toJS();
 });

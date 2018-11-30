@@ -23,7 +23,6 @@ export default class TableListRenderer extends PureComponent {
         className: PropTypes.string,
         children: PropTypes.node,
         //
-        items: PropTypes.array,
         parentProps: PropTypes.shape({
             columns: PropTypes.arrayOf(
                 PropTypes.shape({

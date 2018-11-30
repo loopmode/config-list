@@ -84,7 +84,6 @@ exports.default = TableListRenderer;
   className: _propTypes.default.string,
   children: _propTypes.default.node,
   //
-  items: _propTypes.default.array,
   parentProps: _propTypes.default.shape({
     columns: _propTypes.default.arrayOf(_propTypes.default.shape({
       field: _propTypes.default.string,
