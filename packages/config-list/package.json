@@ -5,6 +5,9 @@
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
   "repository": "github:loopmode/config-list",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir lib --copy-files",
     "watch": "yarn build --watch",
