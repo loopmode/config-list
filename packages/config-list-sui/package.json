@@ -2,7 +2,9 @@
   "name": "@loopmode/config-list-sui",
   "version": "1.0.0",
   "main": "lib/index.js",
+  "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
+  "repository": "github:loopmode/config-list",
   "scripts": {
     "build": "babel src --out-dir lib --copy-files",
     "watch": "yarn build --watch",
@@ -10,17 +12,18 @@
     "lint": "eslint src",
     "docs": "esdoc"
   },
+  "babel": {
+    "extends": "@loopmode/babel7-base/files/.babelrc"
+  },
   "eslintConfig": {
     "extends": "@loopmode/react",
     "rules": {
       "no-unused-vars": [1, { "ignoreRestSiblings": true }]
     }
   },
-  "babel": {
-    "extends": "@loopmode/babel7-base/files/.babelrc"
-  },
   "dependencies": {
+    "@loopmode/async-state": "^0.3.2",
     "@loopmode/config-list": "^1.0.0",
-    "@loopmode/async-state": "^0.3.2"
+    "semantic-ui-react": "^0.83.0"
   }
 }
