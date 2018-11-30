@@ -13,6 +13,7 @@
   "dependencies": {
     "@loopmode/async-state": "^0.3.2",
     "classnames": "^2.2.6",
+    "memoize-one": "^4.0.3",
     "react": "^16.6.3",
     "semantic-ui-react": "^0.83.0",
     "styled-components": "^4.1.1"

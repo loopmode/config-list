@@ -51,6 +51,13 @@ function () {
 
       return DataConverter.object;
     }
+  }, {
+    key: "convertItems",
+    value: function convertItems(items) {
+      var convert = DataConverter.getConverter(items);
+      console.log('convert');
+      return convert(items);
+    }
   }]);
   return DataConverter;
 }();

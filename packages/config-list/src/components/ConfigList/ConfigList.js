@@ -1,22 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ItemSettingsShape, SupportedItemsShape } from '../../utils/shapes';
-import bind from '../../utils/bind';
 import cx from 'classnames';
+import memoize from 'memoize-one';
 
+import { SupportedItemsShape } from '../../utils/shapes';
+import bind from '../../utils/bind';
 import DefaultSelectRenderer from './SelectRenderer';
 import DefaultListRenderer from './ListRenderer';
 import DefaultItemRenderer from './ItemRenderer';
-import DataAdapter from './DataAdapter';
 
-export const defaultItemSettings = {
-    getLabel: item => item.label,
-    getID: item => item.id,
-    getKey: item => item.id,
-    isEditable: () => true,
-    isRemovable: () => true
-};
-
+import DataConverter from './DataConverter';
 export default class ConfigList extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
@@ -28,7 +21,6 @@ export default class ConfigList extends PureComponent {
         ItemValueRenderer: PropTypes.func,
         ItemEditor: PropTypes.func,
         //
-        itemSettings: ItemSettingsShape,
         //
         onAddItem: PropTypes.func,
         onEditItem: PropTypes.func,
@@ -39,13 +31,15 @@ export default class ConfigList extends PureComponent {
     static defaultProps = {
         SelectRenderer: DefaultSelectRenderer,
         ListRenderer: DefaultListRenderer,
-        ItemRenderer: DefaultItemRenderer,
-        itemSettings: defaultItemSettings
+        ItemRenderer: DefaultItemRenderer
     };
     state = {
         removing: {},
         editing: {}
     };
+
+    convertItems = memoize(items => DataConverter.convertItems(items));
+
     constructor(props, context) {
         super(props, context);
         bind(this);
@@ -53,7 +47,6 @@ export default class ConfigList extends PureComponent {
     render() {
         const {
             className,
-            items,
             configuredItems,
             SelectRenderer,
             ListRenderer,
@@ -64,47 +57,45 @@ export default class ConfigList extends PureComponent {
 
         const hasConfiguredItems = configuredItems && configuredItems.length > 0;
 
+        const items = this.convertItems(this.props.items);
+
         return (
-            <DataAdapter items={items} itemSettings={this.props.itemSettings}>
-                {({ items }) => (
-                    <div className={cx('ConfigList', className)}>
-                        <SelectRenderer
-                            items={items}
-                            configuredItems={configuredItems}
-                            onAddItem={onAddItem}
-                            parentProps={this.props}
-                        />
-                        {hasConfiguredItems && (
-                            <ListRenderer items={items} configuredItems={configuredItems} parentProps={this.props}>
-                                {configuredItems.map(item => {
-                                    const editorData = this.state.editing[item.key || item.id];
-                                    const isRemoving = !!this.state.removing[item.key || item.id];
-                                    const isEditing = !!editorData;
-                                    return (
-                                        <ItemRenderer
-                                            ItemValueRenderer={ItemValueRenderer}
-                                            key={item.key || item.id}
-                                            item={item}
-                                            parentProps={this.props}
-                                            // removing
-                                            isRemoving={isRemoving}
-                                            onRemove={this.handleRemove}
-                                            onRemoveConfirm={this.handleRemoveConfirm}
-                                            onRemoveCancel={this.handleRemoveCancel}
-                                            // editing
-                                            isEditing={isEditing}
-                                            onEdit={this.handleEdit}
-                                            onEditConfirm={this.handleEditConfirm}
-                                            onEditCancel={this.handleEditCancel}
-                                            editor={this.renderItemEditor(item)}
-                                        />
-                                    );
-                                })}
-                            </ListRenderer>
-                        )}
-                    </div>
+            <div className={cx('ConfigList', className)}>
+                <SelectRenderer
+                    items={items}
+                    configuredItems={configuredItems}
+                    onAddItem={onAddItem}
+                    parentProps={this.props}
+                />
+                {hasConfiguredItems && (
+                    <ListRenderer items={items} configuredItems={configuredItems} parentProps={this.props}>
+                        {configuredItems.map(item => {
+                            const editorData = this.state.editing[item.key || item.id];
+                            const isRemoving = !!this.state.removing[item.key || item.id];
+                            const isEditing = !!editorData;
+                            return (
+                                <ItemRenderer
+                                    ItemValueRenderer={ItemValueRenderer}
+                                    key={item.key || item.id}
+                                    item={item}
+                                    parentProps={this.props}
+                                    // removing
+                                    isRemoving={isRemoving}
+                                    onRemove={this.handleRemove}
+                                    onRemoveConfirm={this.handleRemoveConfirm}
+                                    onRemoveCancel={this.handleRemoveCancel}
+                                    // editing
+                                    isEditing={isEditing}
+                                    onEdit={this.handleEdit}
+                                    onEditConfirm={this.handleEditConfirm}
+                                    onEditCancel={this.handleEditCancel}
+                                    editor={this.renderItemEditor(item)}
+                                />
+                            );
+                        })}
+                    </ListRenderer>
                 )}
-            </DataAdapter>
+            </div>
         );
     }
 

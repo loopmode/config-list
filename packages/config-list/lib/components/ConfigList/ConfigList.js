@@ -7,7 +7,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.defaultItemSettings = void 0;
+exports.default = void 0;
 
 var _objectSpread8 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
@@ -29,11 +29,13 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _classnames = _interopRequireDefault(require("classnames"));
+
+var _memoizeOne = _interopRequireDefault(require("memoize-one"));
+
 var _shapes = require("../../utils/shapes");
 
 var _bind = _interopRequireDefault(require("../../utils/bind"));
-
-var _classnames = _interopRequireDefault(require("classnames"));
 
 var _SelectRenderer = _interopRequireDefault(require("./SelectRenderer"));
 
@@ -41,26 +43,7 @@ var _ListRenderer = _interopRequireDefault(require("./ListRenderer"));
 
 var _ItemRenderer = _interopRequireDefault(require("./ItemRenderer"));
 
-var _DataAdapter = _interopRequireDefault(require("./DataAdapter"));
-
-var defaultItemSettings = {
-  getLabel: function getLabel(item) {
-    return item.label;
-  },
-  getID: function getID(item) {
-    return item.id;
-  },
-  getKey: function getKey(item) {
-    return item.id;
-  },
-  isEditable: function isEditable() {
-    return true;
-  },
-  isRemovable: function isRemovable() {
-    return true;
-  }
-};
-exports.defaultItemSettings = defaultItemSettings;
+var _DataConverter = _interopRequireDefault(require("./DataConverter"));
 
 var ConfigList =
 /*#__PURE__*/
@@ -76,6 +59,9 @@ function (_PureComponent) {
       removing: {},
       editing: {}
     });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "convertItems", (0, _memoizeOne.default)(function (items) {
+      return _DataConverter.default.convertItems(items);
+    }));
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
   }
@@ -87,7 +73,6 @@ function (_PureComponent) {
 
       var _this$props = this.props,
           className = _this$props.className,
-          items = _this$props.items,
           configuredItems = _this$props.configuredItems,
           SelectRenderer = _this$props.SelectRenderer,
           ListRenderer = _this$props.ListRenderer,
@@ -95,45 +80,40 @@ function (_PureComponent) {
           ItemValueRenderer = _this$props.ItemValueRenderer,
           onAddItem = _this$props.onAddItem;
       var hasConfiguredItems = configuredItems && configuredItems.length > 0;
-      return _react.default.createElement(_DataAdapter.default, {
+      var items = this.convertItems(this.props.items);
+      return _react.default.createElement("div", {
+        className: (0, _classnames.default)('ConfigList', className)
+      }, _react.default.createElement(SelectRenderer, {
         items: items,
-        itemSettings: this.props.itemSettings
-      }, function (_ref) {
-        var items = _ref.items;
-        return _react.default.createElement("div", {
-          className: (0, _classnames.default)('ConfigList', className)
-        }, _react.default.createElement(SelectRenderer, {
-          items: items,
-          configuredItems: configuredItems,
-          onAddItem: onAddItem,
-          parentProps: _this2.props
-        }), hasConfiguredItems && _react.default.createElement(ListRenderer, {
-          items: items,
-          configuredItems: configuredItems,
-          parentProps: _this2.props
-        }, configuredItems.map(function (item) {
-          var editorData = _this2.state.editing[item.key || item.id];
-          var isRemoving = !!_this2.state.removing[item.key || item.id];
-          var isEditing = !!editorData;
-          return _react.default.createElement(ItemRenderer, {
-            ItemValueRenderer: ItemValueRenderer,
-            key: item.key || item.id,
-            item: item,
-            parentProps: _this2.props // removing
-            ,
-            isRemoving: isRemoving,
-            onRemove: _this2.handleRemove,
-            onRemoveConfirm: _this2.handleRemoveConfirm,
-            onRemoveCancel: _this2.handleRemoveCancel // editing
-            ,
-            isEditing: isEditing,
-            onEdit: _this2.handleEdit,
-            onEditConfirm: _this2.handleEditConfirm,
-            onEditCancel: _this2.handleEditCancel,
-            editor: _this2.renderItemEditor(item)
-          });
-        })));
-      });
+        configuredItems: configuredItems,
+        onAddItem: onAddItem,
+        parentProps: this.props
+      }), hasConfiguredItems && _react.default.createElement(ListRenderer, {
+        items: items,
+        configuredItems: configuredItems,
+        parentProps: this.props
+      }, configuredItems.map(function (item) {
+        var editorData = _this2.state.editing[item.key || item.id];
+        var isRemoving = !!_this2.state.removing[item.key || item.id];
+        var isEditing = !!editorData;
+        return _react.default.createElement(ItemRenderer, {
+          ItemValueRenderer: ItemValueRenderer,
+          key: item.key || item.id,
+          item: item,
+          parentProps: _this2.props // removing
+          ,
+          isRemoving: isRemoving,
+          onRemove: _this2.handleRemove,
+          onRemoveConfirm: _this2.handleRemoveConfirm,
+          onRemoveCancel: _this2.handleRemoveCancel // editing
+          ,
+          isEditing: isEditing,
+          onEdit: _this2.handleEdit,
+          onEditConfirm: _this2.handleEditConfirm,
+          onEditCancel: _this2.handleEditCancel,
+          editor: _this2.renderItemEditor(item)
+        });
+      })));
     }
   }, {
     key: "renderItemEditor",
@@ -168,25 +148,25 @@ function (_PureComponent) {
 
   }, {
     key: "handleEdit",
-    value: function handleEdit(_ref2) {
-      var item = _ref2.item;
+    value: function handleEdit(_ref) {
+      var item = _ref.item;
       this.setState({
         editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, true))
       });
     }
   }, {
     key: "handleEditCancel",
-    value: function handleEditCancel(_ref3) {
-      var item = _ref3.item;
+    value: function handleEditCancel(_ref2) {
+      var item = _ref2.item;
       this.setState({
         editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
     }
   }, {
     key: "handleEditConfirm",
-    value: function handleEditConfirm(_ref4) {
-      var item = _ref4.item,
-          data = _ref4.data;
+    value: function handleEditConfirm(_ref3) {
+      var item = _ref3.item,
+          data = _ref3.data;
       this.setState({
         editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
@@ -208,9 +188,9 @@ function (_PureComponent) {
 
   }, {
     key: "handleRemove",
-    value: function handleRemove(_ref5) {
-      var item = _ref5.item,
-          event = _ref5.event;
+    value: function handleRemove(_ref4) {
+      var item = _ref4.item,
+          event = _ref4.event;
 
       if (this.props.confirmRemove) {
         this.setState({
@@ -225,16 +205,16 @@ function (_PureComponent) {
     }
   }, {
     key: "handleRemoveCancel",
-    value: function handleRemoveCancel(_ref6) {
-      var item = _ref6.item;
+    value: function handleRemoveCancel(_ref5) {
+      var item = _ref5.item;
       this.setState({
         removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
     }
   }, {
     key: "handleRemoveConfirm",
-    value: function handleRemoveConfirm(_ref7) {
-      var item = _ref7.item;
+    value: function handleRemoveConfirm(_ref6) {
+      var item = _ref6.item;
       this.setState({
         removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
@@ -263,7 +243,6 @@ exports.default = ConfigList;
   ItemValueRenderer: _propTypes.default.func,
   ItemEditor: _propTypes.default.func,
   //
-  itemSettings: _shapes.ItemSettingsShape,
   //
   onAddItem: _propTypes.default.func,
   onEditItem: _propTypes.default.func,
@@ -274,6 +253,5 @@ exports.default = ConfigList;
 (0, _defineProperty2.default)(ConfigList, "defaultProps", {
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _ListRenderer.default,
-  ItemRenderer: _ItemRenderer.default,
-  itemSettings: defaultItemSettings
+  ItemRenderer: _ItemRenderer.default
 });

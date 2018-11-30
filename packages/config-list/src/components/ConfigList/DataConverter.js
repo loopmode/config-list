@@ -27,4 +27,10 @@ export default class DataConverter {
         }
         return DataConverter.object;
     }
+
+    static convertItems(items) {
+        const convert = DataConverter.getConverter(items);
+        console.log('convert');
+        return convert(items);
+    }
 }
