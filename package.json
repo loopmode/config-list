@@ -1,19 +1,20 @@
 {
   "private": true,
-  "name": "config-list-workspace",
+  "name": "@loopmode/config-list-workspace",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "dev": "cd packages/example && yarn start",
-    "clean": "lerna run clean --ignore example --stream",
-    "build": "lerna run build --ignore example --stream",
-    "watch": "lerna run watch --ignore example --stream",
-    "lint": "lerna run lint --ignore example --stream",
-    "docs": "lerna run docs --ignore example"
+    "dev": "lerna run start --stream --scope example",
+    "clean": "lerna run clean --stream",
+    "build": "lerna run build --stream --ignore example",
+    "watch": "lerna run watch --stream --parallel",
+    "lint": "lerna run lint --stream",
+    "docs": "lerna run docs"
   },
   "devDependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
