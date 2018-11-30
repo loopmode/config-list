@@ -5,4 +5,8 @@
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1em;
 }
+.example {
+    padding: 1em;
+    border: 1px solid #ccc;
+}
 

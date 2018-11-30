@@ -18,28 +18,52 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="example">
-                    <h3>Default</h3>
-                    <Example renderer={DefaultConfigList} availableItems={itemsArray} />
+                    <h3>With array data</h3>
+                    <p>
+                        With <code>removable</code> flag
+                    </p>
+                    <Example renderer={DefaultConfigList} availableItems={itemsArray} removable />
                 </div>
                 <div className="example">
                     <h3>With object data</h3>
-                    <Example renderer={DefaultConfigList} availableItems={itemsObject} />
+                    <p>
+                        With <code>removable</code> and <code>confirmRemove</code> flags
+                    </p>
+                    <Example renderer={DefaultConfigList} availableItems={itemsObject} removable confirmRemove />
                 </div>
                 <div className="example">
                     <h3>With immutable list data</h3>
-                    <Example renderer={DefaultConfigList} availableItems={itemsList} />
+                    <p>
+                        With <code>editable</code> flag and custom <code>ItemValueRenderer</code>
+                    </p>
+                    <Example
+                        renderer={DefaultConfigList}
+                        availableItems={itemsList}
+                        editable
+                        ItemValueRenderer={({ item }) => {
+                            return `${item.label} (${item.value || 'no value'})`;
+                        }}
+                    />
                 </div>
                 <div className="example">
                     <h3>With immutable map data</h3>
-                    <Example renderer={DefaultConfigList} availableItems={itemsMap} />
+                    <p>
+                        With <code>editable</code>, <code>removable</code> and <code>confirmRemove</code>
+                    </p>
+                    <Example renderer={DefaultConfigList} availableItems={itemsMap} editable removable confirmRemove />
                 </div>
                 <div className="example">
-                    <h3>Semantic UI Table</h3>
+                    <h3>With Semantic UI</h3>
+                    <p>
+                        With modal dialogs for confirm and edit, and a custom <code>ItemValueRenderer</code>
+                    </p>
                     <Example
+                        editable
+                        removable
+                        confirmRemove
                         availableItems={itemsArray}
                         // editable={({ item }) => !item.value}
                         renderer={TableListSUI}
-                        confirmRemove
                         modalConfirm={{
                             title: 'Remove this item',
                             size: 'mini',

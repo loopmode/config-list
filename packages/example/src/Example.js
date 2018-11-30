@@ -12,10 +12,7 @@ class Example extends Component {
         modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
     };
-    static defaultProps = {
-        editable: true,
-        removable: true
-    };
+    static defaultProps = {};
     state = {
         configuredItems: []
     };
