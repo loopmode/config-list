@@ -92,6 +92,7 @@ function (_PureComponent) {
           SelectRenderer = _this$props.SelectRenderer,
           ListRenderer = _this$props.ListRenderer,
           ItemRenderer = _this$props.ItemRenderer,
+          ItemValueRenderer = _this$props.ItemValueRenderer,
           onAddItem = _this$props.onAddItem;
       var hasConfiguredItems = configuredItems && configuredItems.length > 0;
       return _react.default.createElement(_DataAdapter.default, {
@@ -115,6 +116,7 @@ function (_PureComponent) {
           var isRemoving = !!_this2.state.removing[item.key];
           var isEditing = !!editorData;
           return _react.default.createElement(ItemRenderer, {
+            ItemValueRenderer: ItemValueRenderer,
             key: item.key,
             item: item,
             parentProps: _this2.props // removing
@@ -258,6 +260,7 @@ exports.default = ConfigList;
   SelectRenderer: _propTypes.default.func,
   ListRenderer: _propTypes.default.func,
   ItemRenderer: _propTypes.default.func,
+  ItemValueRenderer: _propTypes.default.func,
   ItemEditor: _propTypes.default.func,
   //
   itemSettings: _shapes.ItemSettingsShape,

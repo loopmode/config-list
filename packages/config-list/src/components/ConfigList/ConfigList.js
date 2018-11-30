@@ -25,6 +25,7 @@ export default class ConfigList extends PureComponent {
         SelectRenderer: PropTypes.func,
         ListRenderer: PropTypes.func,
         ItemRenderer: PropTypes.func,
+        ItemValueRenderer: PropTypes.func,
         ItemEditor: PropTypes.func,
         //
         itemSettings: ItemSettingsShape,
@@ -50,7 +51,16 @@ export default class ConfigList extends PureComponent {
         bind(this);
     }
     render() {
-        const { className, items, configuredItems, SelectRenderer, ListRenderer, ItemRenderer, onAddItem } = this.props;
+        const {
+            className,
+            items,
+            configuredItems,
+            SelectRenderer,
+            ListRenderer,
+            ItemRenderer,
+            ItemValueRenderer,
+            onAddItem
+        } = this.props;
 
         const hasConfiguredItems = configuredItems && configuredItems.length > 0;
 
@@ -72,6 +82,7 @@ export default class ConfigList extends PureComponent {
                                     const isEditing = !!editorData;
                                     return (
                                         <ItemRenderer
+                                            ItemValueRenderer={ItemValueRenderer}
                                             key={item.key}
                                             item={item}
                                             parentProps={this.props}

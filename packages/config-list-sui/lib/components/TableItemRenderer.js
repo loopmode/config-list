@@ -74,7 +74,15 @@ function (_PureComponent) {
   (0, _createClass2.default)(TableItemRenderer, [{
     key: "render",
     value: function render() {
-      var item = this.props.item;
+      var _this2 = this;
+
+      var _this$props = this.props,
+          item = _this$props.item,
+          _this$props$ItemValue = _this$props.ItemValueRenderer,
+          ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
+        var item = _ref.item;
+        return item.label;
+      } : _this$props$ItemValue;
       var _this$props$parentPro = this.props.parentProps,
           columns = _this$props$parentPro.columns,
           modalConfirm = _this$props$parentPro.modalConfirm,
@@ -84,9 +92,8 @@ function (_PureComponent) {
       }, columns.map(function (column) {
         return _react.default.createElement("td", {
           key: "".concat(item.key, "--").concat(column.field),
-          className: "column-".concat(column.field),
-          children: item.label
-        });
+          className: "column-".concat(column.field)
+        }, _react.default.createElement(ItemValueRenderer, _this2.props));
       }), _react.default.createElement("td", {
         className: "column-actions"
       }, (item.editable || item.removable) && _react.default.createElement("div", {
@@ -125,6 +132,7 @@ function (_PureComponent) {
 exports.default = TableItemRenderer;
 (0, _defineProperty2.default)(TableItemRenderer, "propTypes", {
   item: _propTypes.default.object,
+  ItemValueRenderer: _propTypes.default.func,
   editor: _propTypes.default.element,
   isEditing: _propTypes.default.bool,
   isRemoving: _propTypes.default.bool,

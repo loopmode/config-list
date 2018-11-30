@@ -31,6 +31,7 @@ const StyledListItem = styled.li`
 export default class ItemRenderer extends PureComponent {
     static propTypes = {
         item: DataItemShape,
+        ItemValueRenderer: PropTypes.func,
         isRemoving: PropTypes.bool,
         isEditing: PropTypes.bool,
         onEdit: PropTypes.func,
@@ -50,11 +51,14 @@ export default class ItemRenderer extends PureComponent {
             onRemoveConfirm,
             isRemoving,
             isEditing,
-            editor
+            editor,
+            ItemValueRenderer = ({ item }) => item.label
         } = this.props;
         return (
             <StyledListItem>
-                <span className="item-label">{item.label}</span>
+                <span className="item-label">
+                    <ItemValueRenderer {...this.props} />
+                </span>
                 {item.editable && (
                     <button
                         className={cx('btn-edit', { active: isEditing })}

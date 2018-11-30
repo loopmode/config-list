@@ -29,6 +29,14 @@ class App extends Component {
                             title: 'Edit this item',
                             confirmProps: { color: 'blue', children: 'Save' }
                         }}
+                        ItemValueRenderer={({ item }) => {
+                            return (
+                                <div>
+                                    <h4>{item.data.label}</h4>
+                                    Value: <code>{item.data.value}</code>
+                                </div>
+                            );
+                        }}
                     />
                 </div>
             </div>

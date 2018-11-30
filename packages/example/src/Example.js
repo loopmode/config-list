@@ -7,6 +7,7 @@ import ItemEditor from './ItemEditor';
 class Example extends Component {
     static propTypes = {
         renderer: PropTypes.func,
+        ItemValueRenderer: PropTypes.func,
         modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
     };
@@ -19,11 +20,12 @@ class Example extends Component {
     };
 
     render() {
-        const { renderer: ConfigList, modalConfirm, modalEdit } = this.props;
+        const { renderer: ConfigList, ItemValueRenderer, modalConfirm, modalEdit } = this.props;
         const { configuredItems } = this.state;
         return (
             <ConfigList
                 ItemEditor={ItemEditor}
+                ItemValueRenderer={ItemValueRenderer}
                 items={items}
                 configuredItems={configuredItems}
                 onAddItem={({ item }) => this.handleAddItem({ item })}

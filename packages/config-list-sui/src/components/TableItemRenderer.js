@@ -19,6 +19,7 @@ const Fragment = React.Fragment || 'div';
 export default class TableItemRenderer extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
+        ItemValueRenderer: PropTypes.func,
         editor: PropTypes.element,
         isEditing: PropTypes.bool,
         isRemoving: PropTypes.bool,
@@ -46,7 +47,7 @@ export default class TableItemRenderer extends PureComponent {
         bind(this);
     }
     render() {
-        const { item } = this.props;
+        const { item, ItemValueRenderer = ({ item }) => item.label } = this.props;
         const { columns, modalConfirm, modalEdit } = this.props.parentProps;
 
         return (
@@ -54,11 +55,9 @@ export default class TableItemRenderer extends PureComponent {
                 <tr className="item-row">
                     {columns.map(column => {
                         return (
-                            <td
-                                key={`${item.key}--${column.field}`}
-                                className={`column-${column.field}`}
-                                children={item.label}
-                            />
+                            <td key={`${item.key}--${column.field}`} className={`column-${column.field}`}>
+                                <ItemValueRenderer {...this.props} />
+                            </td>
                         );
                     })}
                     <td className="column-actions">

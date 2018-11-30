@@ -69,10 +69,15 @@ function (_PureComponent) {
           onRemoveConfirm = _this$props.onRemoveConfirm,
           isRemoving = _this$props.isRemoving,
           isEditing = _this$props.isEditing,
-          editor = _this$props.editor;
+          editor = _this$props.editor,
+          _this$props$ItemValue = _this$props.ItemValueRenderer,
+          ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
+        var item = _ref.item;
+        return item.label;
+      } : _this$props$ItemValue;
       return _react.default.createElement(StyledListItem, null, _react.default.createElement("span", {
         className: "item-label"
-      }, item.label), item.editable && _react.default.createElement("button", {
+      }, _react.default.createElement(ItemValueRenderer, this.props)), item.editable && _react.default.createElement("button", {
         className: (0, _classnames.default)('btn-edit', {
           active: isEditing
         }),
@@ -126,6 +131,7 @@ function (_PureComponent) {
 exports.default = ItemRenderer;
 (0, _defineProperty2.default)(ItemRenderer, "propTypes", {
   item: _shapes.DataItemShape,
+  ItemValueRenderer: _propTypes.default.func,
   isRemoving: _propTypes.default.bool,
   isEditing: _propTypes.default.bool,
   onEdit: _propTypes.default.func,
