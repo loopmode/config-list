@@ -27,8 +27,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _shapes = require("../../utils/shapes");
-
 var _Fragment = _interopRequireDefault(require("./Fragment"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
@@ -75,9 +73,11 @@ function (_PureComponent) {
         var item = _ref.item;
         return item.label;
       } : _this$props$ItemValue;
+      var editable = this.resolveBool(this.props.editable);
+      var removable = this.resolveBool(this.props.removable);
       return _react.default.createElement(StyledListItem, null, _react.default.createElement("span", {
         className: "item-label"
-      }, _react.default.createElement(ItemValueRenderer, this.props)), item.editable && _react.default.createElement("button", {
+      }, _react.default.createElement(ItemValueRenderer, this.props)), editable && _react.default.createElement("button", {
         className: (0, _classnames.default)('btn-edit', {
           active: isEditing
         }),
@@ -95,7 +95,7 @@ function (_PureComponent) {
           }
         },
         children: "\u270E"
-      }), item.removable && !isRemoving && _react.default.createElement("button", {
+      }), removable && !isRemoving && _react.default.createElement("button", {
         className: "btn-remove",
         onClick: function onClick(event) {
           return onRemove({
@@ -104,7 +104,7 @@ function (_PureComponent) {
           });
         },
         children: "\u267B"
-      }), item.removable && isRemoving && _react.default.createElement(_Fragment.default, null, _react.default.createElement("button", {
+      }), removable && isRemoving && _react.default.createElement(_Fragment.default, null, _react.default.createElement("button", {
         className: "btn-remove-cancel",
         onClick: function onClick(event) {
           return onRemoveCancel({
@@ -124,13 +124,24 @@ function (_PureComponent) {
         children: "\u2714"
       })), editor);
     }
+  }, {
+    key: "resolveBool",
+    value: function resolveBool(value) {
+      if (typeof value === 'function') {
+        return value(this.props);
+      }
+
+      return value === true;
+    }
   }]);
   return ItemRenderer;
 }(_react.PureComponent);
 
 exports.default = ItemRenderer;
 (0, _defineProperty2.default)(ItemRenderer, "propTypes", {
-  item: _shapes.DataItemShape,
+  item: _propTypes.default.object,
+  editable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
+  removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   ItemValueRenderer: _propTypes.default.func,
   isRemoving: _propTypes.default.bool,
   isEditing: _propTypes.default.bool,

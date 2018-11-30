@@ -87,6 +87,8 @@ function (_PureComponent) {
           columns = _this$props$parentPro.columns,
           modalConfirm = _this$props$parentPro.modalConfirm,
           modalEdit = _this$props$parentPro.modalEdit;
+      var editable = this.resolveBool(this.props.editable);
+      var removable = this.resolveBool(this.props.removable);
       return _react.default.createElement(Fragment, null, _react.default.createElement("tr", {
         className: "item-row"
       }, columns.map(function (column) {
@@ -96,15 +98,17 @@ function (_PureComponent) {
         }, _react.default.createElement(ItemValueRenderer, _this2.props));
       }), _react.default.createElement("td", {
         className: "column-actions"
-      }, (item.editable || item.removable) && _react.default.createElement("div", {
+      }, (editable || removable) && _react.default.createElement("div", {
         className: "action-buttons"
       }, _react.default.createElement(_ItemEditButtons.default, {
         item: this.props.item,
+        editable: editable,
         isEditing: this.props.isEditing,
         onEdit: this.props.onEdit,
         onEditCancel: this.props.onEditCancel
       }), _react.default.createElement(_ItemRemoveButtons.default, {
         item: this.props.item,
+        removable: removable,
         isRemoving: this.props.isRemoving,
         onRemove: this.props.onRemove,
         onRemoveCancel: this.props.onRemoveCancel,
@@ -125,6 +129,15 @@ function (_PureComponent) {
         onCancel: this.props.onEditCancel
       }, modalEdit)) : this.props.editor)));
     }
+  }, {
+    key: "resolveBool",
+    value: function resolveBool(value) {
+      if (typeof value === 'function') {
+        return value(this.props);
+      }
+
+      return value === true;
+    }
   }]);
   return TableItemRenderer;
 }(_react.PureComponent);
@@ -132,6 +145,8 @@ function (_PureComponent) {
 exports.default = TableItemRenderer;
 (0, _defineProperty2.default)(TableItemRenderer, "propTypes", {
   item: _propTypes.default.object,
+  editable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
+  removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   ItemValueRenderer: _propTypes.default.func,
   editor: _propTypes.default.element,
   isEditing: _propTypes.default.bool,

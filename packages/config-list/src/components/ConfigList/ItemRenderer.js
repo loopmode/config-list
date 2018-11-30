@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { DataItemShape } from '../../utils/shapes';
 import Fragment from './Fragment';
 import cx from 'classnames';
 import styled from 'styled-components';
@@ -30,7 +29,9 @@ const StyledListItem = styled.li`
 `;
 export default class ItemRenderer extends PureComponent {
     static propTypes = {
-        item: DataItemShape,
+        item: PropTypes.object,
+        editable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+        removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         ItemValueRenderer: PropTypes.func,
         isRemoving: PropTypes.bool,
         isEditing: PropTypes.bool,
@@ -54,12 +55,15 @@ export default class ItemRenderer extends PureComponent {
             editor,
             ItemValueRenderer = ({ item }) => item.label
         } = this.props;
+
+        const editable = this.resolveBool(this.props.editable);
+        const removable = this.resolveBool(this.props.removable);
         return (
             <StyledListItem>
                 <span className="item-label">
                     <ItemValueRenderer {...this.props} />
                 </span>
-                {item.editable && (
+                {editable && (
                     <button
                         className={cx('btn-edit', { active: isEditing })}
                         onClick={event => {
@@ -72,10 +76,10 @@ export default class ItemRenderer extends PureComponent {
                         children="✎"
                     />
                 )}
-                {item.removable && !isRemoving && (
+                {removable && !isRemoving && (
                     <button className="btn-remove" onClick={event => onRemove({ item, event })} children="♻" />
                 )}
-                {item.removable && isRemoving && (
+                {removable && isRemoving && (
                     <Fragment>
                         <button
                             className="btn-remove-cancel"
@@ -92,5 +96,11 @@ export default class ItemRenderer extends PureComponent {
                 {editor}
             </StyledListItem>
         );
+    }
+    resolveBool(value) {
+        if (typeof value === 'function') {
+            return value(this.props);
+        }
+        return value === true;
     }
 }

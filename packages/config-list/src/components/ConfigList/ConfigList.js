@@ -21,6 +21,8 @@ export default class ConfigList extends PureComponent {
         ItemValueRenderer: PropTypes.func,
         ItemEditor: PropTypes.func,
         //
+        editable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+        removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         //
         onAddItem: PropTypes.func,
         onEditItem: PropTypes.func,
@@ -47,6 +49,8 @@ export default class ConfigList extends PureComponent {
     render() {
         const {
             className,
+            editable,
+            removable,
             configuredItems,
             SelectRenderer,
             ListRenderer,
@@ -75,6 +79,8 @@ export default class ConfigList extends PureComponent {
                             const isEditing = !!editorData;
                             return (
                                 <ItemRenderer
+                                    editable={editable}
+                                    removable={removable}
                                     ItemValueRenderer={ItemValueRenderer}
                                     key={item.key || item.id}
                                     item={item}

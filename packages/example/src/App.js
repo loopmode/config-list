@@ -18,6 +18,7 @@ class App extends Component {
                 <div className="example">
                     <h3>Semantic UI Table</h3>
                     <Example
+                        // editable={({ item }) => !item.value}
                         renderer={TableListSUI}
                         confirmRemove
                         modalConfirm={{

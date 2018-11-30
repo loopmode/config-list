@@ -54,8 +54,8 @@ function () {
   }, {
     key: "convertItems",
     value: function convertItems(items) {
+      console.log('convert', items);
       var convert = DataConverter.getConverter(items);
-      console.log('convert');
       return convert(items);
     }
   }]);

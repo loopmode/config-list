@@ -19,6 +19,8 @@ const Fragment = React.Fragment || 'div';
 export default class TableItemRenderer extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
+        editable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+        removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         ItemValueRenderer: PropTypes.func,
         editor: PropTypes.element,
         isEditing: PropTypes.bool,
@@ -50,6 +52,8 @@ export default class TableItemRenderer extends PureComponent {
         const { item, ItemValueRenderer = ({ item }) => item.label } = this.props;
         const { columns, modalConfirm, modalEdit } = this.props.parentProps;
 
+        const editable = this.resolveBool(this.props.editable);
+        const removable = this.resolveBool(this.props.removable);
         return (
             <Fragment>
                 <tr className="item-row">
@@ -61,16 +65,18 @@ export default class TableItemRenderer extends PureComponent {
                         );
                     })}
                     <td className="column-actions">
-                        {(item.editable || item.removable) && (
+                        {(editable || removable) && (
                             <div className="action-buttons">
                                 <ItemEditButtons
                                     item={this.props.item}
+                                    editable={editable}
                                     isEditing={this.props.isEditing}
                                     onEdit={this.props.onEdit}
                                     onEditCancel={this.props.onEditCancel}
                                 />
                                 <ItemRemoveButtons
                                     item={this.props.item}
+                                    removable={removable}
                                     isRemoving={this.props.isRemoving}
                                     onRemove={this.props.onRemove}
                                     onRemoveCancel={this.props.onRemoveCancel}
@@ -103,5 +109,11 @@ export default class TableItemRenderer extends PureComponent {
                 )}
             </Fragment>
         );
+    }
+    resolveBool(value) {
+        if (typeof value === 'function') {
+            return value(this.props);
+        }
+        return value === true;
     }
 }

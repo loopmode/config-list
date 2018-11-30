@@ -112,11 +112,11 @@ function (_PureComponent) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
-          item = _this$props.item,
+          removable = _this$props.removable,
           isRemoving = _this$props.isRemoving,
           modalConfirm = _this$props.modalConfirm;
 
-      if (!item.removable) {
+      if (!removable) {
         return null;
       }
 
@@ -175,6 +175,7 @@ function (_PureComponent) {
 exports.default = ItemRemoveButtons;
 (0, _defineProperty2.default)(ItemRemoveButtons, "propTypes", {
   item: _propTypes.default.object,
+  removable: _propTypes.default.bool,
   isRemoving: _propTypes.default.bool,
   onRemove: _propTypes.default.func,
   onRemoveCancel: _propTypes.default.func,

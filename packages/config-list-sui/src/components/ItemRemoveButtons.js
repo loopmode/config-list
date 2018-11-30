@@ -41,6 +41,7 @@ const ConfirmModal = ({ onConfirm, onCancel, title = 'Remove item', ...props }) 
 export default class ItemRemoveButtons extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
+        removable: PropTypes.bool,
         isRemoving: PropTypes.bool,
         onRemove: PropTypes.func,
         onRemoveCancel: PropTypes.func,
@@ -52,9 +53,9 @@ export default class ItemRemoveButtons extends PureComponent {
         bind(this);
     }
     render() {
-        const { item, isRemoving, modalConfirm } = this.props;
+        const { removable, isRemoving, modalConfirm } = this.props;
 
-        if (!item.removable) {
+        if (!removable) {
             return null;
         }
 

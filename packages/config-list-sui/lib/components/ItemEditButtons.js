@@ -31,26 +31,26 @@ var _semanticUiReact = require("semantic-ui-react");
 
 var _bind = _interopRequireDefault(require("config-list/lib/utils/bind"));
 
-var TableItemRenderer =
+var ItemEditButtons =
 /*#__PURE__*/
 function (_PureComponent) {
-  (0, _inherits2.default)(TableItemRenderer, _PureComponent);
+  (0, _inherits2.default)(ItemEditButtons, _PureComponent);
 
-  function TableItemRenderer(props, context) {
+  function ItemEditButtons(props, context) {
     var _this;
 
-    (0, _classCallCheck2.default)(this, TableItemRenderer);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TableItemRenderer).call(this, props, context));
+    (0, _classCallCheck2.default)(this, ItemEditButtons);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ItemEditButtons).call(this, props, context));
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
   }
 
-  (0, _createClass2.default)(TableItemRenderer, [{
+  (0, _createClass2.default)(ItemEditButtons, [{
     key: "render",
     value: function render() {
-      var item = this.props.item;
+      var editable = this.props.editable;
 
-      if (!item.editable) {
+      if (!editable) {
         return null;
       }
 
@@ -91,12 +91,13 @@ function (_PureComponent) {
       }
     }
   }]);
-  return TableItemRenderer;
+  return ItemEditButtons;
 }(_react.PureComponent);
 
-exports.default = TableItemRenderer;
-(0, _defineProperty2.default)(TableItemRenderer, "propTypes", {
+exports.default = ItemEditButtons;
+(0, _defineProperty2.default)(ItemEditButtons, "propTypes", {
   item: _propTypes.default.object,
+  editable: _propTypes.default.bool,
   editor: _propTypes.default.element,
   isEditing: _propTypes.default.bool,
   isRemoving: _propTypes.default.bool,

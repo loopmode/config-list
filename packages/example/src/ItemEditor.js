@@ -34,7 +34,7 @@ export default class ItemEditor extends PureComponent {
 
     getCurrentValue(key) {
         const stateValue = this.state.changes[key];
-        const itemValue = this.props.item.data[key];
+        const itemValue = this.props.item[key];
         if (stateValue === undefined) {
             return itemValue;
         }

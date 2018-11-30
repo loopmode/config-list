@@ -55,8 +55,8 @@ class Example extends Component {
     handleEditItem({ item, data }) {
         const { configuredItems } = this.state;
         const index = configuredItems.findIndex(it => it.key === item.key);
-        configuredItems[index].data = {
-            ...item.data,
+        configuredItems[index] = {
+            ...item,
             ...data
         };
         this.setState({

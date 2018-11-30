@@ -29,8 +29,8 @@ export default class DataConverter {
     }
 
     static convertItems(items) {
+        console.log('convert', items);
         const convert = DataConverter.getConverter(items);
-        console.log('convert');
         return convert(items);
     }
 }

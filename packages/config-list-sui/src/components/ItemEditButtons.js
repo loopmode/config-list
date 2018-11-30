@@ -4,9 +4,10 @@ import { Button, Icon } from 'semantic-ui-react';
 
 import bind from 'config-list/lib/utils/bind';
 
-export default class TableItemRenderer extends PureComponent {
+export default class ItemEditButtons extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
+        editable: PropTypes.bool,
         editor: PropTypes.element,
         isEditing: PropTypes.bool,
         isRemoving: PropTypes.bool,
@@ -25,8 +26,8 @@ export default class TableItemRenderer extends PureComponent {
         bind(this);
     }
     render() {
-        const { item } = this.props;
-        if (!item.editable) {
+        const { editable } = this.props;
+        if (!editable) {
             return null;
         }
         return this.renderEditButton();

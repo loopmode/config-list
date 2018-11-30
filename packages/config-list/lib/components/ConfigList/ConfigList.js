@@ -73,6 +73,8 @@ function (_PureComponent) {
 
       var _this$props = this.props,
           className = _this$props.className,
+          editable = _this$props.editable,
+          removable = _this$props.removable,
           configuredItems = _this$props.configuredItems,
           SelectRenderer = _this$props.SelectRenderer,
           ListRenderer = _this$props.ListRenderer,
@@ -97,6 +99,8 @@ function (_PureComponent) {
         var isRemoving = !!_this2.state.removing[item.key || item.id];
         var isEditing = !!editorData;
         return _react.default.createElement(ItemRenderer, {
+          editable: editable,
+          removable: removable,
           ItemValueRenderer: ItemValueRenderer,
           key: item.key || item.id,
           item: item,
@@ -243,6 +247,8 @@ exports.default = ConfigList;
   ItemValueRenderer: _propTypes.default.func,
   ItemEditor: _propTypes.default.func,
   //
+  editable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
+  removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   //
   onAddItem: _propTypes.default.func,
   onEditItem: _propTypes.default.func,
