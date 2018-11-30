@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { DataItemShape } from '@loopmode/config-list/lib/utils/shapes';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`
@@ -12,7 +11,7 @@ const StyledContainer = styled.div`
 `;
 export default class ItemEditor extends PureComponent {
     static propTypes = {
-        item: DataItemShape,
+        item: PropTypes.object,
         onEditCancel: PropTypes.func,
         onEditConfirm: PropTypes.func,
         modalParent: PropTypes.shape({
@@ -32,9 +31,9 @@ export default class ItemEditor extends PureComponent {
         }
     }
 
-    getCurrentValue(key) {
-        const stateValue = this.state.changes[key];
-        const itemValue = this.props.item[key];
+    getCurrentValue(name) {
+        const stateValue = this.state.changes[name];
+        const itemValue = this.props.item[name];
         if (stateValue === undefined) {
             return itemValue;
         }

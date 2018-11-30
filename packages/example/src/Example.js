@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import availableItems from './common.data';
 import ItemEditor from './ItemEditor';
+import { SupportedItemsShape } from '@loopmode/config-list/lib/utils/shapes';
 
 class Example extends Component {
     static propTypes = {
         renderer: PropTypes.func,
+        availableItems: SupportedItemsShape,
         ItemValueRenderer: PropTypes.func,
         modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
@@ -20,8 +21,9 @@ class Example extends Component {
     };
 
     render() {
-        const { renderer: ConfigList, ItemValueRenderer, modalConfirm, modalEdit } = this.props;
+        const { renderer: ConfigList, availableItems, ItemValueRenderer, modalConfirm, modalEdit } = this.props;
         const { configuredItems } = this.state;
+
         return (
             <ConfigList
                 ItemEditor={ItemEditor}

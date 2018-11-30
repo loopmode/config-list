@@ -5,19 +5,38 @@ import './App.css';
 import DefaultConfigList from '@loopmode/config-list';
 import TableListSUI from '@loopmode/config-list-sui/lib/components/ConfigTableList';
 import Example from './Example';
-// import CommandsExample from "./CommandsExample";
+import Immutable from 'immutable';
 
+import itemsArray from './common.data';
+
+const itemsObject = itemsArray.reduce((result, item) => ({ ...result, [item.id]: item }), {});
+const itemsList = Immutable.fromJS(itemsArray);
+const itemsMap = Immutable.fromJS(itemsObject);
+console.log({ itemsArray, itemsObject, itemsList, itemsMap });
 class App extends Component {
     render() {
         return (
             <div className="App">
                 <div className="example">
                     <h3>Default</h3>
-                    <Example renderer={DefaultConfigList} />
+                    <Example renderer={DefaultConfigList} availableItems={itemsArray} />
+                </div>
+                <div className="example">
+                    <h3>With object data</h3>
+                    <Example renderer={DefaultConfigList} availableItems={itemsObject} />
+                </div>
+                <div className="example">
+                    <h3>With immutable list data</h3>
+                    <Example renderer={DefaultConfigList} availableItems={itemsList} />
+                </div>
+                <div className="example">
+                    <h3>With immutable map data</h3>
+                    <Example renderer={DefaultConfigList} availableItems={itemsMap} />
                 </div>
                 <div className="example">
                     <h3>Semantic UI Table</h3>
                     <Example
+                        availableItems={itemsArray}
                         // editable={({ item }) => !item.value}
                         renderer={TableListSUI}
                         confirmRemove
