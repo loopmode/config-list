@@ -49,6 +49,6 @@ ImmutableShape.list = function (props, propName, componentName) {
   return new TypeError("Expected immutable.js List: ".concat(value, " for ").concat(propName, " in ").concat(componentName));
 };
 
-var SupportedItemsShape = _propTypes.default.oneOfType([_propTypes.default.array, _propTypes.default.array, ImmutableShape.list, ImmutableShape.map]);
+var SupportedItemsShape = _propTypes.default.oneOfType([_propTypes.default.array, _propTypes.default.object, ImmutableShape.list, ImmutableShape.map]);
 
 exports.SupportedItemsShape = SupportedItemsShape;

@@ -34,7 +34,7 @@ ImmutableShape.list = (props, propName, componentName) => {
 
 export const SupportedItemsShape = PropTypes.oneOfType([
     PropTypes.array,
-    PropTypes.array,
+    PropTypes.object,
     ImmutableShape.list,
     ImmutableShape.map
 ]);
