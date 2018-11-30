@@ -17,26 +17,20 @@
 10 silly runScriptInPackageStreaming [ 'watch', [], 'config-list-sui' ]
 11 silly getExecOpts { cwd:
 11 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list-sui' }
-12 silly runScriptInPackageStreaming [ 'watch', [], 'config-list-utils' ]
+12 silly runScriptInPackageStreaming [ 'watch', [], 'config-list' ]
 13 silly getExecOpts { cwd:
-13 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list-utils' }
-14 silly runScriptInPackageStreaming [ 'watch', [], 'config-list' ]
-15 silly getExecOpts { cwd:
-15 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list' }
-16 silly runScriptInPackageStreaming [ 'watch', [], 'editable-list' ]
-17 silly getExecOpts { cwd:
-17 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\editable-list' }
-18 error execute callback with error
-19 error Error: Command failed: yarn run watch
-19 error { Error: EPERM: operation not permitted, watch
-19 error     at FSEvent.FSWatcher._handle.onchange (internal/fs/watchers.js:123:28) errno: -4048, syscall: 'watch', code: 'EPERM', filename: null }
-19 error error Command failed with exit code 1.
-19 error error Command failed with exit code 1.
-19 error
-19 error $ yarn build --watch
-19 error $ babel src --out-dir lib --copy-files --watch
-19 error Successfully compiled 0 files with Babel.
-19 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-19 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-19 error
-19 error     at Promise.all.then.arr (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\execa\index.js:236:11)
+13 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list' }
+14 error execute callback with error
+15 error Error: Command failed: yarn run watch
+15 error { Error: EPERM: operation not permitted, watch
+15 error     at FSEvent.FSWatcher._handle.onchange (internal/fs/watchers.js:123:28) errno: -4048, syscall: 'watch', code: 'EPERM', filename: null }
+15 error error Command failed with exit code 1.
+15 error error Command failed with exit code 1.
+15 error
+15 error $ yarn build --watch
+15 error $ babel src --out-dir lib --copy-files --watch
+15 error Successfully compiled 17 files with Babel.
+15 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+15 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+15 error
+15 error     at Promise.all.then.arr (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\execa\index.js:236:11)

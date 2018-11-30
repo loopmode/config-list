@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import memoize from 'memoize-one';
 
-import { SupportedItemsShape } from '../../utils/shapes';
-import bind from '../../utils/bind';
+import { SupportedItemsShape } from '../utils/shapes';
+import bind from '../utils/bind';
 import DefaultSelectRenderer from './SelectRenderer';
 import DefaultListRenderer from './ListRenderer';
 import DefaultItemRenderer from './ItemRenderer';

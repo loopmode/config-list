@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import ConfigList from 'config-list/lib/components/ConfigList';
+import ConfigList from 'config-list';
 import cx from 'classnames';
 
 import ListRenderer from './TableListRenderer';

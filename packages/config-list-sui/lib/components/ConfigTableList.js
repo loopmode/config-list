@@ -27,7 +27,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _ConfigList = _interopRequireDefault(require("config-list/lib/components/ConfigList"));
+var _configList = _interopRequireDefault(require("config-list"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
@@ -50,7 +50,7 @@ function (_PureComponent) {
   (0, _createClass2.default)(TableConfigList, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement(_ConfigList.default, (0, _extends2.default)({}, this.props, {
+      return _react.default.createElement(_configList.default, (0, _extends2.default)({}, this.props, {
         className: (0, _classnames.default)('TableConfigList', this.props.className)
       }));
     }
