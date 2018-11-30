@@ -91,7 +91,7 @@ function (_PureComponent) {
         className: "item-row"
       }, columns.map(function (column) {
         return _react.default.createElement("td", {
-          key: "".concat(item.key, "--").concat(column.field),
+          key: "".concat(item.key || item.id, "--").concat(column.field),
           className: "column-".concat(column.field)
         }, _react.default.createElement(ItemValueRenderer, _this2.props));
       }), _react.default.createElement("td", {

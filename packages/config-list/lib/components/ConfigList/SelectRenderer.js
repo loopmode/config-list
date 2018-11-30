@@ -54,7 +54,7 @@ function (_PureComponent) {
         children: 'Add item'
       }), this.props.items.map(function (item) {
         return _react.default.createElement("option", {
-          key: item.key,
+          key: item.key || item.id,
           value: item.id,
           children: item.label
         });

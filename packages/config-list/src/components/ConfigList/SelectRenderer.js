@@ -11,7 +11,7 @@ export default class SelectRenderer extends PureComponent {
             <select value="default" onChange={event => this.handleSelect(event)} style={{ width: '100%' }}>
                 <option value="default" disabled children={'Add item'} />
                 {this.props.items.map(item => (
-                    <option key={item.key} value={item.id} children={item.label} />
+                    <option key={item.key || item.id} value={item.id} children={item.label} />
                 ))}
             </select>
         );

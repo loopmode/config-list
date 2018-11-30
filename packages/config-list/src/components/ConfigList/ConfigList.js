@@ -77,13 +77,13 @@ export default class ConfigList extends PureComponent {
                         {hasConfiguredItems && (
                             <ListRenderer items={items} configuredItems={configuredItems} parentProps={this.props}>
                                 {configuredItems.map(item => {
-                                    const editorData = this.state.editing[item.key];
-                                    const isRemoving = !!this.state.removing[item.key];
+                                    const editorData = this.state.editing[item.key || item.id];
+                                    const isRemoving = !!this.state.removing[item.key || item.id];
                                     const isEditing = !!editorData;
                                     return (
                                         <ItemRenderer
                                             ItemValueRenderer={ItemValueRenderer}
-                                            key={item.key}
+                                            key={item.key || item.id}
                                             item={item}
                                             parentProps={this.props}
                                             // removing
@@ -110,7 +110,7 @@ export default class ConfigList extends PureComponent {
 
     renderItemEditor(item) {
         const { ItemEditor } = this.props;
-        const editorData = this.state.editing[item.key];
+        const editorData = this.state.editing[item.key || item.id];
 
         if (!editorData) {
             return null;
@@ -120,7 +120,7 @@ export default class ConfigList extends PureComponent {
         if (ItemEditor) {
             editorContent = (
                 <ItemEditor
-                    key={item.key}
+                    key={item.key || item.id}
                     item={item}
                     parentProps={this.props}
                     onEditConfirm={this.handleEditConfirm}
@@ -145,15 +145,15 @@ export default class ConfigList extends PureComponent {
     // -------------------------------------------------
 
     handleEdit({ item }) {
-        this.setState({ editing: { ...this.state.editing, [item.key]: true } });
+        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: true } });
     }
 
     handleEditCancel({ item }) {
-        this.setState({ editing: { ...this.state.editing, [item.key]: false } });
+        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: false } });
     }
 
     handleEditConfirm({ item, data }) {
-        this.setState({ editing: { ...this.state.editing, [item.key]: false } });
+        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: false } });
         if (!this.props.onEditItem) {
             return;
         }
@@ -168,18 +168,18 @@ export default class ConfigList extends PureComponent {
 
     handleRemove({ item, event }) {
         if (this.props.confirmRemove) {
-            this.setState({ removing: { ...this.state.removing, [item.key]: true } });
+            this.setState({ removing: { ...this.state.removing, [item.key || item.id]: true } });
         } else if (this.props.onRemoveItem) {
             this.props.onRemoveItem({ item, event });
         }
     }
 
     handleRemoveCancel({ item }) {
-        this.setState({ removing: { ...this.state.removing, [item.key]: false } });
+        this.setState({ removing: { ...this.state.removing, [item.key || item.id]: false } });
     }
 
     handleRemoveConfirm({ item }) {
-        this.setState({ removing: { ...this.state.removing, [item.key]: false } });
+        this.setState({ removing: { ...this.state.removing, [item.key || item.id]: false } });
         if (!this.props.onRemoveItem) {
             return;
         }

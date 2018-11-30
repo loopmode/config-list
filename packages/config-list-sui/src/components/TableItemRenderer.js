@@ -55,7 +55,7 @@ export default class TableItemRenderer extends PureComponent {
                 <tr className="item-row">
                     {columns.map(column => {
                         return (
-                            <td key={`${item.key}--${column.field}`} className={`column-${column.field}`}>
+                            <td key={`${item.key || item.id}--${column.field}`} className={`column-${column.field}`}>
                                 <ItemValueRenderer {...this.props} />
                             </td>
                         );

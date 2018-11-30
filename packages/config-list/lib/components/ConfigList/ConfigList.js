@@ -112,12 +112,12 @@ function (_PureComponent) {
           configuredItems: configuredItems,
           parentProps: _this2.props
         }, configuredItems.map(function (item) {
-          var editorData = _this2.state.editing[item.key];
-          var isRemoving = !!_this2.state.removing[item.key];
+          var editorData = _this2.state.editing[item.key || item.id];
+          var isRemoving = !!_this2.state.removing[item.key || item.id];
           var isEditing = !!editorData;
           return _react.default.createElement(ItemRenderer, {
             ItemValueRenderer: ItemValueRenderer,
-            key: item.key,
+            key: item.key || item.id,
             item: item,
             parentProps: _this2.props // removing
             ,
@@ -139,7 +139,7 @@ function (_PureComponent) {
     key: "renderItemEditor",
     value: function renderItemEditor(item) {
       var ItemEditor = this.props.ItemEditor;
-      var editorData = this.state.editing[item.key];
+      var editorData = this.state.editing[item.key || item.id];
 
       if (!editorData) {
         return null;
@@ -149,7 +149,7 @@ function (_PureComponent) {
 
       if (ItemEditor) {
         editorContent = _react.default.createElement(ItemEditor, {
-          key: item.key,
+          key: item.key || item.id,
           item: item,
           parentProps: this.props,
           onEditConfirm: this.handleEditConfirm,
@@ -171,7 +171,7 @@ function (_PureComponent) {
     value: function handleEdit(_ref2) {
       var item = _ref2.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key, true))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, true))
       });
     }
   }, {
@@ -179,7 +179,7 @@ function (_PureComponent) {
     value: function handleEditCancel(_ref3) {
       var item = _ref3.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key, false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
     }
   }, {
@@ -188,7 +188,7 @@ function (_PureComponent) {
       var item = _ref4.item,
           data = _ref4.data;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key, false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
 
       if (!this.props.onEditItem) {
@@ -214,7 +214,7 @@ function (_PureComponent) {
 
       if (this.props.confirmRemove) {
         this.setState({
-          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key, true))
+          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, true))
         });
       } else if (this.props.onRemoveItem) {
         this.props.onRemoveItem({
@@ -228,7 +228,7 @@ function (_PureComponent) {
     value: function handleRemoveCancel(_ref6) {
       var item = _ref6.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key, false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
     }
   }, {
@@ -236,7 +236,7 @@ function (_PureComponent) {
     value: function handleRemoveConfirm(_ref7) {
       var item = _ref7.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key, false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
       });
 
       if (!this.props.onRemoveItem) {

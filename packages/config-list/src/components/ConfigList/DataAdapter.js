@@ -22,15 +22,6 @@ export default class DataAdapter extends PureComponent {
             return null;
         }
 
-        return convert(items).map(item => {
-            return {
-                key: settings.getKey(item),
-                id: settings.getID(item),
-                label: settings.getLabel(item),
-                editable: settings.isEditable(item),
-                removable: settings.isRemovable(item),
-                data: item
-            };
-        });
+        return convert(items);
     }
 }

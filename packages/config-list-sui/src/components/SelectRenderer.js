@@ -55,7 +55,11 @@ export default class SelectRenderer extends PureComponent {
                     <Dropdown.Menu>
                         {items.map(item => {
                             return (
-                                <Dropdown.Item key={item.key} onClick={() => onAddItem({ item })} text={item.label} />
+                                <Dropdown.Item
+                                    key={item.key || item.id}
+                                    onClick={() => onAddItem({ item })}
+                                    text={item.label}
+                                />
                             );
                         })}
                     </Dropdown.Menu>

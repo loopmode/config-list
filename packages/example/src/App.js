@@ -32,8 +32,8 @@ class App extends Component {
                         ItemValueRenderer={({ item }) => {
                             return (
                                 <div>
-                                    <h4>{item.data.label}</h4>
-                                    Value: <code>{item.data.value}</code>
+                                    <h4>{item.label}</h4>
+                                    Value: <code>{item.value}</code>
                                 </div>
                             );
                         }}

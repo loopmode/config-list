@@ -73,7 +73,7 @@ function (_PureComponent) {
         text: dropdownText
       }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, items.map(function (item) {
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
-          key: item.key,
+          key: item.key || item.id,
           onClick: function onClick() {
             return onAddItem({
               item: item
