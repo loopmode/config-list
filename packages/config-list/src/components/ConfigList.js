@@ -9,7 +9,7 @@ import DefaultSelectRenderer from './SelectRenderer';
 import DefaultListRenderer from './ListRenderer';
 import DefaultItemRenderer from './ItemRenderer';
 
-import DataConverter from './DataConverter';
+import DataConverter from '../utils/DataConverter';
 export default class ConfigList extends PureComponent {
     static propTypes = {
         className: PropTypes.string,

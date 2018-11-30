@@ -1,9 +1,16 @@
 export default class DataConverter {
-    // supported types
-    static fromArray = items => items;
-    static fromObject = items => Object.values(items);
-    static fromImmutableList = items => items.toJS();
-    static fromImmutableMap = items => items.valueSeq().toJS();
+    static fromArray(items) {
+        return items;
+    }
+    static fromObject(items) {
+        return Object.values(items);
+    }
+    static fromImmutableList(items) {
+        return items.toJS();
+    }
+    static fromImmutableMap(items) {
+        return items.valueSeq().toJS();
+    }
 
     static getConverter(items) {
         if (!items) {

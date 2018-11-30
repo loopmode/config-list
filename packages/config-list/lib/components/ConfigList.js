@@ -43,7 +43,7 @@ var _ListRenderer = _interopRequireDefault(require("./ListRenderer"));
 
 var _ItemRenderer = _interopRequireDefault(require("./ItemRenderer"));
 
-var _DataConverter = _interopRequireDefault(require("./DataConverter"));
+var _DataConverter = _interopRequireDefault(require("../utils/DataConverter"));
 
 var ConfigList =
 /*#__PURE__*/
