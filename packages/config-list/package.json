@@ -1,0 +1,24 @@
+{
+  "name": "config-list",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src --out-dir lib --copy-files",
+    "watch": "yarn build --watch",
+    "clean": "rm -rf lib/*",
+    "lint": "eslint src",
+    "docs": "esdoc"
+  },
+  "dependencies": {
+    "@loopmode/async-state": "^0.3.2",
+    "classnames": "^2.2.6",
+    "react": "^16.6.3",
+    "semantic-ui-react": "^0.83.0",
+    "styled-components": "^4.1.1"
+  },
+  "devDependencies": {
+    "prop-types": "^15.6.2",
+    "react-dom": "^16.6.3"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "editable-list-workspace",
+  "name": "config-list-workspace",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -9,12 +9,14 @@
   ],
   "scripts": {
     "dev": "cd packages/example && yarn start",
+    "clean": "lerna run clean --ignore example --stream",
     "build": "lerna run build --ignore example --stream",
     "watch": "lerna run watch --ignore example --stream",
     "lint": "lerna run lint --ignore example --stream",
     "docs": "lerna run docs --ignore example"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
     "@loopmode/babel7-base": "^1.0.1"
   }
 }

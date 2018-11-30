@@ -1,7 +1,10 @@
 .App {
     padding: 20px;
+    width: 100%;
+    display: flex;
 }
-.example > .ui.segment {
-    width: 400px;
-    margin: 0 auto;
+
+.App .example {
+    margin: 10px;
+    flex: 0.5;
 }
