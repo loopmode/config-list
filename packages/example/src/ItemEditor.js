@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { DataItemShape } from 'config-list/lib/utils/shapes';
+import { DataItemShape } from '@loopmode/config-list/lib/utils/shapes';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`

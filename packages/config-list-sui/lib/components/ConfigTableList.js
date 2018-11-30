@@ -27,7 +27,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _configList = _interopRequireDefault(require("config-list"));
+var _configList = _interopRequireDefault(require("@loopmode/config-list"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
@@ -37,29 +37,29 @@ var _TableItemRenderer = _interopRequireDefault(require("./TableItemRenderer"));
 
 var _SelectRenderer = _interopRequireDefault(require("./SelectRenderer"));
 
-var TableConfigList =
+var ConfigTableList =
 /*#__PURE__*/
 function (_PureComponent) {
-  (0, _inherits2.default)(TableConfigList, _PureComponent);
+  (0, _inherits2.default)(ConfigTableList, _PureComponent);
 
-  function TableConfigList() {
-    (0, _classCallCheck2.default)(this, TableConfigList);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TableConfigList).apply(this, arguments));
+  function ConfigTableList() {
+    (0, _classCallCheck2.default)(this, ConfigTableList);
+    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ConfigTableList).apply(this, arguments));
   }
 
-  (0, _createClass2.default)(TableConfigList, [{
+  (0, _createClass2.default)(ConfigTableList, [{
     key: "render",
     value: function render() {
       return _react.default.createElement(_configList.default, (0, _extends2.default)({}, this.props, {
-        className: (0, _classnames.default)('TableConfigList', this.props.className)
+        className: (0, _classnames.default)('ConfigTableList', this.props.className)
       }));
     }
   }]);
-  return TableConfigList;
+  return ConfigTableList;
 }(_react.PureComponent);
 
-exports.default = TableConfigList;
-(0, _defineProperty2.default)(TableConfigList, "propTypes", {
+exports.default = ConfigTableList;
+(0, _defineProperty2.default)(ConfigTableList, "propTypes", {
   className: _propTypes.default.string,
   SelectRenderer: _propTypes.default.func,
   ListRenderer: _propTypes.default.func,
@@ -67,7 +67,7 @@ exports.default = TableConfigList;
   ItemEditor: _propTypes.default.func,
   columns: _propTypes.default.array
 });
-(0, _defineProperty2.default)(TableConfigList, "defaultProps", {
+(0, _defineProperty2.default)(ConfigTableList, "defaultProps", {
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _TableListRenderer.default,
   ItemRenderer: _TableItemRenderer.default,

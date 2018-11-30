@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import ConfigList from 'config-list';
+import ConfigList from '@loopmode/config-list';
 import cx from 'classnames';
 
 import ListRenderer from './TableListRenderer';
 import ItemRenderer from './TableItemRenderer';
 import SelectRenderer from './SelectRenderer';
 
-export default class TableConfigList extends PureComponent {
+export default class ConfigTableList extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
         SelectRenderer: PropTypes.func,
@@ -24,6 +24,6 @@ export default class TableConfigList extends PureComponent {
         columns: [{ field: 'label', label: 'Name' }]
     };
     render() {
-        return <ConfigList {...this.props} className={cx('TableConfigList', this.props.className)} />;
+        return <ConfigList {...this.props} className={cx('ConfigTableList', this.props.className)} />;
     }
 }

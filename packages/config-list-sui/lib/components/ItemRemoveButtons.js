@@ -31,7 +31,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _bind = _interopRequireDefault(require("config-list/lib/utils/bind"));
+var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
 var _semanticUiReact = require("semantic-ui-react");
 

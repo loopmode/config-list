@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import cx from 'classnames';
 
-import bind from 'config-list/lib/utils/bind';
+import bind from '@loopmode/config-list/lib/utils/bind';
 import ItemEditButtons from './ItemEditButtons';
 import ItemRemoveButtons from './ItemRemoveButtons';
 import ModalDialog from './ModalDialog';

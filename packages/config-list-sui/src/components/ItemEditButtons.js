@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'semantic-ui-react';
 
-import bind from 'config-list/lib/utils/bind';
+import bind from '@loopmode/config-list/lib/utils/bind';
 
 export default class ItemEditButtons extends PureComponent {
     static propTypes = {

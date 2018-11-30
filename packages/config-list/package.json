@@ -1,5 +1,5 @@
 {
-  "name": "config-list",
+  "name": "@loopmode/config-list",
   "version": "1.0.0",
   "main": "lib/index.js",
   "license": "MIT",
@@ -9,6 +9,18 @@
     "clean": "rm -rf lib/*",
     "lint": "eslint src",
     "docs": "esdoc"
+  },
+  "eslintConfig": {
+    "extends": "@loopmode/react",
+    "rules": {
+      "no-unused-vars": [1, { "ignoreRestSiblings": true }]
+    }
+  },
+  "babel": {
+    "extends": "@loopmode/babel7-base/files/.babelrc",
+    "plugins": [
+      "@babel/plugin-proposal-export-namespace-from"
+    ]
   },
   "dependencies": {
     "@loopmode/async-state": "^0.3.2",

@@ -1,7 +1,7 @@
 {
-  "name": "config-list-sui",
+  "name": "@loopmode/config-list-sui",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
     "build": "babel src --out-dir lib --copy-files",
@@ -20,6 +20,7 @@
     "extends": "@loopmode/babel7-base/files/.babelrc"
   },
   "dependencies": {
+    "@loopmode/config-list": "^1.0.0",
     "@loopmode/async-state": "^0.3.2"
   }
 }

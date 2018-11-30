@@ -1,36 +1,24 @@
-0 silly input [ 'watch' ]
+0 silly input [ 'clean' ]
 1 silly flags { _: [ 'run' ],
 1 silly flags   'reject-cycles': false,
 1 silly flags   rejectCycles: false,
 1 silly flags   stream: true,
 1 silly flags   ignore: 'example',
-1 silly flags   script: 'watch',
+1 silly flags   script: 'clean',
 1 silly flags   args: [] }
 2 verbose rootPath D:\Projects\npm\loopmode@npm\editable-list
 3 info version 2.11.0
 4 silly existsSync D:\Projects\npm\loopmode@npm\editable-list\VERSION
 5 info versioning independent
 6 info ignore example
-7 silly initialize attempt
-8 silly initialize success
-9 silly execute attempt
-10 silly runScriptInPackageStreaming [ 'watch', [], 'config-list-sui' ]
-11 silly getExecOpts { cwd:
-11 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list-sui' }
-12 silly runScriptInPackageStreaming [ 'watch', [], 'config-list' ]
-13 silly getExecOpts { cwd:
-13 silly getExecOpts    'D:\\Projects\\npm\\loopmode@npm\\editable-list\\packages\\config-list' }
-14 error execute callback with error
-15 error Error: Command failed: yarn run watch
-15 error { Error: EPERM: operation not permitted, watch
-15 error     at FSEvent.FSWatcher._handle.onchange (internal/fs/watchers.js:123:28) errno: -4048, syscall: 'watch', code: 'EPERM', filename: null }
-15 error error Command failed with exit code 1.
-15 error error Command failed with exit code 1.
-15 error
-15 error $ yarn build --watch
-15 error $ babel src --out-dir lib --copy-files --watch
-15 error Successfully compiled 17 files with Babel.
-15 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-15 error info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
-15 error
-15 error     at Promise.all.then.arr (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\execa\index.js:236:11)
+7 error EPACKAGES Errored while collecting packages and package graph
+8 error JSONError: Unexpected token } in JSON at position 600 while parsing near '...state": "^0.3.2",  }}' in packages\config-list-sui\package.json
+8 error     at module.exports (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\parse-json\index.js:26:19)
+8 error     at parse (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\load-json-file\index.js:8:29)
+8 error     at Function.module.exports.sync.fp [as sync] (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\load-json-file\index.js:11:29)
+8 error     at Function.module.exports.sync (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\node_modules\read-pkg\index.js:40:25)
+8 error     at C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\lib\PackageUtilities.js:138:47
+8 error     at Array.forEach (<anonymous>)
+8 error     at C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\lib\PackageUtilities.js:132:86
+8 error     at Array.forEach (<anonymous>)
+8 error     at Function.getPackages (C:\Users\Jovica.Aleksic\AppData\Roaming\npm\node_modules\lerna\lib\PackageUtilities.js:131:22)

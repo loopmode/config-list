@@ -37,7 +37,7 @@ var _semanticUiReact = require("semantic-ui-react");
 
 var _AsyncState = _interopRequireDefault(require("./AsyncState"));
 
-var _bind = _interopRequireDefault(require("config-list/lib/utils/bind"));
+var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
 var ModalDialog =
 /*#__PURE__*/

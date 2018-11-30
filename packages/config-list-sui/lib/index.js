@@ -8,8 +8,8 @@ Object.defineProperty(exports, "__esModule", {
 Object.defineProperty(exports, "default", {
   enumerable: true,
   get: function get() {
-    return _EditModal.default;
+    return _ConfigTableList.default;
   }
 });
 
-var _EditModal = _interopRequireDefault(require("./EditModal"));
+var _ConfigTableList = _interopRequireDefault(require("./components/ConfigTableList"));

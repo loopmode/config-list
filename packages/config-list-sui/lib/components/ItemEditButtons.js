@@ -29,7 +29,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _semanticUiReact = require("semantic-ui-react");
 
-var _bind = _interopRequireDefault(require("config-list/lib/utils/bind"));
+var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
 var ItemEditButtons =
 /*#__PURE__*/

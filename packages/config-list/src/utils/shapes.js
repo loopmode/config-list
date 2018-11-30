@@ -7,34 +7,6 @@ function isImmutableMap(value) {
 function isImmutableList(value) {
     return value && value.toString().substr(0, 4) === 'List';
 }
-export const displayValueShape = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.node,
-    PropTypes.func
-]);
-
-export const ItemSettingsShape = PropTypes.shape({
-    getLabel: PropTypes.func,
-    getID: PropTypes.func,
-    getKey: PropTypes.func,
-    isEditable: PropTypes.func,
-    isRemovable: PropTypes.func
-});
-
-export const RenderableShape = PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.node,
-    PropTypes.func
-]);
-
-export const DataItemShape = PropTypes.shape({
-    id: PropTypes.string,
-    key: PropTypes.string,
-    label: RenderableShape,
-    data: PropTypes.object
-});
 
 export const ImmutableShape = (props, propName, componentName) => {
     const value = props[propName];

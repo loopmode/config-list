@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import './App.css';
 
-import DefaultConfigList from 'config-list';
-import TableListSUI from 'config-list-sui/lib/components/ConfigTableList';
+import DefaultConfigList from '@loopmode/config-list';
+import TableListSUI from '@loopmode/config-list-sui/lib/components/ConfigTableList';
 import Example from './Example';
 // import CommandsExample from "./CommandsExample";
 

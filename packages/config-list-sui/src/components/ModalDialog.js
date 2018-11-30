@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Button, Modal } from 'semantic-ui-react';
 import AsyncState from './AsyncState';
-import bind from 'config-list/lib/utils/bind';
+import bind from '@loopmode/config-list/lib/utils/bind';
 
 export default class ModalDialog extends PureComponent {
     static propTypes = {

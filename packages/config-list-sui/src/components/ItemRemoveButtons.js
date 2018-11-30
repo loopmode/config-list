@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import bind from 'config-list/lib/utils/bind';
+import bind from '@loopmode/config-list/lib/utils/bind';
 import { Button, Icon } from 'semantic-ui-react';
 
 import ModalDialog from './ModalDialog';

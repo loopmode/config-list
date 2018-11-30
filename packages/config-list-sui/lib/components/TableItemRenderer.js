@@ -35,7 +35,7 @@ var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
-var _bind = _interopRequireDefault(require("config-list/lib/utils/bind"));
+var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
 var _ItemEditButtons = _interopRequireDefault(require("./ItemEditButtons"));
 

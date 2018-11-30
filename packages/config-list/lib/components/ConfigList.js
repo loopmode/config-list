@@ -33,9 +33,9 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _memoizeOne = _interopRequireDefault(require("memoize-one"));
 
-var _shapes = require("../../utils/shapes");
+var _shapes = require("../utils/shapes");
 
-var _bind = _interopRequireDefault(require("../../utils/bind"));
+var _bind = _interopRequireDefault(require("../utils/bind"));
 
 var _SelectRenderer = _interopRequireDefault(require("./SelectRenderer"));
 
