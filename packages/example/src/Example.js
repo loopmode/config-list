@@ -10,7 +10,8 @@ class Example extends Component {
         availableItems: SupportedItemsShape,
         ItemValueRenderer: PropTypes.func,
         modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-        modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
+        modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+        exclusive: PropTypes.bool
     };
     static defaultProps = {};
     state = {
@@ -23,6 +24,7 @@ class Example extends Component {
 
         return (
             <ConfigList
+                exclusive={this.props.exclusive}
                 ItemEditor={ItemEditor}
                 ItemValueRenderer={ItemValueRenderer}
                 availableItems={availableItems}

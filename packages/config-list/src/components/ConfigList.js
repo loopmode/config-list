@@ -28,12 +28,16 @@ export default class ConfigList extends PureComponent {
         onEditItem: PropTypes.func,
         onRemoveItem: PropTypes.func,
         //
-        confirmRemove: PropTypes.bool
+        confirmRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+        //
+        exclusive: PropTypes.bool,
+        isItemConfigured: PropTypes.func
     };
     static defaultProps = {
         SelectRenderer: DefaultSelectRenderer,
         ListRenderer: DefaultListRenderer,
-        ItemRenderer: DefaultItemRenderer
+        ItemRenderer: DefaultItemRenderer,
+        isItemConfigured: ({ item, configuredItems }) => configuredItems.find(it => it.id === item.id)
     };
     state = {
         removing: {},
@@ -63,10 +67,17 @@ export default class ConfigList extends PureComponent {
 
         const availableItems = this.convertItems(this.props.availableItems);
 
+        let selectableItems = availableItems;
+        if (this.props.exclusive) {
+            selectableItems = availableItems.filter(
+                item => !this.props.isItemConfigured({ item, configuredItems, availableItems })
+            );
+        }
+
         return (
             <div className={cx('ConfigList', className)}>
                 <SelectRenderer
-                    availableItems={availableItems}
+                    availableItems={selectableItems}
                     configuredItems={configuredItems}
                     onAddItem={onAddItem}
                     parentProps={this.props}
@@ -168,7 +179,11 @@ export default class ConfigList extends PureComponent {
     // -------------------------------------------------
 
     handleRemove({ item, event }) {
-        if (this.props.confirmRemove) {
+        let confirmRemove = this.props.confirmRemove;
+        if (typeof confirmRemove === 'function') {
+            confirmRemove = confirmRemove({ item, event });
+        }
+        if (confirmRemove) {
             this.setState({ removing: { ...this.state.removing, [item.key || item.id]: true } });
         } else if (this.props.onRemoveItem) {
             this.props.onRemoveItem({ item, event });

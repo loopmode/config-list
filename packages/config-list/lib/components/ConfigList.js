@@ -83,10 +83,22 @@ function (_PureComponent) {
           onAddItem = _this$props.onAddItem;
       var hasConfiguredItems = configuredItems && configuredItems.length > 0;
       var availableItems = this.convertItems(this.props.availableItems);
+      var selectableItems = availableItems;
+
+      if (this.props.exclusive) {
+        selectableItems = availableItems.filter(function (item) {
+          return !_this2.props.isItemConfigured({
+            item: item,
+            configuredItems: configuredItems,
+            availableItems: availableItems
+          });
+        });
+      }
+
       return _react.default.createElement("div", {
         className: (0, _classnames.default)('ConfigList', className)
       }, _react.default.createElement(SelectRenderer, {
-        availableItems: availableItems,
+        availableItems: selectableItems,
         configuredItems: configuredItems,
         onAddItem: onAddItem,
         parentProps: this.props
@@ -195,8 +207,16 @@ function (_PureComponent) {
     value: function handleRemove(_ref4) {
       var item = _ref4.item,
           event = _ref4.event;
+      var confirmRemove = this.props.confirmRemove;
 
-      if (this.props.confirmRemove) {
+      if (typeof confirmRemove === 'function') {
+        confirmRemove = confirmRemove({
+          item: item,
+          event: event
+        });
+      }
+
+      if (confirmRemove) {
         this.setState({
           removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, true))
         });
@@ -254,10 +274,20 @@ exports.default = ConfigList;
   onEditItem: _propTypes.default.func,
   onRemoveItem: _propTypes.default.func,
   //
-  confirmRemove: _propTypes.default.bool
+  confirmRemove: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
+  //
+  exclusive: _propTypes.default.bool,
+  isItemConfigured: _propTypes.default.func
 });
 (0, _defineProperty2.default)(ConfigList, "defaultProps", {
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _ListRenderer.default,
-  ItemRenderer: _ItemRenderer.default
+  ItemRenderer: _ItemRenderer.default,
+  isItemConfigured: function isItemConfigured(_ref7) {
+    var item = _ref7.item,
+        configuredItems = _ref7.configuredItems;
+    return configuredItems.find(function (it) {
+      return it.id === item.id;
+    });
+  }
 });
