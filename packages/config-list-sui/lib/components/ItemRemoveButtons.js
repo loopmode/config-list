@@ -83,10 +83,12 @@ var ConfirmModal = function ConfirmModal(_ref4) {
       onCancel = _ref4.onCancel,
       _ref4$title = _ref4.title,
       title = _ref4$title === void 0 ? 'Remove item' : _ref4$title,
-      props = (0, _objectWithoutProperties2.default)(_ref4, ["onConfirm", "onCancel", "title"]);
+      _ref4$content = _ref4.content,
+      content = _ref4$content === void 0 ? 'Do you really want to remove this item?' : _ref4$content,
+      props = (0, _objectWithoutProperties2.default)(_ref4, ["onConfirm", "onCancel", "title", "content"]);
   return _react.default.createElement(_ModalDialog.default, (0, _extends2.default)({
     title: title,
-    children: _react.default.createElement("p", null, "Do you really want to remove this item?"),
+    children: content,
     onConfirm: onConfirm,
     onCancel: onCancel
   }, props));
@@ -130,6 +132,7 @@ function (_PureComponent) {
         return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(RemoveButton, {
           onClick: this.handleRemoveClick
         }), _react.default.createElement(ConfirmModal, (0, _extends2.default)({
+          item: this.props.item,
           onConfirm: this.handleConfirmClick,
           onCancel: this.handleCancelClick
         }, modalConfirm)));

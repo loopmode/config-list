@@ -26,15 +26,13 @@ const ConfirmButton = ({ onClick }) => (
     />
 );
 
-const ConfirmModal = ({ onConfirm, onCancel, title = 'Remove item', ...props }) => (
-    <ModalDialog
-        title={title}
-        children={<p>Do you really want to remove this item?</p>}
-        onConfirm={onConfirm}
-        onCancel={onCancel}
-        {...props}
-    />
-);
+const ConfirmModal = ({
+    onConfirm,
+    onCancel,
+    title = 'Remove item',
+    content = 'Do you really want to remove this item?',
+    ...props
+}) => <ModalDialog title={title} children={content} onConfirm={onConfirm} onCancel={onCancel} {...props} />;
 
 /* eslint-enable react/prop-types */
 
@@ -68,6 +66,7 @@ export default class ItemRemoveButtons extends PureComponent {
                 <React.Fragment>
                     <RemoveButton onClick={this.handleRemoveClick} />
                     <ConfirmModal
+                        item={this.props.item}
                         onConfirm={this.handleConfirmClick}
                         onCancel={this.handleCancelClick}
                         {...modalConfirm}

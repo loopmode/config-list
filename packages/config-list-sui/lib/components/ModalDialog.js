@@ -75,7 +75,7 @@ function (_PureComponent) {
           modalProps = (0, _objectWithoutProperties2.default)(_this$props, ["withChildData", "item", "onConfirm", "onCancel", "title", "children", "cancelProps", "confirmProps"]);
       return _react.default.createElement(_semanticUiReact.Modal, (0, _objectSpread2.default)({
         open: true
-      }, modalProps), _react.default.createElement(_semanticUiReact.Modal.Header, null, title), _react.default.createElement(_semanticUiReact.Modal.Content, null, _react.default.createElement(_semanticUiReact.Modal.Description, null, this.renderContent(children))), _react.default.createElement(_semanticUiReact.Modal.Actions, null, _react.default.createElement(_AsyncState.default, null, _react.default.createElement(_semanticUiReact.Button, (0, _extends2.default)({
+      }, modalProps), _react.default.createElement(_semanticUiReact.Modal.Header, null, this.renderContent(title)), _react.default.createElement(_semanticUiReact.Modal.Content, null, _react.default.createElement(_semanticUiReact.Modal.Description, null, this.renderContent(children))), _react.default.createElement(_semanticUiReact.Modal.Actions, null, _react.default.createElement(_AsyncState.default, null, _react.default.createElement(_semanticUiReact.Button, (0, _extends2.default)({
         children: 'Cancel',
         onClick: this.handleCancel
       }, cancelProps))), _react.default.createElement(_AsyncState.default, null, _react.default.createElement(_semanticUiReact.Button, (0, _extends2.default)({
@@ -86,7 +86,9 @@ function (_PureComponent) {
   }, {
     key: "renderContent",
     value: function renderContent(children) {
-      var childProps = {};
+      var childProps = {
+        item: this.props.item
+      };
 
       if (this.props.withChildData) {
         childProps.modalParent = {
@@ -96,6 +98,8 @@ function (_PureComponent) {
 
       if (typeof children === 'function') {
         return children(childProps);
+      } else if (typeof children === 'string') {
+        return children;
       } else {
         return _react.default.Children.map(children, function (child) {
           return _react.default.cloneElement(child, childProps);
@@ -140,7 +144,7 @@ function (_PureComponent) {
 exports.default = ModalDialog;
 (0, _defineProperty2.default)(ModalDialog, "propTypes", {
   item: _propTypes.default.object,
-  title: _propTypes.default.node,
+  title: _propTypes.default.oneOfType([_propTypes.default.node, _propTypes.default.func]),
   cancelProps: _propTypes.default.object,
   confirmProps: _propTypes.default.object,
   children: _propTypes.default.oneOfType([_propTypes.default.node, _propTypes.default.func]),

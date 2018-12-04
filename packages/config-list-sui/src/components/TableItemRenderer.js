@@ -10,8 +10,7 @@ import ItemRemoveButtons from './ItemRemoveButtons';
 import ModalDialog from './ModalDialog';
 import memoize from 'memoize-one';
 
-import { COLUMN_FIELD_ACTIONS } from '../defaults';
-import { defaultListSettings } from '../defaults';
+import { COLUMN_FIELD_ACTIONS, defaultListSettings } from '../defaults';
 
 const EditorRow = styled.tr`
     td {

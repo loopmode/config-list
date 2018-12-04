@@ -8,7 +8,7 @@ import bind from '@loopmode/config-list/lib/utils/bind';
 export default class ModalDialog extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
-        title: PropTypes.node,
+        title: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
         cancelProps: PropTypes.object,
         confirmProps: PropTypes.object,
         children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
@@ -44,7 +44,7 @@ export default class ModalDialog extends PureComponent {
         } = this.props;
         return (
             <Modal {...{ open: true, ...modalProps }}>
-                <Modal.Header>{title}</Modal.Header>
+                <Modal.Header>{this.renderContent(title)}</Modal.Header>
                 <Modal.Content>
                     <Modal.Description>{this.renderContent(children)}</Modal.Description>
                 </Modal.Content>
@@ -60,7 +60,9 @@ export default class ModalDialog extends PureComponent {
         );
     }
     renderContent(children) {
-        const childProps = {};
+        const childProps = {
+            item: this.props.item
+        };
         if (this.props.withChildData) {
             childProps.modalParent = {
                 registerChildData: this.registerChildData
@@ -69,6 +71,8 @@ export default class ModalDialog extends PureComponent {
 
         if (typeof children === 'function') {
             return children(childProps);
+        } else if (typeof children === 'string') {
+            return children;
         } else {
             return React.Children.map(children, child => React.cloneElement(child, childProps));
         }
