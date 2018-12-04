@@ -27,7 +27,7 @@ export default class TableItemRenderer extends PureComponent {
         removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         ItemValueRenderer: PropTypes.func,
         settings: settingsShape,
-        editor: PropTypes.element,
+        editor: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
         isEditing: PropTypes.bool,
         isRemoving: PropTypes.bool,
         onEdit: PropTypes.func,
@@ -37,8 +37,8 @@ export default class TableItemRenderer extends PureComponent {
         onRemoveCancel: PropTypes.func,
         onRemoveConfirm: PropTypes.func,
         parentProps: PropTypes.shape({
-            modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-            modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
+            modalConfirm: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object]),
+            modalEdit: PropTypes.oneOfType([PropTypes.func, PropTypes.bool, PropTypes.object])
         })
     };
     static defaultProps = {
@@ -59,7 +59,13 @@ export default class TableItemRenderer extends PureComponent {
     render() {
         const { settings } = this;
         const { item, ItemValueRenderer = ({ item }) => settings.label(item) } = this.props;
-        const { modalConfirm, modalEdit } = this.props.parentProps;
+        let { modalConfirm, modalEdit } = this.props.parentProps;
+        if (typeof modalConfirm === 'function') {
+            modalConfirm = modalConfirm(this.props);
+        }
+        if (typeof modalEdit === 'function') {
+            modalEdit = modalEdit(this.props);
+        }
         const columns = settings.columns.filter(col => col.field !== COLUMN_FIELD_ACTIONS);
         const editable = this.resolveBool(this.props.editable);
         const removable = this.resolveBool(this.props.removable);
@@ -100,7 +106,7 @@ export default class TableItemRenderer extends PureComponent {
                 {this.props.isEditing && (
                     <EditorRow className={cx('editor-row', { hidden: modalEdit })}>
                         <td colSpan={columns.length + 1}>
-                            {modalEdit ? (
+                            {modalEdit && !modalEdit.isModal ? (
                                 <ModalDialog
                                     withChildData
                                     children={this.props.editor}
@@ -111,7 +117,12 @@ export default class TableItemRenderer extends PureComponent {
                                     {...modalEdit}
                                 />
                             ) : (
-                                this.props.editor
+                                React.cloneElement(this.props.editor, {
+                                    item: this.props.item,
+                                    onConfirm: this.props.onEditConfirm,
+                                    onCancel: this.props.onEditCancel,
+                                    ...modalEdit
+                                })
                             )}
                         </td>
                     </EditorRow>

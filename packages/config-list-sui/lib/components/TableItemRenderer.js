@@ -104,6 +104,15 @@ function (_PureComponent) {
       var _this$props$parentPro = this.props.parentProps,
           modalConfirm = _this$props$parentPro.modalConfirm,
           modalEdit = _this$props$parentPro.modalEdit;
+
+      if (typeof modalConfirm === 'function') {
+        modalConfirm = modalConfirm(this.props);
+      }
+
+      if (typeof modalEdit === 'function') {
+        modalEdit = modalEdit(this.props);
+      }
+
       var columns = settings.columns.filter(function (col) {
         return col.field !== _defaults.COLUMN_FIELD_ACTIONS;
       });
@@ -140,14 +149,18 @@ function (_PureComponent) {
         })
       }, _react.default.createElement("td", {
         colSpan: columns.length + 1
-      }, modalEdit ? _react.default.createElement(_ModalDialog.default, (0, _extends2.default)({
+      }, modalEdit && !modalEdit.isModal ? _react.default.createElement(_ModalDialog.default, (0, _extends2.default)({
         withChildData: true,
         children: this.props.editor,
         item: this.props.item,
         title: modalEdit.title || 'Edit item',
         onConfirm: this.props.onEditConfirm,
         onCancel: this.props.onEditCancel
-      }, modalEdit)) : this.props.editor)));
+      }, modalEdit)) : _react.default.cloneElement(this.props.editor, (0, _objectSpread2.default)({
+        item: this.props.item,
+        onConfirm: this.props.onEditConfirm,
+        onCancel: this.props.onEditCancel
+      }, modalEdit)))));
     }
   }, {
     key: "resolveBool",
@@ -169,7 +182,7 @@ exports.default = TableItemRenderer;
   removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   ItemValueRenderer: _propTypes.default.func,
   settings: _shapes.settingsShape,
-  editor: _propTypes.default.element,
+  editor: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.element]),
   isEditing: _propTypes.default.bool,
   isRemoving: _propTypes.default.bool,
   onEdit: _propTypes.default.func,
@@ -179,8 +192,8 @@ exports.default = TableItemRenderer;
   onRemoveCancel: _propTypes.default.func,
   onRemoveConfirm: _propTypes.default.func,
   parentProps: _propTypes.default.shape({
-    modalConfirm: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.object]),
-    modalEdit: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.object])
+    modalConfirm: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool, _propTypes.default.object]),
+    modalEdit: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool, _propTypes.default.object])
   })
 });
 (0, _defineProperty2.default)(TableItemRenderer, "defaultProps", {
