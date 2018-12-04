@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Dropdown, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import { settingsShape, itemsShape } from '@loopmode/config-list/lib/utils/shapes';
+import { settingsShape, itemsShape } from '@loopmode/config-list/lib/shapes';
 import { map, filter } from '@loopmode/config-list/lib/utils/iterate';
 import count from '@loopmode/config-list/lib/utils/count';
 

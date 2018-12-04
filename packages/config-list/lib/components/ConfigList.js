@@ -33,7 +33,7 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _memoizeOne = _interopRequireDefault(require("memoize-one"));
 
-var _shapes = require("../utils/shapes");
+var _shapes = require("../shapes");
 
 var _bind = _interopRequireDefault(require("../utils/bind"));
 
@@ -43,7 +43,7 @@ var _ListRenderer = _interopRequireDefault(require("./ListRenderer"));
 
 var _ItemRenderer = _interopRequireDefault(require("./ItemRenderer"));
 
-var _defaultSettings = require("../defaultSettings");
+var _defaults = _interopRequireDefault(require("../defaults"));
 
 var _count = _interopRequireDefault(require("../utils/count"));
 
@@ -58,12 +58,12 @@ function (_PureComponent) {
   (0, _createClass2.default)(ConfigList, [{
     key: "listSettings",
     get: function get() {
-      return this.getSettings(_defaultSettings.defaultItemSettings, this.props.listSettings);
+      return this.getSettings(_defaults.default, this.props.listSettings);
     }
   }, {
     key: "selectSettings",
     get: function get() {
-      return this.getSettings(_defaultSettings.defaultItemSettings, this.props.selectSettings);
+      return this.getSettings(_defaults.default, this.props.selectSettings);
     }
   }]);
 
@@ -113,7 +113,7 @@ function (_PureComponent) {
       }), hasConfiguredItems && _react.default.createElement(ListRenderer, {
         availableItems: availableItems,
         configuredItems: configuredItems,
-        settings: this.listSettings,
+        settings: listSettings,
         parentProps: this.props
       }, (0, _iterate.map)((0, _iterate.filter)(configuredItems, listSettings.filter), function (item) {
         var key = listSettings.key(item);
@@ -291,8 +291,8 @@ exports.default = ConfigList;
   listSettings: _shapes.settingsShape
 });
 (0, _defineProperty2.default)(ConfigList, "defaultProps", {
-  selectSettings: _defaultSettings.defaultItemSettings,
-  listSettings: _defaultSettings.defaultItemSettings,
+  selectSettings: _defaults.default,
+  listSettings: _defaults.default,
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _ListRenderer.default,
   ItemRenderer: _ItemRenderer.default

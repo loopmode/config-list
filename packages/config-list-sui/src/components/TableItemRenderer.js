@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import cx from 'classnames';
 
 import bind from '@loopmode/config-list/lib/utils/bind';
-import { settingsShape } from '@loopmode/config-list/lib/utils/shapes';
+import { settingsShape } from '@loopmode/config-list/lib/shapes';
 import ItemEditButtons from './ItemEditButtons';
 import ItemRemoveButtons from './ItemRemoveButtons';
 import ModalDialog from './ModalDialog';
+import memoize from 'memoize-one';
+
+import { COLUMN_FIELD_ACTIONS } from '../defaults';
+import { defaultListSettings } from '../defaults';
 
 const EditorRow = styled.tr`
     td {
@@ -34,7 +38,6 @@ export default class TableItemRenderer extends PureComponent {
         onRemoveCancel: PropTypes.func,
         onRemoveConfirm: PropTypes.func,
         parentProps: PropTypes.shape({
-            columns: PropTypes.array,
             modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
             modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object])
         })
@@ -46,14 +49,19 @@ export default class TableItemRenderer extends PureComponent {
             </div>
         )
     };
+    getSettings = memoize((defaults, settings) => ({ ...defaults, ...settings }));
+    get settings() {
+        return this.getSettings(defaultListSettings, this.props.settings);
+    }
     constructor(props, context) {
         super(props, context);
         bind(this);
     }
     render() {
-        const { item, settings, ItemValueRenderer = ({ item }) => settings.label(item) } = this.props;
-        const { columns, modalConfirm, modalEdit } = this.props.parentProps;
-
+        const { settings } = this;
+        const { item, ItemValueRenderer = ({ item }) => settings.label(item) } = this.props;
+        const { modalConfirm, modalEdit } = this.props.parentProps;
+        const columns = settings.columns.filter(col => col.field !== COLUMN_FIELD_ACTIONS);
         const editable = this.resolveBool(this.props.editable);
         const removable = this.resolveBool(this.props.removable);
         return (

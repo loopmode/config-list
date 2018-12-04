@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import memoize from 'memoize-one';
 
-import { itemsShape, settingsShape } from '../utils/shapes';
+import { itemsShape, settingsShape } from '../shapes';
 import bind from '../utils/bind';
 import DefaultSelectRenderer from './SelectRenderer';
 import DefaultListRenderer from './ListRenderer';
 import DefaultItemRenderer from './ItemRenderer';
 
-import { defaultItemSettings } from '../defaultSettings';
+import defaultSettings from '../defaults';
 
 import count from '../utils/count';
 import { map, filter } from '../utils/iterate';
@@ -42,8 +42,8 @@ export default class ConfigList extends PureComponent {
         listSettings: settingsShape
     };
     static defaultProps = {
-        selectSettings: defaultItemSettings,
-        listSettings: defaultItemSettings,
+        selectSettings: defaultSettings,
+        listSettings: defaultSettings,
         SelectRenderer: DefaultSelectRenderer,
         ListRenderer: DefaultListRenderer,
         ItemRenderer: DefaultItemRenderer
@@ -56,10 +56,10 @@ export default class ConfigList extends PureComponent {
     getSettings = memoize((defaults, settings) => ({ ...defaults, ...settings }));
 
     get listSettings() {
-        return this.getSettings(defaultItemSettings, this.props.listSettings);
+        return this.getSettings(defaultSettings, this.props.listSettings);
     }
     get selectSettings() {
-        return this.getSettings(defaultItemSettings, this.props.selectSettings);
+        return this.getSettings(defaultSettings, this.props.selectSettings);
     }
 
     constructor(props, context) {
@@ -96,7 +96,7 @@ export default class ConfigList extends PureComponent {
                     <ListRenderer
                         availableItems={availableItems}
                         configuredItems={configuredItems}
-                        settings={this.listSettings}
+                        settings={listSettings}
                         parentProps={this.props}
                     >
                         {map(filter(configuredItems, listSettings.filter), item => {

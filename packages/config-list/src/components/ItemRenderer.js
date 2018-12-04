@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import Fragment from './Fragment';
-import { settingsShape } from '../utils/shapes';
+import { settingsShape } from '../shapes';
 
 export default class ItemRenderer extends PureComponent {
     static propTypes = {

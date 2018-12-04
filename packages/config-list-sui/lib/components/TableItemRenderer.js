@@ -11,13 +11,15 @@ exports.default = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
@@ -37,13 +39,17 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
-var _shapes = require("@loopmode/config-list/lib/utils/shapes");
+var _shapes = require("@loopmode/config-list/lib/shapes");
 
 var _ItemEditButtons = _interopRequireDefault(require("./ItemEditButtons"));
 
 var _ItemRemoveButtons = _interopRequireDefault(require("./ItemRemoveButtons"));
 
 var _ModalDialog = _interopRequireDefault(require("./ModalDialog"));
+
+var _memoizeOne = _interopRequireDefault(require("memoize-one"));
+
+var _defaults = require("../defaults");
 
 function _templateObject() {
   var data = (0, _taggedTemplateLiteral2.default)(["\n    td {\n        padding-top: 0 !important;\n        border-top: 0 !important;\n    }\n"]);
@@ -63,12 +69,21 @@ var TableItemRenderer =
 /*#__PURE__*/
 function (_PureComponent) {
   (0, _inherits2.default)(TableItemRenderer, _PureComponent);
+  (0, _createClass2.default)(TableItemRenderer, [{
+    key: "settings",
+    get: function get() {
+      return this.getSettings(_defaults.defaultListSettings, this.props.settings);
+    }
+  }]);
 
   function TableItemRenderer(props, context) {
     var _this;
 
     (0, _classCallCheck2.default)(this, TableItemRenderer);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(TableItemRenderer).call(this, props, context));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "getSettings", (0, _memoizeOne.default)(function (defaults, settings) {
+      return (0, _objectSpread2.default)({}, defaults, settings);
+    }));
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
   }
@@ -78,18 +93,20 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
+      var settings = this.settings;
       var _this$props = this.props,
           item = _this$props.item,
-          settings = _this$props.settings,
           _this$props$ItemValue = _this$props.ItemValueRenderer,
           ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
         var item = _ref.item;
         return settings.label(item);
       } : _this$props$ItemValue;
       var _this$props$parentPro = this.props.parentProps,
-          columns = _this$props$parentPro.columns,
           modalConfirm = _this$props$parentPro.modalConfirm,
           modalEdit = _this$props$parentPro.modalEdit;
+      var columns = settings.columns.filter(function (col) {
+        return col.field !== _defaults.COLUMN_FIELD_ACTIONS;
+      });
       var editable = this.resolveBool(this.props.editable);
       var removable = this.resolveBool(this.props.removable);
       return _react.default.createElement(Fragment, null, _react.default.createElement("tr", {
@@ -162,7 +179,6 @@ exports.default = TableItemRenderer;
   onRemoveCancel: _propTypes.default.func,
   onRemoveConfirm: _propTypes.default.func,
   parentProps: _propTypes.default.shape({
-    columns: _propTypes.default.array,
     modalConfirm: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.object]),
     modalEdit: _propTypes.default.oneOfType([_propTypes.default.bool, _propTypes.default.object])
   })

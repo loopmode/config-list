@@ -7,6 +7,11 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styled from 'styled-components';
 
+import { settingsShape } from '../shapes';
+
+import { defaultListSettings } from '../defaults';
+import memoize from 'memoize-one';
+
 const StyledSegment = styled(Segment)`
     .ui.table thead,
     .ui.table tbody {
@@ -19,23 +24,20 @@ const StyledSegment = styled(Segment)`
 
 export default class TableListRenderer extends PureComponent {
     static propTypes = {
+        settings: settingsShape,
         //
         className: PropTypes.string,
-        children: PropTypes.node,
-        //
-        parentProps: PropTypes.shape({
-            columns: PropTypes.arrayOf(
-                PropTypes.shape({
-                    field: PropTypes.string,
-                    label: PropTypes.string
-                })
-            )
-        })
+        children: PropTypes.node
     };
+
+    getSettings = memoize((defaults, settings) => ({ ...defaults, ...settings }));
+    get settings() {
+        return this.getSettings(defaultListSettings, this.props.settings);
+    }
 
     render() {
         const { className } = this.props;
-        const { columns } = this.props.parentProps;
+        const { columns } = this.settings;
 
         return (
             <StyledSegment vertical className={cx(className, 'TableListRenderer ListRenderer')}>
@@ -49,7 +51,6 @@ export default class TableListRenderer extends PureComponent {
                                     className={`column-${column.field}`}
                                 />
                             ))}
-                            <th children={'Actions'} className="column-actions" />
                         </tr>
                     </thead>
                     <tbody>{this.props.children}</tbody>

@@ -29,7 +29,7 @@ var _semanticUiReact = require("semantic-ui-react");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _shapes = require("@loopmode/config-list/lib/utils/shapes");
+var _shapes = require("@loopmode/config-list/lib/shapes");
 
 var _iterate = require("@loopmode/config-list/lib/utils/iterate");
 

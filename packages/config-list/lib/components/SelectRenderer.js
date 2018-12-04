@@ -29,7 +29,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _bind = _interopRequireDefault(require("../utils/bind"));
 
-var _shapes = require("../utils/shapes");
+var _shapes = require("../shapes");
 
 var _iterate = require("../utils/iterate");
 

@@ -39,9 +39,10 @@ export const itemsShape = PropTypes.oneOfType([
     ImmutableShape.map
 ]);
 
-export const settingsShape = PropTypes.shape({
+export const settings = {
     filter: PropTypes.func,
     value: PropTypes.func,
     label: PropTypes.func,
     key: PropTypes.func
-});
+};
+export const settingsShape = PropTypes.shape(settings);

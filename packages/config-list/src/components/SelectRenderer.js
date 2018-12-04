@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import bind from '../utils/bind';
 
-import { settingsShape } from '../utils/shapes';
+import { settingsShape } from '../shapes';
 import { map, filter } from '../utils/iterate';
 
 export default class SelectRenderer extends PureComponent {

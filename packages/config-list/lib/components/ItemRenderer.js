@@ -29,7 +29,7 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _Fragment = _interopRequireDefault(require("./Fragment"));
 
-var _shapes = require("../utils/shapes");
+var _shapes = require("../shapes");
 
 var ItemRenderer =
 /*#__PURE__*/

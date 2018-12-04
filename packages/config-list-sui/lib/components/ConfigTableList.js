@@ -37,6 +37,8 @@ var _TableItemRenderer = _interopRequireDefault(require("./TableItemRenderer"));
 
 var _SelectRenderer = _interopRequireDefault(require("./SelectRenderer"));
 
+var defaults = _interopRequireWildcard(require("../defaults"));
+
 var ConfigTableList =
 /*#__PURE__*/
 function (_PureComponent) {
@@ -59,20 +61,17 @@ function (_PureComponent) {
 }(_react.PureComponent);
 
 exports.default = ConfigTableList;
+(0, _defineProperty2.default)(ConfigTableList, "COLUMN_FIELD_ACTIONS", defaults.COLUMN_FIELD_ACTIONS);
+(0, _defineProperty2.default)(ConfigTableList, "COLUMN_FIELD_ITEM", defaults.COLUMN_FIELD_ITEM);
 (0, _defineProperty2.default)(ConfigTableList, "propTypes", {
   className: _propTypes.default.string,
   SelectRenderer: _propTypes.default.func,
   ListRenderer: _propTypes.default.func,
   ItemRenderer: _propTypes.default.func,
-  ItemEditor: _propTypes.default.func,
-  columns: _propTypes.default.array
+  ItemEditor: _propTypes.default.func
 });
 (0, _defineProperty2.default)(ConfigTableList, "defaultProps", {
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _TableListRenderer.default,
-  ItemRenderer: _TableItemRenderer.default,
-  columns: [{
-    field: 'label',
-    label: 'Name'
-  }]
+  ItemRenderer: _TableItemRenderer.default
 });
