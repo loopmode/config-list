@@ -37,6 +37,6 @@ export default class DataConverter {
 
     static convertItems(items) {
         const convert = DataConverter.getConverter(items);
-        return convert(items);
+        return convert && convert(items);
     }
 }

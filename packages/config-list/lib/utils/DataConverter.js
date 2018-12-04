@@ -72,7 +72,7 @@ function () {
     key: "convertItems",
     value: function convertItems(items) {
       var convert = DataConverter.getConverter(items);
-      return convert(items);
+      return convert && convert(items);
     }
   }]);
   return DataConverter;
