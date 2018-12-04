@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/config-list-sui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "lib/index.js",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@loopmode/async-state": "^0.3.2",
-    "@loopmode/config-list": "^1.0.0",
+    "@loopmode/config-list": "^1.1.0",
     "semantic-ui-react": "^0.83.0"
   }
 }
