@@ -62,9 +62,9 @@ function (_PureComponent) {
         children: 'Add item'
       }), (0, _iterate.map)((0, _iterate.filter)(availableItems, settings.filter), function (item) {
         return _react.default.createElement("option", {
-          key: settings.getKey(item),
-          value: settings.getValue(item),
-          children: settings.getLabel(item)
+          key: settings.key(item),
+          value: settings.value(item),
+          children: settings.label(item)
         });
       }));
     }
@@ -76,7 +76,7 @@ function (_PureComponent) {
           settings = _this$props2.settings;
       var value = event.target.options[event.target.options.selectedIndex].value;
       var item = availableItems.find(function (item) {
-        return settings.getValue(item) === value;
+        return settings.value(item) === value;
       });
       this.props.onAddItem({
         event: event,

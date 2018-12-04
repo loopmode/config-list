@@ -100,7 +100,7 @@ export default class ConfigList extends PureComponent {
                         parentProps={this.props}
                     >
                         {map(filter(configuredItems, listSettings.filter), item => {
-                            const key = listSettings.getKey(item);
+                            const key = listSettings.key(item);
                             return (
                                 <ItemRenderer
                                     settings={listSettings}
@@ -132,7 +132,7 @@ export default class ConfigList extends PureComponent {
 
     renderItemEditor(item) {
         const { ItemEditor } = this.props;
-        const key = this.listSettings.getKey(item);
+        const key = this.listSettings.key(item);
 
         if (!this.state.editing[key]) {
             // not currently editing
@@ -168,15 +168,15 @@ export default class ConfigList extends PureComponent {
     // -------------------------------------------------
 
     handleEdit({ item }) {
-        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: true } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: true } });
     }
 
     handleEditCancel({ item }) {
-        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: false } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: false } });
     }
 
     handleEditConfirm({ item, data }) {
-        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: false } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: false } });
         if (!this.props.onEditItem) {
             return;
         }
@@ -195,18 +195,18 @@ export default class ConfigList extends PureComponent {
             confirmRemove = confirmRemove({ item, event });
         }
         if (confirmRemove) {
-            this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: true } });
+            this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: true } });
         } else if (this.props.onRemoveItem) {
             this.props.onRemoveItem({ item, event });
         }
     }
 
     handleRemoveCancel({ item }) {
-        this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: false } });
+        this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: false } });
     }
 
     handleRemoveConfirm({ item }) {
-        this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: false } });
+        this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: false } });
         if (!this.props.onRemoveItem) {
             return;
         }

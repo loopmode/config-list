@@ -84,7 +84,7 @@ function (_PureComponent) {
           _this$props$ItemValue = _this$props.ItemValueRenderer,
           ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
         var item = _ref.item;
-        return settings.getLabel(item);
+        return settings.label(item);
       } : _this$props$ItemValue;
       var _this$props$parentPro = this.props.parentProps,
           columns = _this$props$parentPro.columns,
@@ -96,7 +96,7 @@ function (_PureComponent) {
         className: "item-row"
       }, columns.map(function (column) {
         return _react.default.createElement("td", {
-          key: "".concat(settings.getKey(item), "--").concat(column.field),
+          key: "".concat(settings.key(item), "--").concat(column.field),
           className: "column-".concat(column.field)
         }, _react.default.createElement(ItemValueRenderer, _this2.props));
       }), _react.default.createElement("td", {

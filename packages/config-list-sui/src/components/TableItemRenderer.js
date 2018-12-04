@@ -51,7 +51,7 @@ export default class TableItemRenderer extends PureComponent {
         bind(this);
     }
     render() {
-        const { item, settings, ItemValueRenderer = ({ item }) => settings.getLabel(item) } = this.props;
+        const { item, settings, ItemValueRenderer = ({ item }) => settings.label(item) } = this.props;
         const { columns, modalConfirm, modalEdit } = this.props.parentProps;
 
         const editable = this.resolveBool(this.props.editable);
@@ -61,7 +61,7 @@ export default class TableItemRenderer extends PureComponent {
                 <tr className="item-row">
                     {columns.map(column => {
                         return (
-                            <td key={`${settings.getKey(item)}--${column.field}`} className={`column-${column.field}`}>
+                            <td key={`${settings.key(item)}--${column.field}`} className={`column-${column.field}`}>
                                 <ItemValueRenderer {...this.props} />
                             </td>
                         );

@@ -41,7 +41,7 @@ export const itemsShape = PropTypes.oneOfType([
 
 export const settingsShape = PropTypes.shape({
     filter: PropTypes.func,
-    getValue: PropTypes.func,
-    getLabel: PropTypes.func,
-    getKey: PropTypes.func
+    value: PropTypes.func,
+    label: PropTypes.func,
+    key: PropTypes.func
 });

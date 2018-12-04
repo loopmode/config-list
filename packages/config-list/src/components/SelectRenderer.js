@@ -24,11 +24,7 @@ export default class SelectRenderer extends PureComponent {
                 <option value="default" disabled children={'Add item'} />
                 {map(filter(availableItems, settings.filter), item => {
                     return (
-                        <option
-                            key={settings.getKey(item)}
-                            value={settings.getValue(item)}
-                            children={settings.getLabel(item)}
-                        />
+                        <option key={settings.key(item)} value={settings.value(item)} children={settings.label(item)} />
                     );
                 })}
             </select>
@@ -37,7 +33,7 @@ export default class SelectRenderer extends PureComponent {
     handleSelect(event) {
         const { availableItems, settings } = this.props;
         const value = event.target.options[event.target.options.selectedIndex].value;
-        const item = availableItems.find(item => settings.getValue(item) === value);
+        const item = availableItems.find(item => settings.value(item) === value);
         this.props.onAddItem({ event, item });
     }
 }

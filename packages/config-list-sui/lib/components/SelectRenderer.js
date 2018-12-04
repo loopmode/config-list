@@ -85,8 +85,8 @@ function (_PureComponent) {
         text: 'No selectable items available'
       }), hasSelectableItems && (0, _iterate.map)(selectableItems, function (item) {
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
-          key: settings.getKey(item),
-          text: settings.getLabel(item),
+          key: settings.key(item),
+          text: settings.label(item),
           onClick: function onClick() {
             return onAddItem({
               item: item

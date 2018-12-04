@@ -55,9 +55,9 @@ exports.itemsShape = itemsShape;
 
 var settingsShape = _propTypes.default.shape({
   filter: _propTypes.default.func,
-  getValue: _propTypes.default.func,
-  getLabel: _propTypes.default.func,
-  getKey: _propTypes.default.func
+  value: _propTypes.default.func,
+  label: _propTypes.default.func,
+  key: _propTypes.default.func
 });
 
 exports.settingsShape = settingsShape;

@@ -116,7 +116,7 @@ function (_PureComponent) {
         settings: this.listSettings,
         parentProps: this.props
       }, (0, _iterate.map)((0, _iterate.filter)(configuredItems, listSettings.filter), function (item) {
-        var key = listSettings.getKey(item);
+        var key = listSettings.key(item);
         return _react.default.createElement(ItemRenderer, {
           settings: listSettings,
           editable: editable,
@@ -143,7 +143,7 @@ function (_PureComponent) {
     key: "renderItemEditor",
     value: function renderItemEditor(item) {
       var ItemEditor = this.props.ItemEditor;
-      var key = this.listSettings.getKey(item);
+      var key = this.listSettings.key(item);
 
       if (!this.state.editing[key]) {
         // not currently editing
@@ -176,7 +176,7 @@ function (_PureComponent) {
     value: function handleEdit(_ref) {
       var item = _ref.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), true))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.key(item), true))
       });
     }
   }, {
@@ -184,7 +184,7 @@ function (_PureComponent) {
     value: function handleEditCancel(_ref2) {
       var item = _ref2.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
       });
     }
   }, {
@@ -193,7 +193,7 @@ function (_PureComponent) {
       var item = _ref3.item,
           data = _ref3.data;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
       });
 
       if (!this.props.onEditItem) {
@@ -227,7 +227,7 @@ function (_PureComponent) {
 
       if (confirmRemove) {
         this.setState({
-          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), true))
+          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), true))
         });
       } else if (this.props.onRemoveItem) {
         this.props.onRemoveItem({
@@ -241,7 +241,7 @@ function (_PureComponent) {
     value: function handleRemoveCancel(_ref5) {
       var item = _ref5.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
       });
     }
   }, {
@@ -249,7 +249,7 @@ function (_PureComponent) {
     value: function handleRemoveConfirm(_ref6) {
       var item = _ref6.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
       });
 
       if (!this.props.onRemoveItem) {

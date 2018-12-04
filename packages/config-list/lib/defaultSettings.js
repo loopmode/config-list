@@ -13,13 +13,13 @@ var defaultItemSettings = {
   filter: function filter() {
     return true;
   },
-  getLabel: function getLabel(item) {
+  label: function label(item) {
     return (0, _get.default)(item, 'label');
   },
-  getValue: function getValue(item) {
+  value: function value(item) {
     return (0, _get.default)(item, 'id');
   },
-  getKey: function getKey(item) {
+  key: function key(item) {
     return (0, _get.default)(item, 'key', (0, _get.default)(item, 'id'));
   }
 };

@@ -56,8 +56,8 @@ export default class SelectRenderer extends PureComponent {
                             map(selectableItems, item => {
                                 return (
                                     <Dropdown.Item
-                                        key={settings.getKey(item)}
-                                        text={settings.getLabel(item)}
+                                        key={settings.key(item)}
+                                        text={settings.label(item)}
                                         onClick={() => onAddItem({ item })}
                                     />
                                 );
