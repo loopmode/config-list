@@ -43,9 +43,11 @@ export default class SelectRenderer extends PureComponent {
     };
 
     render() {
-        const { onAddItem, dropdownIcon, availableItems, dropdownText, settings } = this.props;
+        const { onAddItem, dropdownIcon, configuredItems, availableItems, dropdownText, settings } = this.props;
 
-        const selectableItems = filter(availableItems, settings.filter);
+        const selectableItems = filter(availableItems, item =>
+            settings.filter(item, { configuredItems, availableItems })
+        );
         const hasSelectableItems = count(selectableItems) > 0;
         return (
             <StyledSegment vertical className="SelectRenderer">

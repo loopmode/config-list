@@ -52,7 +52,14 @@ function (_PureComponent) {
     value: function render() {
       var _this$props = this.props,
           availableItems = _this$props.availableItems,
+          configuredItems = _this$props.configuredItems,
           settings = _this$props.settings;
+      var selectableItems = (0, _iterate.filter)(availableItems, function (item) {
+        return settings.filter(item, {
+          availableItems: availableItems,
+          configuredItems: configuredItems
+        });
+      });
       return _react.default.createElement("select", {
         value: "default",
         onChange: this.handleSelect
@@ -60,7 +67,7 @@ function (_PureComponent) {
         value: "default",
         disabled: true,
         children: 'Add item'
-      }), (0, _iterate.map)((0, _iterate.filter)(availableItems, settings.filter), function (item) {
+      }), (0, _iterate.map)(selectableItems, function (item) {
         return _react.default.createElement("option", {
           key: settings.key(item),
           value: settings.value(item),
@@ -90,6 +97,7 @@ function (_PureComponent) {
 exports.default = SelectRenderer;
 (0, _defineProperty2.default)(SelectRenderer, "propTypes", {
   availableItems: _propTypes.default.array,
+  configuredItems: _propTypes.default.array,
   onAddItem: _propTypes.default.func,
   settings: _shapes.settingsShape
 });

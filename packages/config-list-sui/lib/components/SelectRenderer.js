@@ -65,10 +65,16 @@ function (_PureComponent) {
       var _this$props = this.props,
           onAddItem = _this$props.onAddItem,
           dropdownIcon = _this$props.dropdownIcon,
+          configuredItems = _this$props.configuredItems,
           availableItems = _this$props.availableItems,
           dropdownText = _this$props.dropdownText,
           settings = _this$props.settings;
-      var selectableItems = (0, _iterate.filter)(availableItems, settings.filter);
+      var selectableItems = (0, _iterate.filter)(availableItems, function (item) {
+        return settings.filter(item, {
+          configuredItems: configuredItems,
+          availableItems: availableItems
+        });
+      });
       var hasSelectableItems = (0, _count.default)(selectableItems) > 0;
       return _react.default.createElement(StyledSegment, {
         vertical: true,

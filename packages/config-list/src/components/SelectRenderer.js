@@ -9,6 +9,7 @@ import { map, filter } from '../utils/iterate';
 export default class SelectRenderer extends PureComponent {
     static propTypes = {
         availableItems: PropTypes.array,
+        configuredItems: PropTypes.array,
         onAddItem: PropTypes.func,
         settings: settingsShape
     };
@@ -17,12 +18,14 @@ export default class SelectRenderer extends PureComponent {
         bind(this);
     }
     render() {
-        const { availableItems, settings } = this.props;
-
+        const { availableItems, configuredItems, settings } = this.props;
+        const selectableItems = filter(availableItems, item =>
+            settings.filter(item, { availableItems, configuredItems })
+        );
         return (
             <select value="default" onChange={this.handleSelect}>
                 <option value="default" disabled children={'Add item'} />
-                {map(filter(availableItems, settings.filter), item => {
+                {map(selectableItems, item => {
                     return (
                         <option key={settings.key(item)} value={settings.value(item)} children={settings.label(item)} />
                     );
