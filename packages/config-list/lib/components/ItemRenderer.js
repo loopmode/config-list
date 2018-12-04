@@ -21,29 +21,15 @@ var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _taggedTemplateLiteral2 = _interopRequireDefault(require("@babel/runtime/helpers/taggedTemplateLiteral"));
-
 var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _Fragment = _interopRequireDefault(require("./Fragment"));
-
 var _classnames = _interopRequireDefault(require("classnames"));
 
-var _styledComponents = _interopRequireDefault(require("styled-components"));
+var _Fragment = _interopRequireDefault(require("./Fragment"));
 
-function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n    display: flex;\n    flex-wrap: wrap;\n    .item-label {\n        flex: 1;\n    }\n    > button {\n        &.active {\n            color: deepskyblue;\n        }\n        &.btn-remove-confirm {\n            color: red;\n        }\n        & + button {\n            margin-left: 5px;\n        }\n        // target the editor without making assumptions about its tag or class\n        & + *:last-child:not(button) {\n            margin-top: 5px;\n            flex-basis: 100%;\n        }\n    }\n"]);
-
-  _templateObject = function _templateObject() {
-    return data;
-  };
-
-  return data;
-}
-
-var StyledListItem = _styledComponents.default.li(_templateObject());
+var _shapes = require("../utils/shapes");
 
 var ItemRenderer =
 /*#__PURE__*/
@@ -60,6 +46,7 @@ function (_PureComponent) {
     value: function render() {
       var _this$props = this.props,
           item = _this$props.item,
+          settings = _this$props.settings,
           onEdit = _this$props.onEdit,
           onEditCancel = _this$props.onEditCancel,
           onRemove = _this$props.onRemove,
@@ -71,11 +58,11 @@ function (_PureComponent) {
           _this$props$ItemValue = _this$props.ItemValueRenderer,
           ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
         var item = _ref.item;
-        return item.label;
+        return settings.getLabel(item);
       } : _this$props$ItemValue;
       var editable = this.resolveBool(this.props.editable);
       var removable = this.resolveBool(this.props.removable);
-      return _react.default.createElement(StyledListItem, null, _react.default.createElement("span", {
+      return _react.default.createElement("li", null, _react.default.createElement("span", {
         className: "item-label"
       }, _react.default.createElement(ItemValueRenderer, this.props)), editable && _react.default.createElement("button", {
         className: (0, _classnames.default)('btn-edit', {
@@ -140,6 +127,7 @@ function (_PureComponent) {
 exports.default = ItemRenderer;
 (0, _defineProperty2.default)(ItemRenderer, "propTypes", {
   item: _propTypes.default.object,
+  settings: _shapes.settingsShape,
   editable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   ItemValueRenderer: _propTypes.default.func,

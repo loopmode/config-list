@@ -32,9 +32,16 @@ ImmutableShape.list = (props, propName, componentName) => {
     return new TypeError(`Expected immutable.js List: ${value} for ${propName} in ${componentName}`);
 };
 
-export const SupportedItemsShape = PropTypes.oneOfType([
+export const itemsShape = PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
     ImmutableShape.list,
     ImmutableShape.map
 ]);
+
+export const settingsShape = PropTypes.shape({
+    filter: PropTypes.func,
+    getValue: PropTypes.func,
+    getLabel: PropTypes.func,
+    getKey: PropTypes.func
+});

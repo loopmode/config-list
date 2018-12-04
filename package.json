@@ -9,7 +9,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "lerna run start --stream --scope example",
+    "dev": "cd packages/example && yarn start",
     "clean": "lerna run clean --stream",
     "build": "lerna run build --stream --ignore example",
     "watch": "lerna run watch --stream --parallel",

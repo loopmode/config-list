@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import ItemEditor from './ItemEditor';
-import { SupportedItemsShape } from '@loopmode/config-list/lib/utils/shapes';
+import { itemsShape } from '@loopmode/config-list/lib/utils/shapes';
 
 class Example extends Component {
     static propTypes = {
         renderer: PropTypes.func,
-        availableItems: SupportedItemsShape,
+        availableItems: itemsShape,
         ItemValueRenderer: PropTypes.func,
         modalConfirm: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
         modalEdit: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),

@@ -37,6 +37,8 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _bind = _interopRequireDefault(require("@loopmode/config-list/lib/utils/bind"));
 
+var _shapes = require("@loopmode/config-list/lib/utils/shapes");
+
 var _ItemEditButtons = _interopRequireDefault(require("./ItemEditButtons"));
 
 var _ItemRemoveButtons = _interopRequireDefault(require("./ItemRemoveButtons"));
@@ -78,10 +80,11 @@ function (_PureComponent) {
 
       var _this$props = this.props,
           item = _this$props.item,
+          settings = _this$props.settings,
           _this$props$ItemValue = _this$props.ItemValueRenderer,
           ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
         var item = _ref.item;
-        return item.label;
+        return settings.getLabel(item);
       } : _this$props$ItemValue;
       var _this$props$parentPro = this.props.parentProps,
           columns = _this$props$parentPro.columns,
@@ -93,7 +96,7 @@ function (_PureComponent) {
         className: "item-row"
       }, columns.map(function (column) {
         return _react.default.createElement("td", {
-          key: "".concat(item.key || item.id, "--").concat(column.field),
+          key: "".concat(settings.getKey(item), "--").concat(column.field),
           className: "column-".concat(column.field)
         }, _react.default.createElement(ItemValueRenderer, _this2.props));
       }), _react.default.createElement("td", {
@@ -148,6 +151,7 @@ exports.default = TableItemRenderer;
   editable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   removable: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   ItemValueRenderer: _propTypes.default.func,
+  settings: _shapes.settingsShape,
   editor: _propTypes.default.element,
   isEditing: _propTypes.default.bool,
   isRemoving: _propTypes.default.bool,

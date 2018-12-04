@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SupportedItemsShape = exports.ImmutableShape = void 0;
+exports.settingsShape = exports.itemsShape = exports.ImmutableShape = void 0;
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -49,6 +49,15 @@ ImmutableShape.list = function (props, propName, componentName) {
   return new TypeError("Expected immutable.js List: ".concat(value, " for ").concat(propName, " in ").concat(componentName));
 };
 
-var SupportedItemsShape = _propTypes.default.oneOfType([_propTypes.default.array, _propTypes.default.object, ImmutableShape.list, ImmutableShape.map]);
+var itemsShape = _propTypes.default.oneOfType([_propTypes.default.array, _propTypes.default.object, ImmutableShape.list, ImmutableShape.map]);
 
-exports.SupportedItemsShape = SupportedItemsShape;
+exports.itemsShape = itemsShape;
+
+var settingsShape = _propTypes.default.shape({
+  filter: _propTypes.default.func,
+  getValue: _propTypes.default.func,
+  getLabel: _propTypes.default.func,
+  getKey: _propTypes.default.func
+});
+
+exports.settingsShape = settingsShape;

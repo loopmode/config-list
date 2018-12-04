@@ -6,6 +6,6 @@ export default class ListRenderer extends PureComponent {
         children: PropTypes.node
     };
     render() {
-        return <ul style={{ padding: 0, width: '100%' }}>{this.props.children}</ul>;
+        return <ul>{this.props.children}</ul>;
     }
 }

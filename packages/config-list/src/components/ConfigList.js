@@ -3,18 +3,26 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import memoize from 'memoize-one';
 
-import { SupportedItemsShape } from '../utils/shapes';
+import { itemsShape, settingsShape } from '../utils/shapes';
 import bind from '../utils/bind';
 import DefaultSelectRenderer from './SelectRenderer';
 import DefaultListRenderer from './ListRenderer';
 import DefaultItemRenderer from './ItemRenderer';
 
-import DataConverter from '../utils/DataConverter';
+import { defaultItemSettings } from '../defaultSettings';
+
+import count from '../utils/count';
+import { map, filter } from '../utils/iterate';
+import StyledContainer from './ConfigList.styled';
+
 export default class ConfigList extends PureComponent {
+    static itemsShape = itemsShape;
+    static settingsShape = settingsShape;
+
     static propTypes = {
         className: PropTypes.string,
-        availableItems: SupportedItemsShape,
-        configuredItems: SupportedItemsShape,
+        availableItems: itemsShape,
+        configuredItems: itemsShape,
         SelectRenderer: PropTypes.func,
         ListRenderer: PropTypes.func,
         ItemRenderer: PropTypes.func,
@@ -30,32 +38,42 @@ export default class ConfigList extends PureComponent {
         //
         confirmRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         //
-        exclusive: PropTypes.bool,
-        isItemConfigured: PropTypes.func
+        selectSettings: settingsShape,
+        listSettings: settingsShape
     };
     static defaultProps = {
+        selectSettings: defaultItemSettings,
+        listSettings: defaultItemSettings,
         SelectRenderer: DefaultSelectRenderer,
         ListRenderer: DefaultListRenderer,
-        ItemRenderer: DefaultItemRenderer,
-        isItemConfigured: ({ item, configuredItems }) => configuredItems.find(it => it.id === item.id)
+        ItemRenderer: DefaultItemRenderer
     };
     state = {
         removing: {},
         editing: {}
     };
 
-    convertItems = memoize(items => DataConverter.convertItems(items));
+    getSettings = memoize((defaults, settings) => ({ ...defaults, ...settings }));
+
+    get listSettings() {
+        return this.getSettings(defaultItemSettings, this.props.listSettings);
+    }
+    get selectSettings() {
+        return this.getSettings(defaultItemSettings, this.props.selectSettings);
+    }
 
     constructor(props, context) {
         super(props, context);
         bind(this);
     }
     render() {
+        const { listSettings, selectSettings } = this;
         const {
+            availableItems,
+            configuredItems,
             className,
             editable,
             removable,
-            configuredItems,
             SelectRenderer,
             ListRenderer,
             ItemRenderer,
@@ -63,21 +81,13 @@ export default class ConfigList extends PureComponent {
             onAddItem
         } = this.props;
 
-        const hasConfiguredItems = configuredItems && configuredItems.length > 0;
-
-        const availableItems = this.convertItems(this.props.availableItems);
-
-        let selectableItems = availableItems;
-        if (this.props.exclusive) {
-            selectableItems = availableItems.filter(
-                item => !this.props.isItemConfigured({ item, configuredItems, availableItems })
-            );
-        }
+        const hasConfiguredItems = count(configuredItems) > 0;
 
         return (
-            <div className={cx('ConfigList', className)}>
+            <StyledContainer className={cx('ConfigList', className)}>
                 <SelectRenderer
-                    availableItems={selectableItems}
+                    settings={selectSettings}
+                    availableItems={availableItems}
                     configuredItems={configuredItems}
                     onAddItem={onAddItem}
                     parentProps={this.props}
@@ -86,27 +96,27 @@ export default class ConfigList extends PureComponent {
                     <ListRenderer
                         availableItems={availableItems}
                         configuredItems={configuredItems}
+                        settings={this.listSettings}
                         parentProps={this.props}
                     >
-                        {configuredItems.map(item => {
-                            const editorData = this.state.editing[item.key || item.id];
-                            const isRemoving = !!this.state.removing[item.key || item.id];
-                            const isEditing = !!editorData;
+                        {map(filter(configuredItems, listSettings.filter), item => {
+                            const key = listSettings.getKey(item);
                             return (
                                 <ItemRenderer
+                                    settings={listSettings}
                                     editable={editable}
                                     removable={removable}
                                     ItemValueRenderer={ItemValueRenderer}
-                                    key={item.key || item.id}
+                                    key={key}
                                     item={item}
                                     parentProps={this.props}
                                     // removing
-                                    isRemoving={isRemoving}
+                                    isRemoving={!!this.state.removing[key]}
                                     onRemove={this.handleRemove}
                                     onRemoveConfirm={this.handleRemoveConfirm}
                                     onRemoveCancel={this.handleRemoveCancel}
                                     // editing
-                                    isEditing={isEditing}
+                                    isEditing={!!this.state.editing[key]}
                                     onEdit={this.handleEdit}
                                     onEditConfirm={this.handleEditConfirm}
                                     onEditCancel={this.handleEditCancel}
@@ -116,15 +126,16 @@ export default class ConfigList extends PureComponent {
                         })}
                     </ListRenderer>
                 )}
-            </div>
+            </StyledContainer>
         );
     }
 
     renderItemEditor(item) {
         const { ItemEditor } = this.props;
-        const editorData = this.state.editing[item.key || item.id];
+        const key = this.listSettings.getKey(item);
 
-        if (!editorData) {
+        if (!this.state.editing[key]) {
+            // not currently editing
             return null;
         }
 
@@ -132,7 +143,7 @@ export default class ConfigList extends PureComponent {
         if (ItemEditor) {
             editorContent = (
                 <ItemEditor
-                    key={item.key || item.id}
+                    key={`editor-${key}`}
                     item={item}
                     parentProps={this.props}
                     onEditConfirm={this.handleEditConfirm}
@@ -157,15 +168,15 @@ export default class ConfigList extends PureComponent {
     // -------------------------------------------------
 
     handleEdit({ item }) {
-        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: true } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: true } });
     }
 
     handleEditCancel({ item }) {
-        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: false } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: false } });
     }
 
     handleEditConfirm({ item, data }) {
-        this.setState({ editing: { ...this.state.editing, [item.key || item.id]: false } });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.getKey(item)]: false } });
         if (!this.props.onEditItem) {
             return;
         }
@@ -184,18 +195,18 @@ export default class ConfigList extends PureComponent {
             confirmRemove = confirmRemove({ item, event });
         }
         if (confirmRemove) {
-            this.setState({ removing: { ...this.state.removing, [item.key || item.id]: true } });
+            this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: true } });
         } else if (this.props.onRemoveItem) {
             this.props.onRemoveItem({ item, event });
         }
     }
 
     handleRemoveCancel({ item }) {
-        this.setState({ removing: { ...this.state.removing, [item.key || item.id]: false } });
+        this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: false } });
     }
 
     handleRemoveConfirm({ item }) {
-        this.setState({ removing: { ...this.state.removing, [item.key || item.id]: false } });
+        this.setState({ removing: { ...this.state.removing, [this.listSettings.getKey(item)]: false } });
         if (!this.props.onRemoveItem) {
             return;
         }

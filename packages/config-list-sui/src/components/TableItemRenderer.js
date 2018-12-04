@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import cx from 'classnames';
 
 import bind from '@loopmode/config-list/lib/utils/bind';
+import { settingsShape } from '@loopmode/config-list/lib/utils/shapes';
 import ItemEditButtons from './ItemEditButtons';
 import ItemRemoveButtons from './ItemRemoveButtons';
 import ModalDialog from './ModalDialog';
@@ -22,6 +23,7 @@ export default class TableItemRenderer extends PureComponent {
         editable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         ItemValueRenderer: PropTypes.func,
+        settings: settingsShape,
         editor: PropTypes.element,
         isEditing: PropTypes.bool,
         isRemoving: PropTypes.bool,
@@ -49,7 +51,7 @@ export default class TableItemRenderer extends PureComponent {
         bind(this);
     }
     render() {
-        const { item, ItemValueRenderer = ({ item }) => item.label } = this.props;
+        const { item, settings, ItemValueRenderer = ({ item }) => settings.getLabel(item) } = this.props;
         const { columns, modalConfirm, modalEdit } = this.props.parentProps;
 
         const editable = this.resolveBool(this.props.editable);
@@ -59,7 +61,7 @@ export default class TableItemRenderer extends PureComponent {
                 <tr className="item-row">
                     {columns.map(column => {
                         return (
-                            <td key={`${item.key || item.id}--${column.field}`} className={`column-${column.field}`}>
+                            <td key={`${settings.getKey(item)}--${column.field}`} className={`column-${column.field}`}>
                                 <ItemValueRenderer {...this.props} />
                             </td>
                         );

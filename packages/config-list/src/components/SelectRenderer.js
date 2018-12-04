@@ -1,23 +1,43 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import bind from '../utils/bind';
+
+import { settingsShape } from '../utils/shapes';
+import { map, filter } from '../utils/iterate';
+
 export default class SelectRenderer extends PureComponent {
     static propTypes = {
         availableItems: PropTypes.array,
-        onAddItem: PropTypes.func
+        onAddItem: PropTypes.func,
+        settings: settingsShape
     };
+    constructor(props, context) {
+        super(props, context);
+        bind(this);
+    }
     render() {
+        const { availableItems, settings } = this.props;
+
         return (
-            <select value="default" onChange={event => this.handleSelect(event)} style={{ width: '100%' }}>
+            <select value="default" onChange={this.handleSelect}>
                 <option value="default" disabled children={'Add item'} />
-                {this.props.availableItems.map(item => (
-                    <option key={item.key || item.id} value={item.id} children={item.label} />
-                ))}
+                {map(filter(availableItems, settings.filter), item => {
+                    return (
+                        <option
+                            key={settings.getKey(item)}
+                            value={settings.getValue(item)}
+                            children={settings.getLabel(item)}
+                        />
+                    );
+                })}
             </select>
         );
     }
     handleSelect(event) {
-        const item = this.props.availableItems[event.target.selectedIndex - 1];
+        const { availableItems, settings } = this.props;
+        const value = event.target.options[event.target.options.selectedIndex].value;
+        const item = availableItems.find(item => settings.getValue(item) === value);
         this.props.onAddItem({ event, item });
     }
 }

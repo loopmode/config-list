@@ -13,11 +13,11 @@ var _objectSpread8 = _interopRequireDefault(require("@babel/runtime/helpers/obje
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
@@ -43,12 +43,29 @@ var _ListRenderer = _interopRequireDefault(require("./ListRenderer"));
 
 var _ItemRenderer = _interopRequireDefault(require("./ItemRenderer"));
 
-var _DataConverter = _interopRequireDefault(require("../utils/DataConverter"));
+var _defaultSettings = require("../defaultSettings");
+
+var _count = _interopRequireDefault(require("../utils/count"));
+
+var _iterate = require("../utils/iterate");
+
+var _ConfigList = _interopRequireDefault(require("./ConfigList.styled"));
 
 var ConfigList =
 /*#__PURE__*/
 function (_PureComponent) {
   (0, _inherits2.default)(ConfigList, _PureComponent);
+  (0, _createClass2.default)(ConfigList, [{
+    key: "listSettings",
+    get: function get() {
+      return this.getSettings(_defaultSettings.defaultItemSettings, this.props.listSettings);
+    }
+  }, {
+    key: "selectSettings",
+    get: function get() {
+      return this.getSettings(_defaultSettings.defaultItemSettings, this.props.selectSettings);
+    }
+  }]);
 
   function ConfigList(props, context) {
     var _this;
@@ -59,8 +76,8 @@ function (_PureComponent) {
       removing: {},
       editing: {}
     });
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "convertItems", (0, _memoizeOne.default)(function (items) {
-      return _DataConverter.default.convertItems(items);
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "getSettings", (0, _memoizeOne.default)(function (defaults, settings) {
+      return (0, _objectSpread8.default)({}, defaults, settings);
     }));
     (0, _bind.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
     return _this;
@@ -71,59 +88,50 @@ function (_PureComponent) {
     value: function render() {
       var _this2 = this;
 
+      var listSettings = this.listSettings,
+          selectSettings = this.selectSettings;
       var _this$props = this.props,
+          availableItems = _this$props.availableItems,
+          configuredItems = _this$props.configuredItems,
           className = _this$props.className,
           editable = _this$props.editable,
           removable = _this$props.removable,
-          configuredItems = _this$props.configuredItems,
           SelectRenderer = _this$props.SelectRenderer,
           ListRenderer = _this$props.ListRenderer,
           ItemRenderer = _this$props.ItemRenderer,
           ItemValueRenderer = _this$props.ItemValueRenderer,
           onAddItem = _this$props.onAddItem;
-      var hasConfiguredItems = configuredItems && configuredItems.length > 0;
-      var availableItems = this.convertItems(this.props.availableItems);
-      var selectableItems = availableItems;
-
-      if (this.props.exclusive) {
-        selectableItems = availableItems.filter(function (item) {
-          return !_this2.props.isItemConfigured({
-            item: item,
-            configuredItems: configuredItems,
-            availableItems: availableItems
-          });
-        });
-      }
-
-      return _react.default.createElement("div", {
+      var hasConfiguredItems = (0, _count.default)(configuredItems) > 0;
+      return _react.default.createElement(_ConfigList.default, {
         className: (0, _classnames.default)('ConfigList', className)
       }, _react.default.createElement(SelectRenderer, {
-        availableItems: selectableItems,
+        settings: selectSettings,
+        availableItems: availableItems,
         configuredItems: configuredItems,
         onAddItem: onAddItem,
         parentProps: this.props
       }), hasConfiguredItems && _react.default.createElement(ListRenderer, {
         availableItems: availableItems,
         configuredItems: configuredItems,
+        settings: this.listSettings,
         parentProps: this.props
-      }, configuredItems.map(function (item) {
-        var editorData = _this2.state.editing[item.key || item.id];
-        var isRemoving = !!_this2.state.removing[item.key || item.id];
-        var isEditing = !!editorData;
+      }, (0, _iterate.map)((0, _iterate.filter)(configuredItems, listSettings.filter), function (item) {
+        var key = listSettings.getKey(item);
         return _react.default.createElement(ItemRenderer, {
+          settings: listSettings,
           editable: editable,
           removable: removable,
           ItemValueRenderer: ItemValueRenderer,
-          key: item.key || item.id,
+          key: key,
           item: item,
           parentProps: _this2.props // removing
           ,
-          isRemoving: isRemoving,
+          isRemoving: !!_this2.state.removing[key],
           onRemove: _this2.handleRemove,
           onRemoveConfirm: _this2.handleRemoveConfirm,
           onRemoveCancel: _this2.handleRemoveCancel // editing
           ,
-          isEditing: isEditing,
+          isEditing: !!_this2.state.editing[key],
           onEdit: _this2.handleEdit,
           onEditConfirm: _this2.handleEditConfirm,
           onEditCancel: _this2.handleEditCancel,
@@ -135,9 +143,10 @@ function (_PureComponent) {
     key: "renderItemEditor",
     value: function renderItemEditor(item) {
       var ItemEditor = this.props.ItemEditor;
-      var editorData = this.state.editing[item.key || item.id];
+      var key = this.listSettings.getKey(item);
 
-      if (!editorData) {
+      if (!this.state.editing[key]) {
+        // not currently editing
         return null;
       }
 
@@ -145,7 +154,7 @@ function (_PureComponent) {
 
       if (ItemEditor) {
         editorContent = _react.default.createElement(ItemEditor, {
-          key: item.key || item.id,
+          key: "editor-".concat(key),
           item: item,
           parentProps: this.props,
           onEditConfirm: this.handleEditConfirm,
@@ -167,7 +176,7 @@ function (_PureComponent) {
     value: function handleEdit(_ref) {
       var item = _ref.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, true))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), true))
       });
     }
   }, {
@@ -175,7 +184,7 @@ function (_PureComponent) {
     value: function handleEditCancel(_ref2) {
       var item = _ref2.item;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
       });
     }
   }, {
@@ -184,7 +193,7 @@ function (_PureComponent) {
       var item = _ref3.item,
           data = _ref3.data;
       this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, item.key || item.id, false))
+        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
       });
 
       if (!this.props.onEditItem) {
@@ -218,7 +227,7 @@ function (_PureComponent) {
 
       if (confirmRemove) {
         this.setState({
-          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, true))
+          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), true))
         });
       } else if (this.props.onRemoveItem) {
         this.props.onRemoveItem({
@@ -232,7 +241,7 @@ function (_PureComponent) {
     value: function handleRemoveCancel(_ref5) {
       var item = _ref5.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
       });
     }
   }, {
@@ -240,7 +249,7 @@ function (_PureComponent) {
     value: function handleRemoveConfirm(_ref6) {
       var item = _ref6.item;
       this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, item.key || item.id, false))
+        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.getKey(item), false))
       });
 
       if (!this.props.onRemoveItem) {
@@ -257,10 +266,12 @@ function (_PureComponent) {
 }(_react.PureComponent);
 
 exports.default = ConfigList;
+(0, _defineProperty2.default)(ConfigList, "itemsShape", _shapes.itemsShape);
+(0, _defineProperty2.default)(ConfigList, "settingsShape", _shapes.settingsShape);
 (0, _defineProperty2.default)(ConfigList, "propTypes", {
   className: _propTypes.default.string,
-  availableItems: _shapes.SupportedItemsShape,
-  configuredItems: _shapes.SupportedItemsShape,
+  availableItems: _shapes.itemsShape,
+  configuredItems: _shapes.itemsShape,
   SelectRenderer: _propTypes.default.func,
   ListRenderer: _propTypes.default.func,
   ItemRenderer: _propTypes.default.func,
@@ -276,18 +287,13 @@ exports.default = ConfigList;
   //
   confirmRemove: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.bool]),
   //
-  exclusive: _propTypes.default.bool,
-  isItemConfigured: _propTypes.default.func
+  selectSettings: _shapes.settingsShape,
+  listSettings: _shapes.settingsShape
 });
 (0, _defineProperty2.default)(ConfigList, "defaultProps", {
+  selectSettings: _defaultSettings.defaultItemSettings,
+  listSettings: _defaultSettings.defaultItemSettings,
   SelectRenderer: _SelectRenderer.default,
   ListRenderer: _ListRenderer.default,
-  ItemRenderer: _ItemRenderer.default,
-  isItemConfigured: function isItemConfigured(_ref7) {
-    var item = _ref7.item,
-        configuredItems = _ref7.configuredItems;
-    return configuredItems.find(function (it) {
-      return it.id === item.id;
-    });
-  }
+  ItemRenderer: _ItemRenderer.default
 });

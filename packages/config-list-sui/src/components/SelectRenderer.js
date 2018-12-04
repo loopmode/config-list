@@ -2,6 +2,10 @@ import React, { PureComponent } from 'react';
 import { Dropdown, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+import { settingsShape, itemsShape } from '@loopmode/config-list/lib/utils/shapes';
+import { map, filter } from '@loopmode/config-list/lib/utils/iterate';
+import count from '@loopmode/config-list/lib/utils/count';
+
 import styled from 'styled-components';
 
 const StyledSegment = styled(Segment)`
@@ -19,23 +23,15 @@ const StyledSegment = styled(Segment)`
 export default class SelectRenderer extends PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        configuredItems: PropTypes.array,
-        availableItems: PropTypes.array,
+        configuredItems: itemsShape,
+        availableItems: itemsShape,
 
         dropdownText: PropTypes.string,
         dropdownIcon: PropTypes.string,
         // only shows items in dropdown that are not already selected
         exclusive: PropTypes.bool,
 
-        itemConfig: PropTypes.shape({
-            filter: PropTypes.func,
-            identifier: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-            disabled: PropTypes.func,
-            icon: PropTypes.func,
-            label: PropTypes.func,
-            selected: PropTypes.func
-        }),
-
+        settings: settingsShape,
         onAddItem: PropTypes.func
     };
 
@@ -47,21 +43,25 @@ export default class SelectRenderer extends PureComponent {
     };
 
     render() {
-        const { onAddItem, dropdownIcon, availableItems, dropdownText } = this.props;
+        const { onAddItem, dropdownIcon, availableItems, dropdownText, settings } = this.props;
 
+        const selectableItems = filter(availableItems, settings.filter);
+        const hasSelectableItems = count(selectableItems) > 0;
         return (
             <StyledSegment vertical className="SelectRenderer">
                 <Dropdown className="icon" icon={dropdownIcon} floating labeled button text={dropdownText}>
                     <Dropdown.Menu>
-                        {availableItems.map(item => {
-                            return (
-                                <Dropdown.Item
-                                    key={item.key || item.id}
-                                    onClick={() => onAddItem({ item })}
-                                    text={item.label}
-                                />
-                            );
-                        })}
+                        {!hasSelectableItems && <Dropdown.Item disabled text={'No selectable items available'} />}
+                        {hasSelectableItems &&
+                            map(selectableItems, item => {
+                                return (
+                                    <Dropdown.Item
+                                        key={settings.getKey(item)}
+                                        text={settings.getLabel(item)}
+                                        onClick={() => onAddItem({ item })}
+                                    />
+                                );
+                            })}
                     </Dropdown.Menu>
                 </Dropdown>
             </StyledSegment>

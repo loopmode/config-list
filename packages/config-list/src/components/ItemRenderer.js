@@ -1,35 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Fragment from './Fragment';
 import cx from 'classnames';
-import styled from 'styled-components';
 
-const StyledListItem = styled.li`
-    display: flex;
-    flex-wrap: wrap;
-    .item-label {
-        flex: 1;
-    }
-    > button {
-        &.active {
-            color: deepskyblue;
-        }
-        &.btn-remove-confirm {
-            color: red;
-        }
-        & + button {
-            margin-left: 5px;
-        }
-        // target the editor without making assumptions about its tag or class
-        & + *:last-child:not(button) {
-            margin-top: 5px;
-            flex-basis: 100%;
-        }
-    }
-`;
+import Fragment from './Fragment';
+import { settingsShape } from '../utils/shapes';
+
 export default class ItemRenderer extends PureComponent {
     static propTypes = {
         item: PropTypes.object,
+        settings: settingsShape,
         editable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         removable: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
         ItemValueRenderer: PropTypes.func,
@@ -45,6 +24,7 @@ export default class ItemRenderer extends PureComponent {
     render() {
         const {
             item,
+            settings,
             onEdit,
             onEditCancel,
             onRemove,
@@ -53,13 +33,13 @@ export default class ItemRenderer extends PureComponent {
             isRemoving,
             isEditing,
             editor,
-            ItemValueRenderer = ({ item }) => item.label
+            ItemValueRenderer = ({ item }) => settings.getLabel(item)
         } = this.props;
 
         const editable = this.resolveBool(this.props.editable);
         const removable = this.resolveBool(this.props.removable);
         return (
-            <StyledListItem>
+            <li>
                 <span className="item-label">
                     <ItemValueRenderer {...this.props} />
                 </span>
@@ -94,7 +74,7 @@ export default class ItemRenderer extends PureComponent {
                     </Fragment>
                 )}
                 {editor}
-            </StyledListItem>
+            </li>
         );
     }
     resolveBool(value) {

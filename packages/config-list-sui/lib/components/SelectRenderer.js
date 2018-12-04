@@ -29,6 +29,12 @@ var _semanticUiReact = require("semantic-ui-react");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _shapes = require("@loopmode/config-list/lib/utils/shapes");
+
+var _iterate = require("@loopmode/config-list/lib/utils/iterate");
+
+var _count = _interopRequireDefault(require("@loopmode/config-list/lib/utils/count"));
+
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _templateObject() {
@@ -60,7 +66,10 @@ function (_PureComponent) {
           onAddItem = _this$props.onAddItem,
           dropdownIcon = _this$props.dropdownIcon,
           availableItems = _this$props.availableItems,
-          dropdownText = _this$props.dropdownText;
+          dropdownText = _this$props.dropdownText,
+          settings = _this$props.settings;
+      var selectableItems = (0, _iterate.filter)(availableItems, settings.filter);
+      var hasSelectableItems = (0, _count.default)(selectableItems) > 0;
       return _react.default.createElement(StyledSegment, {
         vertical: true,
         className: "SelectRenderer"
@@ -71,15 +80,18 @@ function (_PureComponent) {
         labeled: true,
         button: true,
         text: dropdownText
-      }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, availableItems.map(function (item) {
+      }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, !hasSelectableItems && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
+        disabled: true,
+        text: 'No selectable items available'
+      }), hasSelectableItems && (0, _iterate.map)(selectableItems, function (item) {
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
-          key: item.key || item.id,
+          key: settings.getKey(item),
+          text: settings.getLabel(item),
           onClick: function onClick() {
             return onAddItem({
               item: item
             });
-          },
-          text: item.label
+          }
         });
       }))));
     }
@@ -90,20 +102,13 @@ function (_PureComponent) {
 exports.default = SelectRenderer;
 (0, _defineProperty2.default)(SelectRenderer, "propTypes", {
   className: _propTypes.default.string,
-  configuredItems: _propTypes.default.array,
-  availableItems: _propTypes.default.array,
+  configuredItems: _shapes.itemsShape,
+  availableItems: _shapes.itemsShape,
   dropdownText: _propTypes.default.string,
   dropdownIcon: _propTypes.default.string,
   // only shows items in dropdown that are not already selected
   exclusive: _propTypes.default.bool,
-  itemConfig: _propTypes.default.shape({
-    filter: _propTypes.default.func,
-    identifier: _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.string]),
-    disabled: _propTypes.default.func,
-    icon: _propTypes.default.func,
-    label: _propTypes.default.func,
-    selected: _propTypes.default.func
-  }),
+  settings: _shapes.settingsShape,
   onAddItem: _propTypes.default.func
 });
 (0, _defineProperty2.default)(SelectRenderer, "defaultProps", {

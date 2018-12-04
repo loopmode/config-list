@@ -38,12 +38,7 @@ function (_PureComponent) {
   (0, _createClass2.default)(ListRenderer, [{
     key: "render",
     value: function render() {
-      return _react.default.createElement("ul", {
-        style: {
-          padding: 0,
-          width: '100%'
-        }
-      }, this.props.children);
+      return _react.default.createElement("ul", null, this.props.children);
     }
   }]);
   return ListRenderer;
