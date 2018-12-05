@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.defaultListSettings = exports.COLUMN_FIELD_ACTIONS = exports.COLUMN_FIELD_ITEM = void 0;
+exports.defaultSelectSettings = exports.defaultListSettings = exports.COLUMN_FIELD_ACTIONS = exports.COLUMN_FIELD_ITEM = void 0;
 
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
@@ -16,6 +16,7 @@ exports.COLUMN_FIELD_ITEM = COLUMN_FIELD_ITEM;
 var COLUMN_FIELD_ACTIONS = '$actions';
 exports.COLUMN_FIELD_ACTIONS = COLUMN_FIELD_ACTIONS;
 var defaultListSettings = (0, _objectSpread2.default)({}, _defaults.default, {
+  displayHeaders: true,
   columns: [{
     label: 'Name',
     field: COLUMN_FIELD_ITEM
@@ -25,3 +26,9 @@ var defaultListSettings = (0, _objectSpread2.default)({}, _defaults.default, {
   }]
 });
 exports.defaultListSettings = defaultListSettings;
+var defaultSelectSettings = (0, _objectSpread2.default)({}, _defaults.default, {
+  dropdownIcon: 'add circle',
+  dropdownText: 'select item',
+  dropdownEmptyText: 'No selectable items available'
+});
+exports.defaultSelectSettings = defaultSelectSettings;

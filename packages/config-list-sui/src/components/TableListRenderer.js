@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import styled from 'styled-components';
 
-import { settingsShape } from '../shapes';
+import { listSettingsShape } from '../shapes';
 
 import { defaultListSettings } from '../defaults';
 import memoize from 'memoize-one';
@@ -24,7 +24,7 @@ const StyledSegment = styled(Segment)`
 
 export default class TableListRenderer extends PureComponent {
     static propTypes = {
-        settings: settingsShape,
+        settings: listSettingsShape,
         //
         className: PropTypes.string,
         children: PropTypes.node
@@ -37,22 +37,24 @@ export default class TableListRenderer extends PureComponent {
 
     render() {
         const { className } = this.props;
-        const { columns } = this.settings;
+        const { columns, displayHeaders } = this.settings;
 
         return (
             <StyledSegment vertical className={cx(className, 'TableListRenderer ListRenderer')}>
                 <Table>
-                    <thead>
-                        <tr>
-                            {columns.map(column => (
-                                <th
-                                    key={`${column.field}--${column.label}`}
-                                    children={column.label}
-                                    className={`column-${column.field}`}
-                                />
-                            ))}
-                        </tr>
-                    </thead>
+                    {displayHeaders && (
+                        <thead>
+                            <tr>
+                                {columns.map(column => (
+                                    <th
+                                        key={`${column.field}--${column.label}`}
+                                        children={column.label}
+                                        className={`column-${column.field}`}
+                                    />
+                                ))}
+                            </tr>
+                        </thead>
+                    )}
                     <tbody>{this.props.children}</tbody>
                 </Table>
             </StyledSegment>

@@ -6,7 +6,14 @@ export const columnShape = PropTypes.shape({
     field: PropTypes.string,
     label: PropTypes.string
 });
-export const settingsShape = PropTypes.shape({
+export const listSettingsShape = PropTypes.shape({
     ...settings,
     columns: PropTypes.arrayOf(columnShape)
+});
+
+export const selectSettingsShape = PropTypes.shape({
+    ...settings,
+    dropdownIcon: PropTypes.string,
+    dropdownText: PropTypes.string,
+    dropdownEmptyText: PropTypes.string
 });

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.settingsShape = exports.columnShape = void 0;
+exports.selectSettingsShape = exports.listSettingsShape = exports.columnShape = void 0;
 
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
@@ -20,8 +20,16 @@ var columnShape = _propTypes.default.shape({
 
 exports.columnShape = columnShape;
 
-var settingsShape = _propTypes.default.shape((0, _objectSpread2.default)({}, _shapes.settings, {
+var listSettingsShape = _propTypes.default.shape((0, _objectSpread2.default)({}, _shapes.settings, {
   columns: _propTypes.default.arrayOf(columnShape)
 }));
 
-exports.settingsShape = settingsShape;
+exports.listSettingsShape = listSettingsShape;
+
+var selectSettingsShape = _propTypes.default.shape((0, _objectSpread2.default)({}, _shapes.settings, {
+  dropdownIcon: _propTypes.default.string,
+  dropdownText: _propTypes.default.string,
+  dropdownEmptyText: _propTypes.default.string
+}));
+
+exports.selectSettingsShape = selectSettingsShape;

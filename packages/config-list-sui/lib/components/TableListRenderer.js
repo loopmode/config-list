@@ -82,11 +82,13 @@ function (_PureComponent) {
     key: "render",
     value: function render() {
       var className = this.props.className;
-      var columns = this.settings.columns;
+      var _this$settings = this.settings,
+          columns = _this$settings.columns,
+          displayHeaders = _this$settings.displayHeaders;
       return _react.default.createElement(StyledSegment, {
         vertical: true,
         className: (0, _classnames.default)(className, 'TableListRenderer ListRenderer')
-      }, _react.default.createElement(_semanticUiReact.Table, null, _react.default.createElement("thead", null, _react.default.createElement("tr", null, columns.map(function (column) {
+      }, _react.default.createElement(_semanticUiReact.Table, null, displayHeaders && _react.default.createElement("thead", null, _react.default.createElement("tr", null, columns.map(function (column) {
         return _react.default.createElement("th", {
           key: "".concat(column.field, "--").concat(column.label),
           children: column.label,
@@ -105,7 +107,7 @@ function (_PureComponent) {
 
 exports.default = TableListRenderer;
 (0, _defineProperty2.default)(TableListRenderer, "propTypes", {
-  settings: _shapes.settingsShape,
+  settings: _shapes.listSettingsShape,
   //
   className: _propTypes.default.string,
   children: _propTypes.default.node

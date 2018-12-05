@@ -9,15 +9,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _getPrototypeOf3 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
@@ -29,7 +33,13 @@ var _semanticUiReact = require("semantic-ui-react");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _shapes = require("@loopmode/config-list/lib/shapes");
+var _memoizeOne = _interopRequireDefault(require("memoize-one"));
+
+var _shapes = require("../shapes");
+
+var _defaults = require("../defaults");
+
+var _shapes2 = require("@loopmode/config-list/lib/shapes");
 
 var _iterate = require("@loopmode/config-list/lib/utils/iterate");
 
@@ -55,20 +65,31 @@ function (_PureComponent) {
   (0, _inherits2.default)(SelectRenderer, _PureComponent);
 
   function SelectRenderer() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     (0, _classCallCheck2.default)(this, SelectRenderer);
-    return (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(SelectRenderer).apply(this, arguments));
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = (0, _possibleConstructorReturn2.default)(this, (_getPrototypeOf2 = (0, _getPrototypeOf3.default)(SelectRenderer)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "getSettings", (0, _memoizeOne.default)(function (defaults, settings) {
+      return (0, _objectSpread2.default)({}, defaults, settings);
+    }));
+    return _this;
   }
 
   (0, _createClass2.default)(SelectRenderer, [{
     key: "render",
     value: function render() {
+      var settings = this.settings;
       var _this$props = this.props,
           onAddItem = _this$props.onAddItem,
-          dropdownIcon = _this$props.dropdownIcon,
           configuredItems = _this$props.configuredItems,
-          availableItems = _this$props.availableItems,
-          dropdownText = _this$props.dropdownText,
-          settings = _this$props.settings;
+          availableItems = _this$props.availableItems;
       var selectableItems = (0, _iterate.filter)(availableItems, function (item) {
         return settings.filter(item, {
           configuredItems: configuredItems,
@@ -81,14 +102,14 @@ function (_PureComponent) {
         className: "SelectRenderer"
       }, _react.default.createElement(_semanticUiReact.Dropdown, {
         className: "icon",
-        icon: dropdownIcon,
+        icon: settings.dropdownIcon,
         floating: true,
         labeled: true,
         button: true,
-        text: dropdownText
+        text: settings.dropdownText
       }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, !hasSelectableItems && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
         disabled: true,
-        text: 'No selectable items available'
+        text: settings.dropdownEmptyText
       }), hasSelectableItems && (0, _iterate.map)(selectableItems, function (item) {
         return _react.default.createElement(_semanticUiReact.Dropdown.Item, {
           key: settings.key(item),
@@ -101,6 +122,11 @@ function (_PureComponent) {
         });
       }))));
     }
+  }, {
+    key: "settings",
+    get: function get() {
+      return this.getSettings(_defaults.defaultSelectSettings, this.props.settings);
+    }
   }]);
   return SelectRenderer;
 }(_react.PureComponent);
@@ -108,18 +134,14 @@ function (_PureComponent) {
 exports.default = SelectRenderer;
 (0, _defineProperty2.default)(SelectRenderer, "propTypes", {
   className: _propTypes.default.string,
-  configuredItems: _shapes.itemsShape,
-  availableItems: _shapes.itemsShape,
-  dropdownText: _propTypes.default.string,
-  dropdownIcon: _propTypes.default.string,
+  configuredItems: _shapes2.itemsShape,
+  availableItems: _shapes2.itemsShape,
   // only shows items in dropdown that are not already selected
   exclusive: _propTypes.default.bool,
-  settings: _shapes.settingsShape,
+  settings: _shapes.selectSettingsShape,
   onAddItem: _propTypes.default.func
 });
 (0, _defineProperty2.default)(SelectRenderer, "defaultProps", {
   onAddItem: function onAddItem() {},
-  className: 'icon',
-  dropdownIcon: 'add circle',
-  dropdownText: 'select item'
+  className: 'icon'
 });

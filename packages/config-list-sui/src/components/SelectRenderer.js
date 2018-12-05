@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Dropdown, Segment } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import memoize from 'memoize-one';
 
-import { settingsShape, itemsShape } from '@loopmode/config-list/lib/shapes';
+import { selectSettingsShape } from '../shapes';
+import { defaultSelectSettings } from '../defaults';
+import { itemsShape } from '@loopmode/config-list/lib/shapes';
 import { map, filter } from '@loopmode/config-list/lib/utils/iterate';
 import count from '@loopmode/config-list/lib/utils/count';
 
@@ -26,24 +29,25 @@ export default class SelectRenderer extends PureComponent {
         configuredItems: itemsShape,
         availableItems: itemsShape,
 
-        dropdownText: PropTypes.string,
-        dropdownIcon: PropTypes.string,
         // only shows items in dropdown that are not already selected
         exclusive: PropTypes.bool,
 
-        settings: settingsShape,
+        settings: selectSettingsShape,
         onAddItem: PropTypes.func
     };
 
     static defaultProps = {
         onAddItem: () => {},
-        className: 'icon',
-        dropdownIcon: 'add circle',
-        dropdownText: 'select item'
+        className: 'icon'
     };
 
+    getSettings = memoize((defaults, settings) => ({ ...defaults, ...settings }));
+    get settings() {
+        return this.getSettings(defaultSelectSettings, this.props.settings);
+    }
     render() {
-        const { onAddItem, dropdownIcon, configuredItems, availableItems, dropdownText, settings } = this.props;
+        const { settings } = this;
+        const { onAddItem, configuredItems, availableItems } = this.props;
 
         const selectableItems = filter(availableItems, item =>
             settings.filter(item, { configuredItems, availableItems })
@@ -51,9 +55,16 @@ export default class SelectRenderer extends PureComponent {
         const hasSelectableItems = count(selectableItems) > 0;
         return (
             <StyledSegment vertical className="SelectRenderer">
-                <Dropdown className="icon" icon={dropdownIcon} floating labeled button text={dropdownText}>
+                <Dropdown
+                    className="icon"
+                    icon={settings.dropdownIcon}
+                    floating
+                    labeled
+                    button
+                    text={settings.dropdownText}
+                >
                     <Dropdown.Menu>
-                        {!hasSelectableItems && <Dropdown.Item disabled text={'No selectable items available'} />}
+                        {!hasSelectableItems && <Dropdown.Item disabled text={settings.dropdownEmptyText} />}
                         {hasSelectableItems &&
                             map(selectableItems, item => {
                                 return (
