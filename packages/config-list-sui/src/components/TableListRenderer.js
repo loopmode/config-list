@@ -14,7 +14,7 @@ import memoize from 'memoize-one';
 
 const StyledSegment = styled(Segment)`
     .ui.table thead,
-    .ui.table tbody {
+    .ui.table tbody tr:not(.editor-row) {
         td:last-child,
         th:last-child {
             text-align: right;

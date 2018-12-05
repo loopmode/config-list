@@ -58,7 +58,7 @@ function (_PureComponent) {
           _this$props$ItemValue = _this$props.ItemValueRenderer,
           ItemValueRenderer = _this$props$ItemValue === void 0 ? function (_ref) {
         var item = _ref.item;
-        return settings.label(item);
+        return settings.label(item) || null;
       } : _this$props$ItemValue;
       var editable = this.resolveBool(this.props.editable);
       var removable = this.resolveBool(this.props.removable);

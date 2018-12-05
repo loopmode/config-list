@@ -27,6 +27,9 @@ var listSettingsShape = _propTypes.default.shape((0, _objectSpread2.default)({},
 exports.listSettingsShape = listSettingsShape;
 
 var selectSettingsShape = _propTypes.default.shape((0, _objectSpread2.default)({}, _shapes.settings, {
+  dropdownProps: _propTypes.default.object,
+  dropdownHeader: _shapes.renderableShape,
+  dropdownFooter: _shapes.renderableShape,
   dropdownIcon: _propTypes.default.string,
   dropdownText: _propTypes.default.string,
   dropdownEmptyText: _propTypes.default.string

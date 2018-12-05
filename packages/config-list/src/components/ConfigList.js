@@ -146,8 +146,8 @@ export default class ConfigList extends PureComponent {
                     key={`editor-${key}`}
                     item={item}
                     parentProps={this.props}
-                    onEditConfirm={this.handleEditConfirm}
-                    onEditCancel={this.handleEditCancel}
+                    onConfirm={this.handleEditConfirm}
+                    onCancel={this.handleEditCancel}
                 />
             );
         } else {
@@ -175,12 +175,11 @@ export default class ConfigList extends PureComponent {
         this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: false } });
     }
 
-    handleEditConfirm({ item, data }) {
-        this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: false } });
-        if (!this.props.onEditItem) {
-            return;
+    async handleEditConfirm({ item, data }) {
+        if (this.props.onEditItem) {
+            await this.props.onEditItem({ item, data, event });
         }
-        this.props.onEditItem({ item, data, event });
+        this.setState({ editing: { ...this.state.editing, [this.listSettings.key(item)]: false } });
     }
 
     // -------------------------------------------------
@@ -189,7 +188,7 @@ export default class ConfigList extends PureComponent {
     //
     // -------------------------------------------------
 
-    handleRemove({ item, event }) {
+    async handleRemove({ item, event }) {
         let confirmRemove = this.props.confirmRemove;
         if (typeof confirmRemove === 'function') {
             confirmRemove = confirmRemove({ item, event });
@@ -197,7 +196,7 @@ export default class ConfigList extends PureComponent {
         if (confirmRemove) {
             this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: true } });
         } else if (this.props.onRemoveItem) {
-            this.props.onRemoveItem({ item, event });
+            await this.props.onRemoveItem({ item, event });
         }
     }
 
@@ -205,11 +204,10 @@ export default class ConfigList extends PureComponent {
         this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: false } });
     }
 
-    handleRemoveConfirm({ item }) {
-        this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: false } });
-        if (!this.props.onRemoveItem) {
-            return;
+    async handleRemoveConfirm({ item }) {
+        if (this.props.onRemoveItem) {
+            await this.props.onRemoveItem({ item, event });
         }
-        this.props.onRemoveItem({ item, event });
+        this.setState({ removing: { ...this.state.removing, [this.listSettings.key(item)]: false } });
     }
 }

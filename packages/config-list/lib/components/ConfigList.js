@@ -9,6 +9,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _objectSpread8 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -157,8 +161,8 @@ function (_PureComponent) {
           key: "editor-".concat(key),
           item: item,
           parentProps: this.props,
-          onEditConfirm: this.handleEditConfirm,
-          onEditCancel: this.handleEditCancel
+          onConfirm: this.handleEditConfirm,
+          onCancel: this.handleEditCancel
         });
       } else {
         editorContent = _react.default.createElement("div", null, "No ", _react.default.createElement("code", null, "ItemEditor"), " provided");
@@ -189,23 +193,46 @@ function (_PureComponent) {
     }
   }, {
     key: "handleEditConfirm",
-    value: function handleEditConfirm(_ref3) {
-      var item = _ref3.item,
-          data = _ref3.data;
-      this.setState({
-        editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
-      });
+    value: function () {
+      var _handleEditConfirm = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee(_ref3) {
+        var item, data;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                item = _ref3.item, data = _ref3.data;
 
-      if (!this.props.onEditItem) {
-        return;
-      }
+                if (!this.props.onEditItem) {
+                  _context.next = 4;
+                  break;
+                }
 
-      this.props.onEditItem({
-        item: item,
-        data: data,
-        event: event
-      });
-    } // -------------------------------------------------
+                _context.next = 4;
+                return this.props.onEditItem({
+                  item: item,
+                  data: data,
+                  event: event
+                });
+
+              case 4:
+                this.setState({
+                  editing: (0, _objectSpread8.default)({}, this.state.editing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
+                });
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      return function handleEditConfirm(_x) {
+        return _handleEditConfirm.apply(this, arguments);
+      };
+    }() // -------------------------------------------------
     //
     //          REMOVE ITEM
     //
@@ -213,29 +240,60 @@ function (_PureComponent) {
 
   }, {
     key: "handleRemove",
-    value: function handleRemove(_ref4) {
-      var item = _ref4.item,
-          event = _ref4.event;
-      var confirmRemove = this.props.confirmRemove;
+    value: function () {
+      var _handleRemove = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee2(_ref4) {
+        var item, event, confirmRemove;
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                item = _ref4.item, event = _ref4.event;
+                confirmRemove = this.props.confirmRemove;
 
-      if (typeof confirmRemove === 'function') {
-        confirmRemove = confirmRemove({
-          item: item,
-          event: event
-        });
-      }
+                if (typeof confirmRemove === 'function') {
+                  confirmRemove = confirmRemove({
+                    item: item,
+                    event: event
+                  });
+                }
 
-      if (confirmRemove) {
-        this.setState({
-          removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), true))
-        });
-      } else if (this.props.onRemoveItem) {
-        this.props.onRemoveItem({
-          item: item,
-          event: event
-        });
-      }
-    }
+                if (!confirmRemove) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                this.setState({
+                  removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), true))
+                });
+                _context2.next = 10;
+                break;
+
+              case 7:
+                if (!this.props.onRemoveItem) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _context2.next = 10;
+                return this.props.onRemoveItem({
+                  item: item,
+                  event: event
+                });
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      return function handleRemove(_x2) {
+        return _handleRemove.apply(this, arguments);
+      };
+    }()
   }, {
     key: "handleRemoveCancel",
     value: function handleRemoveCancel(_ref5) {
@@ -246,21 +304,45 @@ function (_PureComponent) {
     }
   }, {
     key: "handleRemoveConfirm",
-    value: function handleRemoveConfirm(_ref6) {
-      var item = _ref6.item;
-      this.setState({
-        removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
-      });
+    value: function () {
+      var _handleRemoveConfirm = (0, _asyncToGenerator2.default)(
+      /*#__PURE__*/
+      _regenerator.default.mark(function _callee3(_ref6) {
+        var item;
+        return _regenerator.default.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                item = _ref6.item;
 
-      if (!this.props.onRemoveItem) {
-        return;
-      }
+                if (!this.props.onRemoveItem) {
+                  _context3.next = 4;
+                  break;
+                }
 
-      this.props.onRemoveItem({
-        item: item,
-        event: event
-      });
-    }
+                _context3.next = 4;
+                return this.props.onRemoveItem({
+                  item: item,
+                  event: event
+                });
+
+              case 4:
+                this.setState({
+                  removing: (0, _objectSpread8.default)({}, this.state.removing, (0, _defineProperty2.default)({}, this.listSettings.key(item), false))
+                });
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      return function handleRemoveConfirm(_x3) {
+        return _handleRemoveConfirm.apply(this, arguments);
+      };
+    }()
   }]);
   return ConfigList;
 }(_react.PureComponent);

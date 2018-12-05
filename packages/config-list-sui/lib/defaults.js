@@ -27,6 +27,8 @@ var defaultListSettings = (0, _objectSpread2.default)({}, _defaults.default, {
 });
 exports.defaultListSettings = defaultListSettings;
 var defaultSelectSettings = (0, _objectSpread2.default)({}, _defaults.default, {
+  dropdownHeader: null,
+  dropdownFooter: null,
   dropdownIcon: 'add circle',
   dropdownText: 'select item',
   dropdownEmptyText: 'No selectable items available'

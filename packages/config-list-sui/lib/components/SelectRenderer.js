@@ -9,6 +9,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -48,7 +50,7 @@ var _count = _interopRequireDefault(require("@loopmode/config-list/lib/utils/cou
 var _styledComponents = _interopRequireDefault(require("styled-components"));
 
 function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n    &:first-child {\n        padding-top: 0 !important;\n    }\n    .ui.dropdown {\n        width: 100%;\n    }\n    .ui.icon.button {\n        padding: 7px;\n    }\n"]);
+  var data = (0, _taggedTemplateLiteral2.default)(["\n    &:first-child {\n        padding-top: 0 !important;\n    }\n    .ui.dropdown {\n        width: 100%;\n    }\n    .ui.icon.button {\n        padding: 7px;\n    }\n    .ui.dropdown .menu {\n        max-width: 100%;\n        .item .text {\n            white-space: pre-wrap;\n        }\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -97,17 +99,21 @@ function (_PureComponent) {
         });
       });
       var hasSelectableItems = (0, _count.default)(selectableItems) > 0;
+      var header = this.renderValue(settings.dropdownHeader);
+      var footer = this.renderValue(settings.dropdownFooter);
       return _react.default.createElement(StyledSegment, {
         vertical: true,
         className: "SelectRenderer"
-      }, _react.default.createElement(_semanticUiReact.Dropdown, {
+      }, _react.default.createElement(_semanticUiReact.Dropdown, (0, _extends2.default)({
         className: "icon",
         icon: settings.dropdownIcon,
         floating: true,
         labeled: true,
         button: true,
         text: settings.dropdownText
-      }, _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, !hasSelectableItems && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
+      }, settings.dropdownProps), _react.default.createElement(_semanticUiReact.Dropdown.Menu, null, header && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
+        children: header
+      }), !hasSelectableItems && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
         disabled: true,
         text: settings.dropdownEmptyText
       }), hasSelectableItems && (0, _iterate.map)(selectableItems, function (item) {
@@ -120,7 +126,18 @@ function (_PureComponent) {
             });
           }
         });
+      }), footer && _react.default.createElement(_semanticUiReact.Dropdown.Item, {
+        children: footer
       }))));
+    }
+  }, {
+    key: "renderValue",
+    value: function renderValue(value) {
+      if (typeof value === 'function') {
+        return value(this.props) || null;
+      }
+
+      return value || null;
     }
   }, {
     key: "settings",

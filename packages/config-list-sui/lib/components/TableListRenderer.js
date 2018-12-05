@@ -44,7 +44,7 @@ var _defaults = require("../defaults");
 var _memoizeOne = _interopRequireDefault(require("memoize-one"));
 
 function _templateObject() {
-  var data = (0, _taggedTemplateLiteral2.default)(["\n    .ui.table thead,\n    .ui.table tbody {\n        td:last-child,\n        th:last-child {\n            text-align: right;\n        }\n    }\n"]);
+  var data = (0, _taggedTemplateLiteral2.default)(["\n    .ui.table thead,\n    .ui.table tbody tr:not(.editor-row) {\n        td:last-child,\n        th:last-child {\n            text-align: right;\n        }\n    }\n"]);
 
   _templateObject = function _templateObject() {
     return data;

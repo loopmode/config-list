@@ -21,6 +21,12 @@ const StyledSegment = styled(Segment)`
     .ui.icon.button {
         padding: 7px;
     }
+    .ui.dropdown .menu {
+        max-width: 100%;
+        .item .text {
+            white-space: pre-wrap;
+        }
+    }
 `;
 
 export default class SelectRenderer extends PureComponent {
@@ -53,6 +59,8 @@ export default class SelectRenderer extends PureComponent {
             settings.filter(item, { configuredItems, availableItems })
         );
         const hasSelectableItems = count(selectableItems) > 0;
+        const header = this.renderValue(settings.dropdownHeader);
+        const footer = this.renderValue(settings.dropdownFooter);
         return (
             <StyledSegment vertical className="SelectRenderer">
                 <Dropdown
@@ -62,8 +70,10 @@ export default class SelectRenderer extends PureComponent {
                     labeled
                     button
                     text={settings.dropdownText}
+                    {...settings.dropdownProps}
                 >
                     <Dropdown.Menu>
+                        {header && <Dropdown.Item children={header} />}
                         {!hasSelectableItems && <Dropdown.Item disabled text={settings.dropdownEmptyText} />}
                         {hasSelectableItems &&
                             map(selectableItems, item => {
@@ -75,9 +85,16 @@ export default class SelectRenderer extends PureComponent {
                                     />
                                 );
                             })}
+                        {footer && <Dropdown.Item children={footer} />}
                     </Dropdown.Menu>
                 </Dropdown>
             </StyledSegment>
         );
+    }
+    renderValue(value) {
+        if (typeof value === 'function') {
+            return value(this.props) || null;
+        }
+        return value || null;
     }
 }

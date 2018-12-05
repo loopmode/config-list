@@ -11,6 +11,8 @@ export const defaultListSettings = {
 
 export const defaultSelectSettings = {
     ...defaults,
+    dropdownHeader: null,
+    dropdownFooter: null,
     dropdownIcon: 'add circle',
     dropdownText: 'select item',
     dropdownEmptyText: 'No selectable items available'
