@@ -58,7 +58,7 @@ export default class TableItemRenderer extends PureComponent {
     }
     render() {
         const { settings } = this;
-        const { item, ItemValueRenderer = ({ item }) => settings.label(item) } = this.props;
+        const { item, ItemValueRenderer = ({ item }) => settings.label(item) || null } = this.props;
         let { modalConfirm, modalEdit } = this.props.parentProps;
         if (typeof modalConfirm === 'function') {
             modalConfirm = modalConfirm(this.props);

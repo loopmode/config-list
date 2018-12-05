@@ -33,7 +33,7 @@ export default class ItemRenderer extends PureComponent {
             isRemoving,
             isEditing,
             editor,
-            ItemValueRenderer = ({ item }) => settings.label(item)
+            ItemValueRenderer = ({ item }) => settings.label(item) || null
         } = this.props;
 
         const editable = this.resolveBool(this.props.editable);
