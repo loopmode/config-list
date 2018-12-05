@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/config-list-sui",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "lib/index.js",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
@@ -21,12 +21,17 @@
   "eslintConfig": {
     "extends": "@loopmode/react",
     "rules": {
-      "no-unused-vars": [1, { "ignoreRestSiblings": true }]
+      "no-unused-vars": [
+        1,
+        {
+          "ignoreRestSiblings": true
+        }
+      ]
     }
   },
   "dependencies": {
     "@loopmode/async-state": "^0.3.2",
-    "@loopmode/config-list": "^1.2.1",
+    "@loopmode/config-list": "^1.2.2",
     "semantic-ui-react": "^0.83.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/config-list",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "lib/index.js",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
@@ -24,7 +24,12 @@
   "eslintConfig": {
     "extends": "@loopmode/react",
     "rules": {
-      "no-unused-vars": [1, { "ignoreRestSiblings": true }]
+      "no-unused-vars": [
+        1,
+        {
+          "ignoreRestSiblings": true
+        }
+      ]
     }
   },
   "dependencies": {
