@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/config-list-sui",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "lib/index.js",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
