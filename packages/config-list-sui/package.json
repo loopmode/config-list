@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@loopmode/async-state": "^0.3.2",
-    "@loopmode/config-list": "^1.2.2",
+    "@loopmode/config-list": "^1.2.3",
     "semantic-ui-react": "^0.83.0"
   }
 }
