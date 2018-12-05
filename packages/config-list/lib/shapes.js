@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.settingsShape = exports.settings = exports.itemsShape = exports.ImmutableShape = void 0;
+exports.renderableShape = exports.settingsShape = exports.settings = exports.itemsShape = exports.ImmutableShape = void 0;
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -63,3 +63,7 @@ exports.settings = settings;
 var settingsShape = _propTypes.default.shape(settings);
 
 exports.settingsShape = settingsShape;
+
+var renderableShape = _propTypes.default.oneOfType([_propTypes.default.func, _propTypes.default.node, _propTypes.default.string, _propTypes.default.number]);
+
+exports.renderableShape = renderableShape;

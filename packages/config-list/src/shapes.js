@@ -46,3 +46,9 @@ export const settings = {
     key: PropTypes.func
 };
 export const settingsShape = PropTypes.shape(settings);
+export const renderableShape = PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.node,
+    PropTypes.string,
+    PropTypes.number
+]);
